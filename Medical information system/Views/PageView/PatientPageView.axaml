@@ -7,14 +7,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PatientPageView">
     
-    <DataGrid>
+    <DataGrid ItemsSource="{Binding Patients}" 
+               AreRowDetailsFrozen="True"
+               AutoGenerateColumns="False">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding}"/>
-            <DataGridTextColumn Header="ФИО" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Дата рождения" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Номер телефона" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Адрес" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Номер полиса" Binding="{Binding}"/>
+            <DataGridTextColumn Header="№"  Binding="{Binding Id }"/>
+            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+            <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}"/>
+            <DataGridTextColumn Header="Пол" Binding="{Binding Gender}"/>
+            <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+            <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
+            <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

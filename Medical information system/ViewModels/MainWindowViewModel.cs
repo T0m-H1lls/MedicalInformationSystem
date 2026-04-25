@@ -13,10 +13,11 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     
     private readonly IServiceProvider _serviceProvider;
-    
+    private readonly PatientPageViewModel _patientPageViewModel;
+
     [ObservableProperty] private bool _isPaneOpen = true;
     [ObservableProperty] private ListItemTemplate? _selectedListItem;
-    [ObservableProperty] private ViewModelBase _currentPage = new PatientPageViewModel();
+    [ObservableProperty] private ViewModelBase _currentPage;
 
     public ObservableCollection<ListItemTemplate> ListItemTemplates { get; } = new()
     {
@@ -41,11 +42,11 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
 
-    public MainWindowViewModel(IServiceProvider serviceProvider)
+    public MainWindowViewModel(IServiceProvider serviceProvider, PatientPageViewModel patientPageViewModel)
     {
         _serviceProvider = serviceProvider;
-        
-       
+        _patientPageViewModel = patientPageViewModel;
+        CurrentPage = new PatientPageViewModel(serviceProvider);
     }
     
     [RelayCommand]

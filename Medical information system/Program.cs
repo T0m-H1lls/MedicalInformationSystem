@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using System;
 using Medical_information_system.DB;
+using Medical_information_system.DB.Repository;
 using Medical_information_system.ViewModels;
 using Medical_information_system.Views;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,9 @@ sealed class Program
                     GetSection("DataBaseConnection"));
                 s.AddTransient<MainWindowViewModel>();
                 s.AddTransient<MainWindow>();
+                s.AddTransient<PatientPageViewModel>();
+                s.AddTransient<PatientPageView>();
+                s.AddTransient<PatientRep>();
                
 
             }).
