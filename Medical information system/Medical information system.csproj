@@ -35,10 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Views\PageView\ApoitmentsPageView.axaml.cs">
         <DependentUpon>ApoitmentsPageView.axaml</DependentUpon>
         <SubType>Code</SubType>

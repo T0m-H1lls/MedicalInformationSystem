@@ -17,17 +17,17 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private bool _isPaneOpen = true;
     [ObservableProperty] private ListItemTemplate? _selectedListItem;
     [ObservableProperty] private ViewModelBase _currentPage = new PatientPageViewModel();
-    
+
     public ObservableCollection<ListItemTemplate> ListItemTemplates { get; } = new()
     {
-        new ListItemTemplate(typeof(PatientPageViewModel),"person_regular","Пациенты"),
-        new ListItemTemplate(typeof(DoctorsPageViewModel),"doctors_d ","Врачи"),
-        new ListItemTemplate(typeof(ApoitmentsPageViewModel),"calendar_month_regular ","Приемы"),
-        new ListItemTemplate(typeof(MedicalRecordsPageViewModel)," reading_mode_mobile_regular","Медицинские записи"),
-        new ListItemTemplate(typeof(DiagnosPageViewModel),"diagnose ","Диагнозы"),
-        new ListItemTemplate(typeof(PrescriptionsPageViewModel)," ","Назначения"),
-        new ListItemTemplate(typeof(MedicationsPageViewModel),"medical ","Лекарства"),
-        
+        new ListItemTemplate(typeof(PatientPageViewModel), "person_regular", "Пациенты"),
+        new ListItemTemplate(typeof(DoctorsPageViewModel), "doctors_d", "Врачи"),
+        new ListItemTemplate(typeof(ApoitmentsPageViewModel), "calendar_month_regular", "Приемы"),
+        new ListItemTemplate(typeof(MedicalRecordsPageViewModel), "reading_mode_mobile_regular", "Медицинские записи"),
+        new ListItemTemplate(typeof(DiagnosPageViewModel), "diagnose", "Диагнозы"),
+        new ListItemTemplate(typeof(PrescriptionsPageViewModel), "naznachenie", "Назначения"),
+        new ListItemTemplate(typeof(MedicationsPageViewModel), "medical", "Лекарства"),
+
     };
 
     partial void OnSelectedListItemChanged(ListItemTemplate? value)
@@ -56,11 +56,11 @@ public partial class MainWindowViewModel : ViewModelBase
 }
 public class ListItemTemplate
 {
-    public ListItemTemplate(Type type,string Icon, string label = null)
+    public ListItemTemplate(Type type,string icon, string label = null)
     {
         ModelType = type;
         Label = label??type.Name.Replace("PageViewModel", "");
-        Application.Current.TryFindResource(Icon, out var res);
+        Application.Current.TryFindResource(icon, out var res);
         ListItemIcon = (StreamGeometry)res!;
     }
     public string Label { get; set; }

@@ -12,6 +12,13 @@
         <entry key="Medical information system/Views/MedicalPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/MedicalRecordsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/MedicationsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/ApoitmentsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/DiagnosPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/DoctorsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/MedicalRecordsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/MedicationsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/PatientPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PatientPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
       </map>

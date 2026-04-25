@@ -2,7 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:Medical_information_system.ViewModels"
+             x:DataType="viewmodel:DoctorsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.DoctorsPageView">
-    Doctors
+    
+    <DataGrid>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="№"  Binding="{Binding}"/>
+            <DataGridTextColumn Header="ФИО" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Специализация" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Номер телефона" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Кабинет" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Отделение" Binding="{Binding}"/>
+        </DataGrid.Columns>
+    </DataGrid>
 </UserControl>

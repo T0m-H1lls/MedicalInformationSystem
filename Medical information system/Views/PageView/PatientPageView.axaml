@@ -2,7 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:Medical_information_system.ViewModels"
+             x:DataType="viewmodel:PatientPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PatientPageView">
-    Welcome to Avalonia!
+    
+    <DataGrid>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="№"  Binding="{Binding}"/>
+            <DataGridTextColumn Header="ФИО" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Дата рождения" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Номер телефона" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Адрес" Binding="{Binding}"/>
+            <DataGridTextColumn Header="Номер полиса" Binding="{Binding}"/>
+        </DataGrid.Columns>
+    </DataGrid>
 </UserControl>

@@ -20,16 +20,17 @@
     
     
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
-               OpenPaneLength="290"
+               OpenPaneLength="300"
                DisplayMode="CompactInline"
-               CompactPaneLength="50"
+               CompactPaneLength="60"
                PaneBackground="MidnightBlue">
         <SplitView.Pane>
-            <StackPanel Spacing="5" 
+            <StackPanel Spacing="15" 
                         Margin="5">
-                <Button Command="{Binding TriggerPaneCommand}">
-                    <PathIcon Data="{StaticResource line_horizontal_3_regular}">
-                    </PathIcon>
+                <Button Command="{Binding TriggerPaneCommand}" 
+                        Background="MidnightBlue"
+                        Foreground="White">
+                    <PathIcon Data="{StaticResource line_horizontal_3_regular}"/>
                 </Button>
                 <TextBlock Foreground="White">МЕДИЦИНСКАЯ ИНФОРМАЦИОННАЯ</TextBlock>
                 <TextBlock Foreground="White">СИСТЕМА</TextBlock>
@@ -37,8 +38,13 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
                             <StackPanel Spacing="15" Orientation="Horizontal">
-                                <PathIcon Foreground="AliceBlue" Data="{Binding ListItemIcon}"></PathIcon>
-                                <TextBlock Foreground="White" Text="{Binding Label}"></TextBlock>
+                                <PathIcon Foreground="AliceBlue"
+                                          Width="20"
+                                          Height="20"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="{Binding ListItemIcon}"/>
+                                <TextBlock Foreground="White" Text="{Binding Label}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

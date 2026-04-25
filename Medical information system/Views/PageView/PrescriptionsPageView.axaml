@@ -2,10 +2,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:Medical_information_system.ViewModels"
+             x:DataType="viewmodel:PrescriptionsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PrescriptionsPageView">
-    Welcome to Avalonia!
-    Курсовая работа
 
-    Медицинская Информационная Система(МИС)
+    <DataGrid>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="№" Binding="{Binding }"/>
+            <DataGridTextColumn Header="Врач" Binding="{Binding }"/>
+            <DataGridTextColumn Header="Лекарство " Binding="{Binding }"/>
+            <DataGridTextColumn Header="Пациент" Binding="{Binding }"/>
+            <DataGridTextColumn Header="Дозировка" Binding="{Binding }"/>
+            <DataGridTextColumn Header="Длительность" Binding="{Binding }"/>
+
+        </DataGrid.Columns>
+    </DataGrid>
+    
 </UserControl>
