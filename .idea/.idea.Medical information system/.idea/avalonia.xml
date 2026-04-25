@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Medical information system/App.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Assets/Icons.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/ApoitmentsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/DiagnosPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/DoctorsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/MainWindow.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/MedicalPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/MedicalRecordsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/MedicationsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PatientPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Medical_information_system.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Medical_information_system.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Medical_information_system">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    
+    
+    
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               OpenPaneLength="290"
+               DisplayMode="CompactInline"
+               CompactPaneLength="50"
+               PaneBackground="MidnightBlue">
+        <SplitView.Pane>
+            <StackPanel Spacing="5" 
+                        Margin="5">
+                <Button Command="{Binding TriggerPaneCommand}">
+                    <PathIcon Data="{StaticResource line_horizontal_3_regular}">
+                    </PathIcon>
+                </Button>
+                <TextBlock Foreground="White">МЕДИЦИНСКАЯ ИНФОРМАЦИОННАЯ</TextBlock>
+                <TextBlock Foreground="White">СИСТЕМА</TextBlock>
+                <ListBox Foreground="White" ItemsSource="{Binding ListItemTemplates}" SelectedItem="{Binding SelectedListItem }">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
+                            <StackPanel Spacing="15" Orientation="Horizontal">
+                                <PathIcon Foreground="AliceBlue" Data="{Binding ListItemIcon}"></PathIcon>
+                                <TextBlock Foreground="White" Text="{Binding Label}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Border CornerRadius="12 0 0 0"
+                    Background="WhiteSmoke">
+                <TransitioningContentControl Content="{Binding CurrentPage }"/>
+            </Border>
+        </SplitView.Content>
+    </SplitView>
+    
+    <!-->
+    <StackPanel HorizontalAlignment="Left">
+       <controls:NavigationView Height="500" PaneDisplayMode="Auto">
+           <controls:NavigationView.MenuItems>
+               <controls:NavigationViewItem Content="Пациенты" IconSource="Contact"/>
+               <controls:NavigationViewItem Content="Врачи" IconSource=""/>
+               <controls:NavigationViewItem Content="Приемы" IconSource="CalendarFilled"/>
+               <controls:NavigationViewItem Content="Медицинские записки" IconSource="Library"/>
+               <controls:NavigationViewItem Content="Диагнозы" IconSource=""/>
+               <controls:NavigationViewItem Content="Назначения" IconSource=""/>
+               <controls:NavigationViewItem Content="Лекарства" IconSource=""/>
+               <controls:NavigationViewItem Content="Отчеты и статистика" IconSource=""/>
+               <controls:NavigationViewItem Content="Пользователи" IconSource=""/>
+           </controls:NavigationView.MenuItems>
+               <controls:NavigationView.FooterMenuItems>
+                   <controls:NavigationViewItem Content="Выйти" IconSource=""/>
+               </controls:NavigationView.FooterMenuItems>
+        </controls:NavigationView>
+    </StackPanel>
+</!-->
+</Window>
