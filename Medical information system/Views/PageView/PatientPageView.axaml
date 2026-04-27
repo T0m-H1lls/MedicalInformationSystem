@@ -6,18 +6,40 @@
              x:DataType="viewmodel:PatientPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PatientPageView">
+    <Canvas>
+        <Canvas>
+            <StackPanel Orientation="Horizontal" Canvas.Left="200" Canvas.Top="3" >
+                <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black"/>
+                <Button Margin="2" Content="Искать" Command="{Binding SearchPatientCommand}"/>
+            </StackPanel>
+        </Canvas>
+        <DataGrid Canvas.Left="20"  Canvas.Top="40" ItemsSource="{Binding Patients}" 
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedPatient}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="№"  Binding="{Binding Id }"/>
+                    <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                    <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}"/>
+                    <DataGridTextColumn Header="Пол" Binding="{Binding Gender}"/>
+                    <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+           
+        <Border Background="MidnightBlue"
+                Height ="25" 
+                BorderBrush="Black" 
+                BorderThickness="1">
+            <TextBlock Foreground="White" />
+        </Border>
+    </Canvas>
     
-    <DataGrid ItemsSource="{Binding Patients}" 
-               AreRowDetailsFrozen="True"
-               AutoGenerateColumns="False">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding Id }"/>
-            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
-            <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}"/>
-            <DataGridTextColumn Header="Пол" Binding="{Binding Gender}"/>
-            <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
-            <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
-            <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+    
+    
 </UserControl>

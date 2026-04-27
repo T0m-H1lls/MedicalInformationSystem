@@ -5,6 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Medical_information_system.DB.Repository;
+using Medical_information_system.Views;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Medical_information_system.ViewModels;
@@ -14,6 +16,7 @@ public partial class MainWindowViewModel : ViewModelBase
     
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientPageViewModel _patientPageViewModel;
+    private readonly PatientRep _patientRep;
 
     [ObservableProperty] private bool _isPaneOpen = true;
     [ObservableProperty] private ListItemTemplate? _selectedListItem;
@@ -42,11 +45,12 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
 
-    public MainWindowViewModel(IServiceProvider serviceProvider, PatientPageViewModel patientPageViewModel)
+    public MainWindowViewModel(IServiceProvider serviceProvider, PatientPageViewModel patientPageViewModel,PatientRep patientRep)
     {
         _serviceProvider = serviceProvider;
         _patientPageViewModel = patientPageViewModel;
-        CurrentPage = new PatientPageViewModel(serviceProvider);
+        _patientRep = patientRep;
+        CurrentPage = new PatientPageViewModel(serviceProvider,patientRep);
     }
     
     [RelayCommand]

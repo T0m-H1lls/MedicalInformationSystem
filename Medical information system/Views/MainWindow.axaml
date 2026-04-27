@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Medical_information_system.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/Icon.png"
         Title="Medical_information_system">
 
     <Design.DataContext>
@@ -22,19 +22,26 @@
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
                OpenPaneLength="300"
                DisplayMode="CompactInline"
-               CompactPaneLength="60"
+               CompactPaneLength="50"
                PaneBackground="MidnightBlue">
         <SplitView.Pane>
             <StackPanel Spacing="15" 
                         Margin="5">
                 <Button Command="{Binding TriggerPaneCommand}" 
-                        Background="MidnightBlue"
-                        Foreground="White">
-                    <PathIcon Data="{StaticResource line_horizontal_3_regular}"/>
+                        Background="MidnightBlue">
+                    <PathIcon Foreground="White" Data="{StaticResource line_horizontal_3_regular}"/>
                 </Button>
-                <TextBlock Foreground="White">МЕДИЦИНСКАЯ ИНФОРМАЦИОННАЯ</TextBlock>
-                <TextBlock Foreground="White">СИСТЕМА</TextBlock>
-                <ListBox Foreground="White" ItemsSource="{Binding ListItemTemplates}" SelectedItem="{Binding SelectedListItem }">
+                <StackPanel Orientation="Horizontal" Spacing="15">
+                    <Image Source="/Assets/Icon2.png" Width="45" Height="45"/>
+                    <TextBlock Foreground="White">
+                        МЕДИЦИНСКАЯ<LineBreak />
+                        ИНФОРМАЦИОННАЯ СИСТЕМА
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    
+                </StackPanel>
+                <ListBox ItemsSource="{Binding ListItemTemplates}" Background="MidnightBlue" SelectedItem="{Binding SelectedListItem }">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
                             <StackPanel Spacing="15" Orientation="Horizontal">
@@ -53,7 +60,7 @@
         </SplitView.Pane>
         <SplitView.Content>
             <Border CornerRadius="12 0 0 0"
-                    Background="WhiteSmoke">
+                    Background="AntiqueWhite">
                 <TransitioningContentControl Content="{Binding CurrentPage }"/>
             </Border>
         </SplitView.Content>
