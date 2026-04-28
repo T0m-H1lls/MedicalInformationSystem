@@ -47,6 +47,12 @@ public class PatientRep:Base
         return patients;
     }
 
+
+    public void AddPatient(Patient patient)
+    {
+       // string sql = @"insert into `patient`";
+    }
+
     public void Dispose()
     {
         base.Dispose();

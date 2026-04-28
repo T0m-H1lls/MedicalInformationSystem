@@ -9,8 +9,7 @@
     <Canvas>
         <Canvas>
             <StackPanel Orientation="Horizontal" Canvas.Left="200" Canvas.Top="3" >
-                <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black"/>
-                <Button Margin="2" Content="Искать" Command="{Binding SearchPatientCommand}"/>
+                <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
             </StackPanel>
         </Canvas>
         <DataGrid Canvas.Left="20"  Canvas.Top="40" ItemsSource="{Binding Patients}" 

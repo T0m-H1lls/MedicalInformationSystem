@@ -1,0 +1,33 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodel="clr-namespace:Medical_information_system.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Medical_information_system.Views.RegistrationWindow"
+        x:DataType="viewmodel:RegistrationViewModel"
+        Height="400"
+        Width="400"
+        WindowStartupLocation="CenterScreen"
+        Title="RegistrationWindow">
+        <Design.DataContext>
+                <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+                <viewmodel:RegistrationViewModel/>
+        </Design.DataContext>
+        
+        <StackPanel HorizontalAlignment="Center" Spacing="15">
+                <Label FontSize="20" FontWeight="Bold" HorizontalAlignment="Center">РЕГИСТРАЦИЯ</Label>
+                <TextBox Watermark="Имя"/>
+                <TextBox Watermark="Фамилия"/>
+                <TextBox Watermark="Отчество"/>
+                <TextBox Watermark="Придумайте логин" Width="200"/>
+                <TextBox Watermark="Придумайте пароль" Width="200"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text ="Зарегистрированы?"/>
+                        <HyperlinkButton Content="Войти" Command="{Binding OpenAutorizationCommand}"/>
+                </StackPanel>
+                <ContentControl Content="{Binding CurrentPage}"/>
+        </StackPanel>
+    
+</Window>

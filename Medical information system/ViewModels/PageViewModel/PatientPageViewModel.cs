@@ -17,8 +17,22 @@ public partial class PatientPageViewModel:ViewModelBase
 
     [ObservableProperty] ObservableCollection<Patient> _patients;
     [ObservableProperty] private Patient _selectedPatient;
-    [ObservableProperty] private string _searchText;
-    
+
+   
+
+    private string _searchText;
+    public string SearchText
+    {
+        get =>_searchText;
+        set
+        {
+           _searchText = value;
+           SearchPatient();
+           OnPropertyChanged(nameof(SearchText));
+        }
+    }
+
+
     public PatientPageViewModel(IServiceProvider serviceProvider, PatientRep patientRep)
     {
         _serviceProvider = serviceProvider;
@@ -29,8 +43,6 @@ public partial class PatientPageViewModel:ViewModelBase
         }
     }
     
-    
-    [RelayCommand]
     void SearchPatient()
     {
         if (string.IsNullOrWhiteSpace(_searchText))
@@ -40,8 +52,11 @@ public partial class PatientPageViewModel:ViewModelBase
         else
         {
             Patients = new ObservableCollection<Patient>(
-                _patientRep.GetAllPatient().Where(s=>
-                    s.FullName.Contains(SearchText,StringComparison.CurrentCultureIgnoreCase)));
+                _patientRep.GetAllPatient().Where(s =>
+                    s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                    s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                    s.InsuranceNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+
         }
     }
     

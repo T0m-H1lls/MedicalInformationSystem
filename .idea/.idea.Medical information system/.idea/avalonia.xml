@@ -6,6 +6,7 @@
         <entry key="Medical information system/App.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Assets/Icons.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/ApoitmentsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/AuthorizationWindow.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/DiagnosPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/DoctorsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/MainWindow.axaml" value="Medical information system/Medical information system.csproj" />
@@ -21,6 +22,7 @@
         <entry key="Medical information system/Views/PageView/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PatientPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/RegistrationWindow.axaml" value="Medical information system/Medical information system.csproj" />
       </map>
     </option>
   </component>

@@ -34,6 +34,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
     };
 
+  
+
     partial void OnSelectedListItemChanged(ListItemTemplate? value)
     {
         if (value is null)
