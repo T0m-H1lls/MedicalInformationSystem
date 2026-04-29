@@ -13,7 +13,7 @@
                 <TextBox Watermark="Пароль" Width="200"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text ="Нет аккаунта?"/>
-                        <HyperlinkButton Content="Регистрация" Command="{Binding }"/>
+                        <HyperlinkButton Content="Регистрация" Command="{Binding OpenRegistrationCommand}"/>
                 </StackPanel>
         </StackPanel>
     

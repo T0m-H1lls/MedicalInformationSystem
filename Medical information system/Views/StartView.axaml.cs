@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Medical_information_system.Views;
 
-public partial class RegistrationWindow : Window
+public partial class StartView : Window
 {
-    public RegistrationWindow()
+    public StartView()
     {
         InitializeComponent();
     }

@@ -1,0 +1,13 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Medical_information_system.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Medical_information_system.Views.StartView"
+        x:DataType="viewModels:StartViewModel"
+        WindowStartupLocation="CenterScreen"
+        Title="RegistrationWindow">
+    <ContentControl Content="{Binding CurrentPage}"/>
+
+</Window>

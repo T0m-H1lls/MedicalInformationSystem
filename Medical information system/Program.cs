@@ -35,11 +35,13 @@ sealed class Program
                 s.AddTransient<PatientPageView>();
                 s.AddTransient<PatientRep>();
                 s.AddTransient<RegistrationViewModel>();
-                s.AddTransient<RegistrationWindow>();
+                s.AddTransient<RegistrationView>();
                 s.AddTransient<AuthorizationViewModel>();
                 s.AddTransient<AuthorizationView>();
                 
-
+                s.AddTransient<StartViewModel>();
+                s.AddTransient<StartView>();
+                s.AddSingleton<Navigation>();
 
             }).
             Build();
