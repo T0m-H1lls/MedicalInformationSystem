@@ -17,17 +17,17 @@
         <StackPanel HorizontalAlignment="Center" Spacing="15">
                 
                 <Label FontSize="20" FontWeight="Bold" HorizontalAlignment="Center">РЕГИСТРАЦИЯ</Label>
-                <TextBox Watermark="Имя" Width="200"/>
-                <TextBox Watermark="Фамилия" Width="200"/>
-                <TextBox Watermark="Отчество" Width="200"/>
-                <TextBox Watermark="Придумайте логин" Width="200"/>
-                <TextBox Watermark="Придумайте пароль" Width="200"/>
-                <TextBox Watermark="Роль" Width="200"/>
+                <TextBox Watermark="Имя" Width="200" Text="{Binding Name}"/>
+                <TextBox Watermark="Фамилия" Width="200" Text="{Binding Surname}"/>
+                <TextBox Watermark="Отчество" Width="200" Text="{Binding Patronymic}"/>
+                <TextBox Watermark="Придумайте логин" Width="200" Text="{Binding Login}"/>
+                <TextBox Watermark="Придумайте пароль" Width="200" Text="{Binding Password}"/>
+                <TextBox Watermark="Роль" Width="200" Text="{Binding Roles}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text ="Зарегистрированы?"/>
                         <HyperlinkButton Content="Войти" Command="{Binding OpenAutorizationCommand}"/>
                 </StackPanel>
-                <Button Content="Зарегистрироваться" />
+                <Button Content="Зарегистрироваться" Command="{Binding RegistrationCommand}"/>
         </StackPanel>
     
 </UserControl>

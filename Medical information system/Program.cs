@@ -43,6 +43,8 @@ sealed class Program
                 s.AddTransient<StartView>();
                 s.AddSingleton<Navigation>();
 
+                s.AddTransient<UserRep>();
+
             }).
             Build();
             BuildAvaloniaApp(host.Services)
