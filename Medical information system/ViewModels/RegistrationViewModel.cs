@@ -57,5 +57,6 @@ public partial class RegistrationViewModel : ViewModelBase
         var win = _serviceProvider.GetRequiredService<MainWindow>();
         win.DataContext = vm;
         win.Show();
+        _navigation.Close();
     }
 }

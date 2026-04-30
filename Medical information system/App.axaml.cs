@@ -37,6 +37,7 @@ public partial class App : Application
             
             var vm = _serviceProvider.GetRequiredService<StartViewModel>();
             var win = _serviceProvider.GetRequiredService<StartView>();
+            vm.SetClose(win.Close);
             win.DataContext = vm;
             desktop.MainWindow = win;
             

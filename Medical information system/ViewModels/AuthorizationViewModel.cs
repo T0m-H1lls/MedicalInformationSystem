@@ -26,10 +26,7 @@ public partial class AuthorizationViewModel:ViewModelBase
     {
         _serviceProvider = serviceProvider;
         _navigation = navigation;
-        using (var rep = _serviceProvider.GetRequiredService<UserRep>())
-        {
-            UserList = new ObservableCollection<User>(rep.CheckUser(UsLogin,UsPassword));
-        }
+       
         
     }
 
@@ -68,6 +65,7 @@ public partial class AuthorizationViewModel:ViewModelBase
             win.DataContext = vm;
             Error = "Вход выполнен";
             win.Show();
+            _navigation.Close();
         }
         else {
             Error = "Неверный Логин или Пароль";

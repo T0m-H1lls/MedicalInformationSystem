@@ -45,8 +45,8 @@ public class UserRep:Base
         {
             using (var mc = new MySqlCommand(sql, connection)) 
             {
-                mc.Parameters.AddWithValue("Login", Login);
-                mc.Parameters.AddWithValue("Password", Password);
+                mc.Parameters.AddWithValue("@Login", Login);
+                mc.Parameters.AddWithValue("@Password", Password);
                 using ( var reader = mc.ExecuteReader())
                 {
                     while (reader.Read())

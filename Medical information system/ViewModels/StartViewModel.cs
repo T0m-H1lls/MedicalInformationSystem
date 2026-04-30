@@ -15,4 +15,16 @@ public partial class StartViewModel:ViewModelBase
         _navigation.SetCurrentView(this);
         _navigation.Navigate(sv.GetRequiredService<RegistrationViewModel>());
     }
+
+    Action closeAction;
+    public void SetClose(Action closeAction)
+    {
+        this.closeAction = closeAction;
+    }
+
+    public void Close()
+    {
+        this.closeAction?.Invoke();
+    }
+    
 }

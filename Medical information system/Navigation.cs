@@ -15,4 +15,9 @@ public class Navigation
     {
         this.startViewModel = startViewModel;
     }
+
+    public void Close()
+    {
+        this.startViewModel.Close();
+    }
 }
