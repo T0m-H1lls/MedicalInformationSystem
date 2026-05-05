@@ -6,13 +6,13 @@
              x:DataType="viewmodel:ApoitmentsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.ApoitmentsPageView">
-    <DataGrid>
+    <DataGrid ItemsSource="{Binding AppointmentsList}">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding}"/>
-            <DataGridTextColumn Header="ФИО пациента" Binding="{Binding}"/>
-            <DataGridTextColumn Header="ФИО врача" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Дата и время" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Статус" Binding="{Binding}"/>
+            <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
+            <DataGridTextColumn Header="ФИО пациента" Binding="{Binding PatientName}"/>
+            <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
+            <DataGridTextColumn Header="Дата и время" Binding="{Binding AppointmentDate}"/>
+            <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

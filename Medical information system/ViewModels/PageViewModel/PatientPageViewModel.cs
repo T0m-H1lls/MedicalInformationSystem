@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
@@ -15,6 +16,8 @@ public partial class PatientPageViewModel:ViewModelBase
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientRep _patientRep;
 
+    [ObservableProperty] private bool _viewStyle = false;
+    
     [ObservableProperty] ObservableCollection<Patient> _patients;
     [ObservableProperty] private Patient _selectedPatient;
 
@@ -59,8 +62,15 @@ public partial class PatientPageViewModel:ViewModelBase
 
         }
     }
-    
-    
-    
+    private Classes view;
+    public void SetView(Classes view)
+    {
+        this.view = view;
+    }
+    private Classes viewClose;
+    public void SetViewClose(Classes viewClose)
+    {
+        this.viewClose = viewClose;
+    }
     
 }

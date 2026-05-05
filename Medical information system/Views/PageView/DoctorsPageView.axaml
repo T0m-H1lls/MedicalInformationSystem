@@ -7,14 +7,14 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.DoctorsPageView">
     
-    <DataGrid>
+    <DataGrid ItemsSource="{Binding Doctors}">
         <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding}"/>
-            <DataGridTextColumn Header="ФИО" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Специализация" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Номер телефона" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Кабинет" Binding="{Binding}"/>
-            <DataGridTextColumn Header="Отделение" Binding="{Binding}"/>
+            <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
+            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+            <DataGridTextColumn Header="Специализация" Binding="{Binding Speciality}"/>
+            <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+            <DataGridTextColumn Header="Кабинет" Binding="{Binding Room}"/>
+            <DataGridTextColumn Header="Отделение" Binding="{Binding DepartmentName}"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

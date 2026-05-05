@@ -6,7 +6,7 @@
              x:DataType="viewmodel:MedicalRecordsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.MedicalRecordsPageView">
-    <DataGrid>
+    <DataGrid SelectedIndex="{Binding}">
         <DataGrid.Columns>
             <DataGridTextColumn Header="№"  Binding="{Binding}"/>
             <DataGridTextColumn Header="ФИО пациента" Binding="{Binding}"/>

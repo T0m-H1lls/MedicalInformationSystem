@@ -7,6 +7,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Medical_information_system.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        WindowStartupLocation="CenterScreen"
+        WindowState="FullScreen"
         Icon="/Assets/Icon.png"
         Title="Medical_information_system">
     
@@ -29,9 +31,7 @@
                         ИНФОРМАЦИОННАЯ СИСТЕМА
                     </TextBlock>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    
-                </StackPanel>
+               
                 <ListBox ItemsSource="{Binding ListItemTemplates}" Background="MidnightBlue" SelectedItem="{Binding SelectedListItem }">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
@@ -57,24 +57,7 @@
         </SplitView.Content>
     </SplitView>
     
-    <!-->
-    <StackPanel HorizontalAlignment="Left">
-       <controls:NavigationView Height="500" PaneDisplayMode="Auto">
-           <controls:NavigationView.MenuItems>
-               <controls:NavigationViewItem Content="Пациенты" IconSource="Contact"/>
-               <controls:NavigationViewItem Content="Врачи" IconSource=""/>
-               <controls:NavigationViewItem Content="Приемы" IconSource="CalendarFilled"/>
-               <controls:NavigationViewItem Content="Медицинские записки" IconSource="Library"/>
-               <controls:NavigationViewItem Content="Диагнозы" IconSource=""/>
-               <controls:NavigationViewItem Content="Назначения" IconSource=""/>
-               <controls:NavigationViewItem Content="Лекарства" IconSource=""/>
-               <controls:NavigationViewItem Content="Отчеты и статистика" IconSource=""/>
-               <controls:NavigationViewItem Content="Пользователи" IconSource=""/>
-           </controls:NavigationView.MenuItems>
-               <controls:NavigationView.FooterMenuItems>
-                   <controls:NavigationViewItem Content="Выйти" IconSource=""/>
-               </controls:NavigationView.FooterMenuItems>
-        </controls:NavigationView>
-    </StackPanel>
-</!-->
+    
+   
+   
 </Window>

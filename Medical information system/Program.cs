@@ -29,18 +29,35 @@ sealed class Program
             {
                 s.Configure<DataBaseConnection>(c.Configuration.
                     GetSection("DataBaseConnection"));
+                
                 s.AddTransient<MainWindowViewModel>();
                 s.AddTransient<MainWindow>();
+                
                 s.AddTransient<PatientPageViewModel>();
                 s.AddTransient<PatientPageView>();
+                
+                s.AddTransient<DoctorsPageViewModel>();
+                s.AddTransient<DoctorsPageView>();
+                
+                s.AddTransient<AppointmentRep>();
+                s.AddTransient<ApoitmentsPageViewModel>();
+                
+                s.AddTransient<DiagnosPageViewModel>();
+                s.AddTransient<DiagnoseRep>();
+                s.AddTransient<DiagnosPageView>();
+                
+                s.AddTransient<ApoitmentsPageView>();
                 s.AddTransient<PatientRep>();
+                
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();
+                
                 s.AddTransient<AuthorizationViewModel>();
                 s.AddTransient<AuthorizationView>();
                 
                 s.AddTransient<StartViewModel>();
                 s.AddTransient<StartView>();
+                
                 s.AddSingleton<Navigation>();
 
                 s.AddTransient<UserRep>();

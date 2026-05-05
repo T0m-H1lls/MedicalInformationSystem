@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -39,7 +40,7 @@ public partial class AuthorizationViewModel:ViewModelBase
     }
 
     [RelayCommand]
-    void Authorizations()
+   async void Authorizations()
     {
         Flag = false;
         using (var rep = _serviceProvider.GetRequiredService<UserRep>())
@@ -64,6 +65,7 @@ public partial class AuthorizationViewModel:ViewModelBase
             var win = _serviceProvider.GetRequiredService<MainWindow>();
             win.DataContext = vm;
             Error = "Вход выполнен";
+            await Task.Delay(1000);   
             win.Show();
             _navigation.Close();
         }
