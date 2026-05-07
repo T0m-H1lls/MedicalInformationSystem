@@ -35,19 +35,27 @@ sealed class Program
                 
                 s.AddTransient<PatientPageViewModel>();
                 s.AddTransient<PatientPageView>();
+                s.AddTransient<PatientRep>();
                 
                 s.AddTransient<DoctorsPageViewModel>();
                 s.AddTransient<DoctorsPageView>();
+                s.AddTransient<DoctorRep>();
                 
                 s.AddTransient<AppointmentRep>();
                 s.AddTransient<ApoitmentsPageViewModel>();
+                s.AddTransient<ApoitmentsPageView>();
                 
                 s.AddTransient<DiagnosPageViewModel>();
                 s.AddTransient<DiagnoseRep>();
                 s.AddTransient<DiagnosPageView>();
                 
-                s.AddTransient<ApoitmentsPageView>();
-                s.AddTransient<PatientRep>();
+                s.AddTransient<MedicalRecordRep>();
+                s.AddTransient<MedicalRecordsPageViewModel>();
+                s.AddTransient<MedicalRecordsPageView>();
+
+                s.AddTransient<MedicationRep>();
+                s.AddTransient<MedicationsPageViewModel>();
+                s.AddTransient<MedicationsPageView>();
                 
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();

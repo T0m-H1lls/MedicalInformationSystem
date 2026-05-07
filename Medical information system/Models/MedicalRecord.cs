@@ -10,4 +10,10 @@ public class MedicalRecord
     public int DiagnoseId { get; set; }
     public string Description { get; set; }
     public DateTime RecordDate { get; set; }
+    public int Medicineid { get; set; }
+
+    public string PatientName { get; set; }
+    public string DoctorName { get; set; }
+    public string DiagnoseName { get; set; }
+    public string MedicineName { get; set; }
 }

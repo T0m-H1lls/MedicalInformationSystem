@@ -16,7 +16,7 @@ public class DoctorRep:Base
     public List<Doctor> GetDoctors()
     {
         List<Doctor> doctors = new();
-        string sql = @"SELECT d.Id ,d.FullName,d.Phone,d.Specialization,d.Room,d.DepartmentId, d2.Name 
+        string sql = @"SELECT d.Id ,d.FullName,d.Phone,d.Specialization,d.Room,d.DepartmentId, d2.Name as DepartmentName
                        from doctors d 
                        JOIN departments d2 ON d.DepartmentId = d2.Id ";
         try
