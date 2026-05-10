@@ -48,6 +48,8 @@ public partial class App : Application
             var win = _serviceProvider.GetRequiredService<MainWindow>();
             win.DataContext = vm;
             desktop.MainWindow = win;
+            vm.SetCloseAction(win.Close);
+            
             
             
         }

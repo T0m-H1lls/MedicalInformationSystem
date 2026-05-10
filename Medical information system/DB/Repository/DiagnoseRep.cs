@@ -22,7 +22,7 @@ public class DiagnoseRep:Base
         {
             using (var cm = new MySqlCommand(sql, connection))
             {
-                var reader = cm.ExecuteReader();
+                using (var reader = cm.ExecuteReader())
                 while (reader.Read())
                 {
                     diagnoses.Add(new Diagnose()

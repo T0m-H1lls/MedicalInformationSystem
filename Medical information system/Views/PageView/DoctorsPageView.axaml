@@ -7,14 +7,26 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.DoctorsPageView">
     
-    <DataGrid ItemsSource="{Binding Doctors}">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
-            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
-            <DataGridTextColumn Header="Специализация" Binding="{Binding Speciality}"/>
-            <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
-            <DataGridTextColumn Header="Кабинет" Binding="{Binding Room}"/>
-            <DataGridTextColumn Header="Отделение" Binding="{Binding DepartmentName}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding DoctorsList}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding }">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Специализация" Binding="{Binding Speciality}"/>
+                <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
+                <DataGridTextColumn Header="Кабинет" Binding="{Binding Room}"/>
+                <DataGridTextColumn Header="Отделение" Binding="{Binding DepartmentName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>

@@ -59,7 +59,6 @@ public partial class PatientPageViewModel:ViewModelBase
                     s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                     s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                     s.InsuranceNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
-
         }
     }
     private Classes view;

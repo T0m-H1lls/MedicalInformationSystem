@@ -7,18 +7,18 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PatientPageView">
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin=" 0 5 0 0">
                 <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
             </StackPanel>
         <DataGrid  Grid.Row="1" Margin=" 0 10 0 0"
                    ItemsSource="{Binding Patients}" 
-                  AreRowDetailsFrozen="True"
-                  GridLinesVisibility="All"
-                  IsReadOnly="True"
-                  BorderThickness="1"
-                  BorderBrush="Black"
-                  AutoGenerateColumns="False"
-                  SelectedItem="{Binding SelectedPatient}">
+                   AreRowDetailsFrozen="True"
+                   GridLinesVisibility="All"
+                   IsReadOnly="True"
+                   BorderThickness="1"
+                   BorderBrush="Black"
+                   AutoGenerateColumns="False"
+                   SelectedItem="{Binding SelectedPatient}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="№"  Binding="{Binding Id }"/>
                     <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
@@ -29,25 +29,6 @@
                     <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}"/>
                 </DataGrid.Columns>
             </DataGrid>
-        
-        <Border BorderBrush="Gray"  BorderThickness="2" CornerRadius="8" Grid.Column="1" Grid.Row="1" Margin="10 10 0 0" HorizontalAlignment="Right">
-            <StackPanel >
-                <Label Content="ФИО" HorizontalAlignment="Center" />
-                <TextBox/>
-            
-                <Label Content="Дата рождения" HorizontalAlignment="Center"/>
-                <TextBox/>
-                <Label Content="Пол" HorizontalAlignment="Center"/>
-                <TextBox/>
-                <Label Content="Номер телефона" HorizontalAlignment="Center"/>
-                <TextBox/>
-                <Label Content="Адрес" HorizontalAlignment="Center"/>
-                <TextBox/>
-                <Label Content="Номер полиса" HorizontalAlignment="Center"/>
-                <TextBox/>
-          
-            </StackPanel>
-        </Border>
     </Grid>
     
     

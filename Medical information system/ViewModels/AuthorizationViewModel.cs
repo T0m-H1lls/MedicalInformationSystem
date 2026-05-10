@@ -42,6 +42,7 @@ public partial class AuthorizationViewModel:ViewModelBase
     [RelayCommand]
    async void Authorizations()
     {
+        Console.WriteLine("Click");
         Flag = false;
         using (var rep = _serviceProvider.GetRequiredService<UserRep>())
         {
@@ -58,6 +59,8 @@ public partial class AuthorizationViewModel:ViewModelBase
                 Flag = false;
             }
         }
+        
+        
 
 
         if (Flag == true) {

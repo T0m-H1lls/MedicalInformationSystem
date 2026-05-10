@@ -4,7 +4,10 @@
     <option name="projectPerEditor">
       <map>
         <entry key="Medical information system/App.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Assets/AutorizAndRegistStyles.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Assets/AutorizationStyles.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Assets/Icons.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Assets/RegistrationStyles.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/ApoitmentsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/AuthorizationView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/AuthorizationWindow.axaml" value="Medical information system/Medical information system.csproj" />
@@ -14,6 +17,7 @@
         <entry key="Medical information system/Views/MedicalPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/MedicalRecordsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/MedicationsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/AccountPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PageView/ApoitmentsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PageView/DiagnosPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PageView/DoctorsPageView.axaml" value="Medical information system/Medical information system.csproj" />

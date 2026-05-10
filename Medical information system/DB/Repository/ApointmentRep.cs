@@ -6,9 +6,9 @@ using MySqlConnector;
 
 namespace Medical_information_system.DB.Repository;
 
-public class AppointmentRep:Base
+public class ApointmentRep:Base
 {
-    public AppointmentRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
+    public ApointmentRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
         OpenConnection();
     }

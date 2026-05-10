@@ -6,12 +6,24 @@
              x:DataType="viewmodel:MedicationsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.MedicationsPageView">
-    <DataGrid ItemsSource="{Binding MedicationList}">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
-            <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
-            <DataGridTextColumn Header="Производитель" Binding="{Binding Manufacturer}"/>
-            <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding MedicationList}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding }">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Производитель" Binding="{Binding Manufacturer}"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>

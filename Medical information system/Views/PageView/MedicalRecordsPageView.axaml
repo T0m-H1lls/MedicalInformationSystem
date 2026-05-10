@@ -6,15 +6,27 @@
              x:DataType="viewmodel:MedicalRecordsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.MedicalRecordsPageView">
-    <DataGrid ItemsSource="{Binding MedicalRecordsList}">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
-            <DataGridTextColumn Header="ФИО пациента" Binding="{Binding PatientName}"/>
-            <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
-            <DataGridTextColumn Header="Диагноз" Binding="{Binding DiagnoseName}"/>
-            <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
-            <DataGridTextColumn Header="Лекарство" Binding="{Binding MedicineName}"/>
-            <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding MedicalRecordsList}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding }">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="ФИО пациента" Binding="{Binding PatientName}"/>
+                <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
+                <DataGridTextColumn Header="Диагноз" Binding="{Binding DiagnoseName}"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Лекарство" Binding="{Binding MedicineName}"/>
+                <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>

@@ -6,13 +6,25 @@
              x:DataType="viewmodel:ApoitmentsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.ApoitmentsPageView">
-    <DataGrid ItemsSource="{Binding AppointmentsList}">
-        <DataGrid.Columns>
-            <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
-            <DataGridTextColumn Header="ФИО пациента" Binding="{Binding PatientName}"/>
-            <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
-            <DataGridTextColumn Header="Дата и время" Binding="{Binding AppointmentDate}"/>
-            <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
-        </DataGrid.Columns>
-    </DataGrid>
+    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
+        </StackPanel>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding AppointmentsList}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding }">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="ФИО пациента" Binding="{Binding PatientName}"/>
+                <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
+                <DataGridTextColumn Header="Дата и время" Binding="{Binding AppointmentDate}"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>

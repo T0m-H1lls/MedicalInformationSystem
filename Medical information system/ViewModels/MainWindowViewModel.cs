@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -8,6 +9,8 @@ using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
 using Medical_information_system.Views;
 using Microsoft.Extensions.DependencyInjection;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace Medical_information_system.ViewModels;
 
@@ -17,6 +20,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientPageViewModel _patientPageViewModel;
     private readonly PatientRep _patientRep;
+    private Action _closeAction;
 
     [ObservableProperty] private bool _isPaneOpen = true;
     [ObservableProperty] private ListItemTemplate? _selectedListItem;
@@ -54,12 +58,31 @@ public partial class MainWindowViewModel : ViewModelBase
         _patientRep = patientRep;
         CurrentPage = new PatientPageViewModel(serviceProvider,patientRep);
     }
+
+    
+    public void SetCloseAction(Action action)
+    {
+        _closeAction = action;
+    }
     
     [RelayCommand]
     private void TriggerPane()
     {
         IsPaneOpen = !IsPaneOpen;
     }
+
+    [RelayCommand]
+    async Task CloseProgram()
+    {
+        var box = MessageBoxManager.GetMessageBoxStandard("Выход","Выйти из программы?",ButtonEnum.OkCancel);
+        var result = await box.ShowAsync();
+        if (result == ButtonResult.Ok)
+        {
+            _closeAction?.Invoke();
+        }
+       
+    }
+    
 }
 public class ListItemTemplate
 {

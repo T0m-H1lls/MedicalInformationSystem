@@ -8,7 +8,6 @@
         x:Class="Medical_information_system.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         WindowStartupLocation="CenterScreen"
-        WindowState="FullScreen"
         Icon="/Assets/Icon.png"
         Title="Medical_information_system">
     
@@ -37,8 +36,6 @@
                         <DataTemplate DataType="{x:Type vm:ListItemTemplate}">
                             <StackPanel Spacing="15" Orientation="Horizontal">
                                 <PathIcon Foreground="AliceBlue"
-                                          Width="20"
-                                          Height="20"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           Data="{Binding ListItemIcon}"/>
@@ -47,6 +44,14 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+                <Button Background="MidnightBlue" Command="{Binding CloseProgramCommand}">
+                    <StackPanel Spacing="15" Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource  off}" Foreground="AliceBlue"  
+                                  Width="20"
+                                  Height="20"/>
+                        <TextBlock Text="Выйти из программы" Foreground="AliceBlue"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>

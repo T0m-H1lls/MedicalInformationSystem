@@ -6,28 +6,52 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Medical_information_system.Views.RegistrationView"
         x:DataType="viewmodel:RegistrationViewModel"
-        Height="400"
-        Width="400">
-        <Design.DataContext>
-                <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-                <viewmodel:RegistrationViewModel/>
-        </Design.DataContext>
-        
-        <StackPanel HorizontalAlignment="Center" Spacing="15">
-                
-                <Label FontSize="20" FontWeight="Bold" HorizontalAlignment="Center">РЕГИСТРАЦИЯ</Label>
-                <TextBox Watermark="Имя" Width="200" Text="{Binding Name}"/>
-                <TextBox Watermark="Фамилия" Width="200" Text="{Binding Surname}"/>
-                <TextBox Watermark="Отчество" Width="200" Text="{Binding Patronymic}"/>
-                <TextBox Watermark="Придумайте логин" Width="200" Text="{Binding Login}"/>
-                <TextBox Watermark="Придумайте пароль" Width="200" Text="{Binding Password}"/>
-                <TextBox Watermark="Роль" Width="200" Text="{Binding Roles}"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text ="Зарегистрированы?"/>
-                        <HyperlinkButton Content="Войти" Command="{Binding OpenAutorizationCommand}"/>
-                </StackPanel>
-                <Button Content="Зарегистрироваться" Command="{Binding RegistrationCommand}"/>
-        </StackPanel>
+        Height="750"
+        Width="500">
+        <Grid >
+                <Border Classes="medCard" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" >
+                        <StackPanel Spacing="8">
+                                <TextBlock Classes="title" Text ="РЕГИСТРАЦИЯ"/>
+                                <StackPanel>
+                                        <Label Classes="label" Content="Имя"/>
+                                        <TextBox Classes="medInput" Watermark="Введите имя"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding Name}"/>
+                                </StackPanel>
+                                <StackPanel>
+                                        <Label Classes="label" Content="Фамилия"/>
+                                        <TextBox Classes="medInput" Watermark="Введите фамилию"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Text="{Binding Surname}"/>
+                                </StackPanel>
+                                                
+                                <StackPanel>
+                                        <Label Classes="label" Content="Отчество"/>
+                                        <TextBox Classes="medInput" Watermark="Введите отчество" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Text="{Binding Patronymic}"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Classes="label" Content="Придумайте логин"/>
+                                        <TextBox Classes="medInput" Watermark="Логин" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding Login}"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Classes="label" Content="Придумайте пароль"/>
+                                        <TextBox Classes="medInput" Watermark="Пароль" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Text="{Binding Password}"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Classes="label" Content="Введите свою роль"/>
+                                        <TextBox Classes="medInput" Watermark="Роль" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Text="{Binding Roles}"/>
+                                </StackPanel>
+                                
+                              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text ="Зарегистрированы?"/>
+                                        <HyperlinkButton Content="Войти" Command="{Binding OpenAutorizationCommand}"/>
+                              </StackPanel>
+                                
+                                <Button Content="Зарегистрироваться" Command="{Binding RegistrationCommand}"/>
+                                
+                        </StackPanel>
+                </Border>
+               
+        </Grid>
     
 </UserControl>

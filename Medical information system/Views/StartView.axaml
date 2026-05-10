@@ -7,7 +7,7 @@
         x:Class="Medical_information_system.Views.StartView"
         x:DataType="viewModels:StartViewModel"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Title="RegistrationWindow">
     <ContentControl Content="{Binding CurrentPage}"/>
-
 </Window>

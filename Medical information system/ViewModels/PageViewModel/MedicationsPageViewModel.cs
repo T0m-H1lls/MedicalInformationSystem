@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Medical_information_system.DB.Repository;
 using Medical_information_system.Models;
@@ -10,16 +11,50 @@ namespace Medical_information_system.ViewModels;
 public partial class MedicationsPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly MedicationRep _medicationRep;
     [ObservableProperty] ObservableCollection<Medication> _medicationList;
+    
+    private string _searchText;
 
-    public MedicationsPageViewModel(IServiceProvider serviceProvider)
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            SearchMedications();
+            OnPropertyChanged(nameof(SearchMedications));
+        }
+    }
+
+    
+
+
+    public MedicationsPageViewModel(IServiceProvider serviceProvider, MedicationRep medicationRep)
     {
         _serviceProvider = serviceProvider;
+        _medicationRep = medicationRep;
         using (var rep = serviceProvider.GetRequiredService<MedicationRep>())
         {
             MedicationList = new ObservableCollection<Medication>(rep.GetMedication());
         }
     }
-    
-    
+    private void SearchMedications()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            MedicationList= new ObservableCollection<Medication>(_medicationRep.GetMedication());
+        }
+        else
+        {
+            MedicationList = new ObservableCollection<Medication>(
+                _medicationRep.GetMedication().Where(s =>
+                    s.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                    s.Description.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                    s.Manufacturer.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+
+        }
+    }
+
+   
 }

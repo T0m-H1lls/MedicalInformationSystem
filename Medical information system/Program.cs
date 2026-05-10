@@ -41,7 +41,7 @@ sealed class Program
                 s.AddTransient<DoctorsPageView>();
                 s.AddTransient<DoctorRep>();
                 
-                s.AddTransient<AppointmentRep>();
+                s.AddTransient<ApointmentRep>();
                 s.AddTransient<ApoitmentsPageViewModel>();
                 s.AddTransient<ApoitmentsPageView>();
                 
@@ -56,6 +56,10 @@ sealed class Program
                 s.AddTransient<MedicationRep>();
                 s.AddTransient<MedicationsPageViewModel>();
                 s.AddTransient<MedicationsPageView>();
+
+                s.AddTransient<PrescriptionRep>();
+                s.AddTransient<PrescriptionsPageView>();
+                s.AddTransient<PrescriptionsPageViewModel>();
                 
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();

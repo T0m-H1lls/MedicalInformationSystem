@@ -13,7 +13,7 @@ public partial class StartViewModel:ViewModelBase
     {
         _navigation = navigation;
         _navigation.SetCurrentView(this);
-        _navigation.Navigate(sv.GetRequiredService<RegistrationViewModel>());
+        _navigation.Navigate(sv.GetRequiredService<AuthorizationViewModel>());
     }
 
     Action closeAction;

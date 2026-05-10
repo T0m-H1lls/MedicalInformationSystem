@@ -23,19 +23,23 @@ public class DoctorRep:Base
         {
             using (var cm = new MySqlCommand(sql, connection))
             {
-                var reader = cm.ExecuteReader();
-                while (reader.Read())
+                using (var reader = cm.ExecuteReader())
                 {
-                    doctors.Add(new Doctor()
+
+
+                    while (reader.Read())
                     {
-                        Id = reader.GetInt32("id"),
-                        FullName = reader.GetString("FullName"),
-                        PhoneNumber = reader.GetString("Phone"),
-                        Speciality =  reader.GetString("Specialization"),
-                        Room = reader.GetString("Room"),
-                        DepartmentId = reader.GetInt32("DepartmentId"),
-                        DepartmentName = reader.GetString("DepartmentName"),
-                    });
+                        doctors.Add(new Doctor()
+                        {
+                            Id = reader.GetInt32("id"),
+                            FullName = reader.GetString("FullName"),
+                            PhoneNumber = reader.GetString("Phone"),
+                            Speciality = reader.GetString("Specialization"),
+                            Room = reader.GetString("Room"),
+                            DepartmentId = reader.GetInt32("DepartmentId"),
+                            DepartmentName = reader.GetString("DepartmentName"),
+                        });
+                    }
                 }
             }
         }

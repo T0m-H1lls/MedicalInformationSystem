@@ -1,0 +1,105 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+   <Style Selector="Window">
+       <Setter Property="Background" Value="#F4F7FA"/>
+   </Style>
+    <Style Selector="Border.medCard">
+
+        <Setter Property="Background" Value="White"/>
+
+        <Setter Property="CornerRadius" Value="18"/>
+
+        <Setter Property="Padding" Value="30"/>
+
+        <Setter Property="BorderBrush" Value="#DCE3EA"/>
+
+        <Setter Property="BorderThickness" Value="1"/>
+
+       
+    </Style>
+        
+    <Style Selector="TextBlock.title">
+
+        <Setter Property="FontSize" Value="30"/>
+
+        <Setter Property="FontWeight" Value="Bold"/>
+
+        <Setter Property="Foreground" Value="#1D2A3A"/>
+
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+
+        <Setter Property="Margin" Value="0,0,0,25"/>
+
+    </Style>
+    <Style Selector="TextBlock.label">
+
+        <Setter Property="Foreground" Value="#4A5A6A"/>
+
+        <Setter Property="FontSize" Value="14"/>
+
+        <Setter Property="Margin" Value="0,0,0,6"/>
+
+    </Style>
+    <Style Selector="TextBox.medInput">
+
+        <Setter Property="Height" Value="44"/>
+
+        <Setter Property="Width" Value="300"/>
+
+        <Setter Property="Background" Value="#FAFCFE"/>
+
+        <Setter Property="Foreground" Value="#1D2A3A"/>
+
+        <Setter Property="BorderBrush" Value="#D4DEE8"/>
+
+        <Setter Property="BorderThickness" Value="1.5"/>
+
+        <Setter Property="CornerRadius" Value="10"/>
+
+        <Setter Property="Padding" Value="14,0"/>
+
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+    
+    <Style Selector="TextBox.medInput:pointerover">
+        <Setter Property="BorderBrush" Value="#7DB8FF"/>
+    </Style>
+    
+    <Style Selector="TextBox.medInput:focus">
+        <Setter Property="BorderBrush" Value="#3B82F6"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
+    
+    <Style Selector="TextBox.medInput.error">
+        <Setter Property="BorderBrush" Value="#E35D5D"/>
+    </Style>
+    
+    <Style Selector="Button.medButton">
+
+        <Setter Property="Width" Value="340"/>
+
+        <Setter Property="Height" Value="46"/>
+
+        <Setter Property="Background" Value="#3B82F6"/>
+
+        <Setter Property="Foreground" Value="White"/>
+
+        <Setter Property="FontSize" Value="15"/>
+
+        <Setter Property="FontWeight" Value="SemiBold"/>
+
+        <Setter Property="CornerRadius" Value="10"/>
+
+        <Setter Property="BorderThickness" Value="0"/>
+
+        <Setter Property="Cursor" Value="Hand"/>
+
+    </Style>
+    
+</Styles>

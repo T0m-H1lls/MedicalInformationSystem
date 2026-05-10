@@ -27,22 +27,24 @@ public class MedicalRecordRep:Base
         {
             using (var rep = new MySqlCommand(sql, connection))
             {
-                var reader = rep.ExecuteReader();
-                while (reader.Read())
+                using (var reader = rep.ExecuteReader())
                 {
-                    diagnosesList.Add(new MedicalRecord()
+                    while (reader.Read())
                     {
-                        Id = reader.GetInt32("Id"),
-                        PatientId = reader.GetInt32("PatientId"),
-                        AppointmentId = reader.GetInt32("AppointmentId"),
-                        DiagnoseId =  reader.GetInt32("DiagnosisId"),
-                        Description = reader.GetString("Description"),
-                        RecordDate = reader.GetDateTime("RecordDate"),
-                        PatientName = reader.GetString("PatientName"),
-                        DoctorName =  reader.GetString("FullName"),
-                        DiagnoseName = reader.GetString("DiagnoseName"),
-                        MedicineName = reader.GetString("MedicineName")
-                    });
+                        diagnosesList.Add(new MedicalRecord()
+                        {
+                            Id = reader.GetInt32("Id"),
+                            PatientId = reader.GetInt32("PatientId"),
+                            AppointmentId = reader.GetInt32("AppointmentId"),
+                            DiagnoseId = reader.GetInt32("DiagnosisId"),
+                            Description = reader.GetString("Description"),
+                            RecordDate = reader.GetDateTime("RecordDate"),
+                            PatientName = reader.GetString("PatientName"),
+                            DoctorName = reader.GetString("FullName"),
+                            DiagnoseName = reader.GetString("DiagnoseName"),
+                            MedicineName = reader.GetString("MedicineName")
+                        });
+                    }
                 }
             }
             

@@ -21,16 +21,18 @@ public class MedicationRep:Base
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
-                var reader = mc.ExecuteReader();
-                while (reader.Read())
+                using (var reader = mc.ExecuteReader())
                 {
-                    medicationsList.Add(new Medication()
+                    while (reader.Read())
                     {
-                        Id = reader.GetInt32("Id"),
-                        Name = reader.GetString("Name"),
-                        Description = reader.GetString("Description"),
-                        Manufacturer = reader.GetString("Manufacturer")
-                    });
+                        medicationsList.Add(new Medication()
+                        {
+                            Id = reader.GetInt32("Id"),
+                            Name = reader.GetString("Name"),
+                            Description = reader.GetString("Description"),
+                            Manufacturer = reader.GetString("Manufacturer")
+                        });
+                    }
                 }
             }
         }

@@ -11,4 +11,8 @@ public class Prescription
     public string Dosage {get; set;}
     public string Duration {get; set;}
     
+    public string PatientName { get; set; }
+    public string DoctorName { get; set; }
+    public string MedicalName { get; set; }
+    
 }
