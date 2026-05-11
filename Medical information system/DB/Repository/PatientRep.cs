@@ -88,7 +88,6 @@ public class PatientRep:Base
                  command.Parameters.AddWithValue("@PhoneNumber",patient.PhoneNumber);
                  command.Parameters.AddWithValue("@Address",patient.Address);
                  command.Parameters.AddWithValue("@InsuranceNumber",patient.InsuranceNumber);
-                 command.Parameters.AddWithValue("@id", patient.Id);
                  command.ExecuteNonQuery();
              }
              return true;

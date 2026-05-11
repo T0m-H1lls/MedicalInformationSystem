@@ -1,0 +1,68 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:addViewModel="clr-namespace:Medical_information_system.ViewModels.AddViewModel"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Medical_information_system.Views.Add.AddMedicalRecord"
+        x:DataType="addViewModel:AddMedicalRecordViewModel"
+        Title="AddMedicalRecord">
+    <Grid Background="Azure">
+        
+        <Border Classes="medCard" HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" Spacing="5">
+                
+                <TextBlock Text="Имя пациента"/>
+                
+                <StackPanel>
+                <ComboBox ItemsSource="{Binding MedicalRecordsList}" Width="180">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PatientName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                </StackPanel>
+
+                
+                <StackPanel>
+                <TextBlock Text="Имя доктора"/>
+                <ComboBox ItemsSource="{Binding MedicalRecordsList}" Width="180">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DoctorName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Диагноз"/>
+                    <TextBox Text="{Binding Diagnose}"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Описание"/>
+                    <TextBox Text="{Binding Description}"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Лекарство"/>
+                    <TextBox Text="{Binding Medicine}"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Дата"/>
+                    <TextBox Text="{Binding RecordDate}"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding }"/>
+                    <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding }"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+    
+</Window>

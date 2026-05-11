@@ -11,6 +11,7 @@ public partial class AccountPageViewModel:ViewModelBase
     public AccountPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        
     }
     
 }

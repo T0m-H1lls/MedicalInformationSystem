@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Medical_information_system.Models;
 using Microsoft.Extensions.Options;
 using MySqlConnector;
@@ -70,6 +71,38 @@ public class UserRep:Base
             Console.WriteLine(e);
         }
         return users;
+    }
+
+    public List<User> GetNameAndSurname(string Login, string Password)
+    {
+        List<User> usersList = new();
+        string sql = @"select * from users where `Login`= @Login and `Password`= @Password";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@Login", Login);
+                mc.Parameters.AddWithValue("@Password", Password);
+                using (var reader = mc.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        usersList.Add(new User()
+                        {
+                            Id = reader.GetInt32("Id"),
+                            Name = reader.GetString("Name"),
+                            Surname = reader.GetString("Surname"),
+                            Role = reader.GetString("Role")
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        return usersList;
     }
 
     public void Dispose()

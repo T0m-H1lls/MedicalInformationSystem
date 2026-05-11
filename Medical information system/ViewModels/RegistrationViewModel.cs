@@ -13,6 +13,7 @@ public partial class RegistrationViewModel : ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Navigation _navigation;
+    private readonly AccountName _accountName;
     private readonly UserControl _userControl;
 
     [ObservableProperty] private string _name;
@@ -22,10 +23,11 @@ public partial class RegistrationViewModel : ViewModelBase
     [ObservableProperty] private string _password;
     [ObservableProperty] private string _roles;
 
-    public RegistrationViewModel(IServiceProvider serviceProvider, Navigation navigation )
+    public RegistrationViewModel(IServiceProvider serviceProvider, Navigation navigation,AccountName accountName )
     {
         _serviceProvider = serviceProvider;
-        _navigation = navigation; 
+        _navigation = navigation;
+        _accountName = accountName;
     }
 
     [RelayCommand]
@@ -47,6 +49,9 @@ public partial class RegistrationViewModel : ViewModelBase
             Password = Password,
             Role = Roles
         };
+
+        _accountName.Name = Name;
+        _accountName.Surname = Surname;
 
         using (var rep = _serviceProvider.GetRequiredService<UserRep>())
         {

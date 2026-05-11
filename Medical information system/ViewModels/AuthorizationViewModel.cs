@@ -15,6 +15,7 @@ public partial class AuthorizationViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Navigation _navigation;
+    private readonly AccountName _accountNames;
     private readonly User _users;
 
     [ObservableProperty] private ObservableCollection<User> _userList;
@@ -23,18 +24,19 @@ public partial class AuthorizationViewModel:ViewModelBase
     [ObservableProperty] private bool _flag =  false;
     [ObservableProperty] private string _error;
     [ObservableProperty] private DispatcherTimer _timer;
-    public AuthorizationViewModel(IServiceProvider serviceProvider,Navigation navigation)
+    public AuthorizationViewModel(IServiceProvider serviceProvider,Navigation navigation,AccountName accountNames)
     {
         _serviceProvider = serviceProvider;
         _navigation = navigation;
-       
+        _accountNames = accountNames;
         
+        
+       
     }
 
     [RelayCommand]
     void OpenRegistration()
     {
-
         var vm = _serviceProvider.GetRequiredService<RegistrationViewModel>();
         _navigation.Navigate(vm);
     }
@@ -53,26 +55,29 @@ public partial class AuthorizationViewModel:ViewModelBase
             if (us.Login == UsLogin & us.Password == UsPassword)
             {
                 Flag = true;
+                
             }
             else
             {
                 Flag = false;
             }
         }
-        
-        
 
-
-        if (Flag == true) {
+        if (Flag == true)
+        {
+            _accountNames.Login = UsLogin;
+            _accountNames.Password = UsPassword;
             var vm = ActivatorUtilities.CreateInstance<MainWindowViewModel>(_serviceProvider);
             var win = _serviceProvider.GetRequiredService<MainWindow>();
             win.DataContext = vm;
+            vm.SetCloseAction(win.Close);
             Error = "Вход выполнен";
             await Task.Delay(1000);   
             win.Show();
             _navigation.Close();
         }
-        else {
+        else 
+        {
             Error = "Неверный Логин или Пароль";
         }
         

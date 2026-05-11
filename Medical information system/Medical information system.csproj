@@ -68,5 +68,7 @@
 
     <ItemGroup>
       <Folder Include="Converter\" />
+      <Folder Include="ViewModels\EditViewModel\" />
+      <Folder Include="Views\Edit\" />
     </ItemGroup>
 </Project>

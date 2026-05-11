@@ -2,8 +2,10 @@
 using System;
 using Medical_information_system.DB;
 using Medical_information_system.DB.Repository;
+using Medical_information_system.Models;
 using Medical_information_system.ViewModels;
 using Medical_information_system.Views;
+using Medical_information_system.Views.PageView;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -63,6 +65,11 @@ sealed class Program
                 
                 s.AddTransient<RegistrationViewModel>();
                 s.AddTransient<RegistrationView>();
+
+                s.AddTransient<AccountPageViewModel>();
+                s.AddTransient<AccountPageView>();
+                s.AddSingleton<AccountName>();
+               
                 
                 s.AddTransient<AuthorizationViewModel>();
                 s.AddTransient<AuthorizationView>();

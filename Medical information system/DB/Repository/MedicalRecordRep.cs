@@ -16,7 +16,7 @@ public class MedicalRecordRep:Base
     public List<MedicalRecord> GetMedicalRecords()
     {
         List<MedicalRecord> diagnosesList = new();
-        string sql = @"select m.Id, m.PatientId, m.AppointmentId,m.DiagnosisId,m.Description,m.RecordDate,p.FullName as PatientName,d2.FullName,d.Name as DiagnoseName,m3.Name as MedicineName, m.RecordDate 
+        string sql = @"select m.Id, m.PatientId, m.AppointmentId,m.DiagnosisId,m.Description,m.RecordDate,m.MedicineId,p.FullName as PatientName,d2.FullName,d.Name as DiagnoseName,m3.Name as MedicineName, m.RecordDate 
                       from medicalrecords m
 					  join patients p ON m.PatientId = p.Id
                       join appointments a ON m.AppointmentId  = a.Id 
@@ -38,6 +38,7 @@ public class MedicalRecordRep:Base
                             AppointmentId = reader.GetInt32("AppointmentId"),
                             DiagnoseId = reader.GetInt32("DiagnosisId"),
                             Description = reader.GetString("Description"),
+                            Medicineid = reader.GetInt32("MedicineId"),
                             RecordDate = reader.GetDateTime("RecordDate"),
                             PatientName = reader.GetString("PatientName"),
                             DoctorName = reader.GetString("FullName"),
@@ -55,5 +56,76 @@ public class MedicalRecordRep:Base
             
         }
         return diagnosesList;
+    }
+    
+     
+    
+    
+     public void AddMedicalRecords(MedicalRecord medicalRecord)
+    {
+        string sql = @"insert into `medicalrecords` values(0,@PatientId,@AppointmentId,@DiagnoseId,@Description,@RecordDate)";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@Id", medicalRecord.Id);
+                mc.Parameters.AddWithValue("@PatientId", medicalRecord.PatientId);
+                mc.Parameters.AddWithValue("@AppointmentId", medicalRecord.AppointmentId);
+                mc.Parameters.AddWithValue("@DiagnoseId", medicalRecord.DiagnoseId);
+                mc.Parameters.AddWithValue("@Description", medicalRecord.Description);
+                mc.Parameters.AddWithValue("@RecordDate", medicalRecord.RecordDate);
+                mc.ExecuteNonQuery();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    public bool UpdateMedicalRecord(MedicalRecord medicalRecord)
+    {
+        string sql = @"update `medicalrecords` set PatientId = @PatientId, ApointmentId = @AppointmentId, DiagnoseId = @DiagnoseId, Description = @Description, RecordDate = @RecordDate,MedicineId = @MedicineId ";
+        try
+        {
+             using (var command = new MySqlCommand(sql, connection))
+             {
+                 command.Parameters.AddWithValue("@PatientId", medicalRecord.PatientId);
+                 command.Parameters.AddWithValue("@AppointmentId", medicalRecord.AppointmentId);
+                 command.Parameters.AddWithValue("@DiagnoseId", medicalRecord.DiagnoseId);
+                 command.Parameters.AddWithValue("@Description", medicalRecord.Description);
+                 command.Parameters.AddWithValue("@RecordDate", medicalRecord.RecordDate);
+                 command.ExecuteNonQuery();
+                
+             }
+             return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        return false;
+
+    }
+    
+    public bool DeleteMedicalRecord(int id)
+    {
+        string sql = @"delete from `medicalrecords` where `id` = @id";
+        try
+        {
+            using (var mc = new MySqlCommand(sql, connection))
+            {
+                mc.Parameters.AddWithValue("@id",id);
+                mc.ExecuteNonQuery();
+                
+            }
+            return true;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        return false;
     }
 }

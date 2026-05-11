@@ -7,6 +7,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
+using Medical_information_system.Models;
 using Medical_information_system.Views;
 using Microsoft.Extensions.DependencyInjection;
 using MsBox.Avalonia;
@@ -20,11 +21,38 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientPageViewModel _patientPageViewModel;
     private readonly PatientRep _patientRep;
+    private readonly UserRep _userRep;
+    private readonly AccountName _accountName;
     private Action _closeAction;
 
     [ObservableProperty] private bool _isPaneOpen = true;
     [ObservableProperty] private ListItemTemplate? _selectedListItem;
     [ObservableProperty] private ViewModelBase _currentPage;
+    [ObservableProperty] private ObservableCollection<User> _usersList = new();
+
+    [ObservableProperty] private string _docName;
+    [ObservableProperty] private string _docSurname;
+    [ObservableProperty] private string _role;
+    
+    
+    public MainWindowViewModel(IServiceProvider serviceProvider, PatientPageViewModel patientPageViewModel,PatientRep patientRep,UserRep userRep,AccountName accountName)
+    {
+        _serviceProvider = serviceProvider;
+        _patientPageViewModel = patientPageViewModel;
+        _patientRep = patientRep;
+        _userRep = userRep;
+        _accountName = accountName;
+        CurrentPage = new PatientPageViewModel(serviceProvider,patientRep);
+        
+        UsersList = new ObservableCollection<User>(userRep.GetNameAndSurname(accountName.Login,accountName.Password));
+        foreach (var user in UsersList)
+        {
+            DocName = user.Name;
+            DocSurname = user.Surname;
+            Role = user.Role;
+        }
+        
+    }
 
     public ObservableCollection<ListItemTemplate> ListItemTemplates { get; } = new()
     {
@@ -35,6 +63,7 @@ public partial class MainWindowViewModel : ViewModelBase
         new ListItemTemplate(typeof(DiagnosPageViewModel), "diagnose", "Диагнозы"),
         new ListItemTemplate(typeof(PrescriptionsPageViewModel), "naznachenie", "Назначения"),
         new ListItemTemplate(typeof(MedicationsPageViewModel), "medical", "Лекарства"),
+        new ListItemTemplate(typeof(AccountPageViewModel),"person_regular","Профиль" )
 
     };
 
@@ -51,14 +80,7 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
 
-    public MainWindowViewModel(IServiceProvider serviceProvider, PatientPageViewModel patientPageViewModel,PatientRep patientRep)
-    {
-        _serviceProvider = serviceProvider;
-        _patientPageViewModel = patientPageViewModel;
-        _patientRep = patientRep;
-        CurrentPage = new PatientPageViewModel(serviceProvider,patientRep);
-    }
-
+  
     
     public void SetCloseAction(Action action)
     {
