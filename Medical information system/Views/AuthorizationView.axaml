@@ -8,34 +8,32 @@
         x:Class="Medical_information_system.Views.AuthorizationView">
       
         <Grid >
-                <Border >
-                        <Border Classes="medCard" Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Classes="medCard" Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        
+                        <StackPanel Spacing="16">
                                 
-                                <StackPanel Spacing="16">
-                                        
-                                        <TextBlock Classes="title" Text="Вход"/>
-                                        
-                                        <StackPanel>
-                                                <Label Classes="label" Content="Логин"/>
-                                                <TextBox Classes="medInput" Watermark="Введите логин" VerticalContentAlignment="Center" 
-                                                         HorizontalContentAlignment="Center" Text="{Binding UsLogin}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel>
-                                                <Label Classes="label" Content="Пароль"/>
-                                                <TextBox Classes="medInput" PasswordChar="*" Watermark="Введите пароль" 
-                                                         VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text ="{Binding UsPassword}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                <Label Content ="Нет аккаунта?"/>
-                                                <HyperlinkButton Content="Регистрация" Command="{Binding OpenRegistrationCommand}"/>
-                                        </StackPanel>
-                                        
-                                        <Button Content="Войти" Command="{Binding AuthorizationsCommand}"/>
-                                        
+                                <TextBlock Classes="title" Text="Вход"/>
+                                
+                                <StackPanel>
+                                        <Label Classes="label" Content="Логин"/>
+                                        <TextBox Classes="medInput" Watermark="Введите логин" VerticalContentAlignment="Center" 
+                                                 HorizontalContentAlignment="Center" Text="{Binding UsLogin}"/>
                                 </StackPanel>
-                        </Border>
+                                
+                                <StackPanel>
+                                        <Label Classes="label" Content="Пароль"/>
+                                        <TextBox Classes="medInput" PasswordChar="*" Watermark="Введите пароль" 
+                                                 VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text ="{Binding UsPassword}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Label Content ="Нет аккаунта?"/>
+                                        <HyperlinkButton Content="Регистрация" Command="{Binding OpenRegistrationCommand}"/>
+                                </StackPanel>
+                                
+                                <Button Content="Войти" Command="{Binding AuthorizationsCommand}"/>
+                                
+                        </StackPanel>
                 </Border>
         </Grid>
         

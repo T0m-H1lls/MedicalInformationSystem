@@ -16,18 +16,18 @@ public class UserRep:Base
 
     public void AddUser(User user)
     {
-        string sql = @"insert into `users`values(0,@Name,@Surname,@Patronymic,@Login,@Password,@Role)";
+        string sql = @"insert into `users`values(0,@Login,@Password,@Role,@Name,@Surname,@Patronymic)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
-                mc.Parameters.AddWithValue("Name", user.Name);
-                mc.Parameters.AddWithValue("Surname", user.Surname);
-                mc.Parameters.AddWithValue("Patronymic", user.Patronymic);
-                mc.Parameters.AddWithValue("Login", user.Login);
-                mc.Parameters.AddWithValue("Password", user.Password);
-                mc.Parameters.AddWithValue("Role", user.Role);
-                mc.ExecuteNonQuery();
+             mc.Parameters.AddWithValue("@Login", user.Login);
+             mc.Parameters.AddWithValue("@Password", user.Password);
+             mc.Parameters.AddWithValue("@Role", user.Role);
+             mc.Parameters.AddWithValue("@Name", user.Name);
+             mc.Parameters.AddWithValue("@Surname", user.Surname);
+             mc.Parameters.AddWithValue("@Patronymic", user.Patronymic);
+             mc.ExecuteNonQuery();
             }
         }
         catch (Exception e)

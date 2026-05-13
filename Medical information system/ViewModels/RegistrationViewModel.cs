@@ -52,6 +52,9 @@ public partial class RegistrationViewModel : ViewModelBase
 
         _accountName.Name = Name;
         _accountName.Surname = Surname;
+        _accountName.Patronomyc = Patronymic;
+        _accountName.Login = Login;
+        _accountName.Password = Password;
 
         using (var rep = _serviceProvider.GetRequiredService<UserRep>())
         {

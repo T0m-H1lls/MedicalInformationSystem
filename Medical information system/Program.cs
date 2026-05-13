@@ -5,7 +5,6 @@ using Medical_information_system.DB.Repository;
 using Medical_information_system.Models;
 using Medical_information_system.ViewModels;
 using Medical_information_system.Views;
-using Medical_information_system.Views.PageView;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -87,7 +86,7 @@ sealed class Program
             .StartWithClassicDesktopLifetime(args);
     }
 
-    // Avalonia configuration, don't remove; also used by visual designer.
+   
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()

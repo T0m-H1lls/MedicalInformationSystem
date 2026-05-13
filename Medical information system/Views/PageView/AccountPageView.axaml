@@ -4,13 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Medical_information_system.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+            Width="900"
              x:DataType="viewModels:AccountPageViewModel"
-             x:Class="Medical_information_system.Views.PageView.AccountPageView">
-    <Grid>
-        <StackPanel>
-            
-        </StackPanel>
-    </Grid>
+             x:Class="Medical_information_system.Views.AccountPageView">
     
+    <Grid>
+        <Border Classes="medButton" HorizontalAlignment="Center">
+            <StackPanel>
+                 <Image Source="/Assets/USER.jpg" Height="100" Width="100"/> 
+                <StackPanel>
+                    <TextBlock Classes="title" Text="Профиль"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="Имя"/>
+                    <TextBox Text="{Binding Name}"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Фамилия"/>
+                    <TextBox Text="{Binding Surname}"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Отчество"/>
+                    <TextBox Text="{Binding }"/>
+                </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Роль"/>
+                    <TextBox Text="{Binding Role}"/>
+                </StackPanel>
+                
+            </StackPanel>
+            
+        </Border>
+    </Grid>
     
 </UserControl>

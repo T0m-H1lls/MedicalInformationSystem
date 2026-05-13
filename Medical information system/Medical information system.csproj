@@ -64,6 +64,10 @@
         <DependentUpon>PrescriptionsPageView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PageView\AccountPageView.axaml.cs">
+        <DependentUpon>AccountPageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -63,7 +63,7 @@ public partial class MainWindowViewModel : ViewModelBase
         new ListItemTemplate(typeof(DiagnosPageViewModel), "diagnose", "Диагнозы"),
         new ListItemTemplate(typeof(PrescriptionsPageViewModel), "naznachenie", "Назначения"),
         new ListItemTemplate(typeof(MedicationsPageViewModel), "medical", "Лекарства"),
-        new ListItemTemplate(typeof(AccountPageViewModel),"person_regular","Профиль" )
+        new ListItemTemplate(typeof(AccountPageViewModel),"person_regular","Профиль")
 
     };
 
