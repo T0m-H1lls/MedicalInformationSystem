@@ -27,6 +27,8 @@
                     <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
                     <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
                     <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}"/>
+                    <DataGridTextColumn Header="Паспорт" Binding="{Binding  Passport}"/>
+                    <DataGridTextColumn Header="СНИЛС" Binding="{Binding   Snils}"/>
                 </DataGrid.Columns>
             </DataGrid>
     </Grid>

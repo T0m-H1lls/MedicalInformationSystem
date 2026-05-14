@@ -16,10 +16,13 @@ public class ApointmentRep:Base
     public List<Appointments> GetAppointments()
     {
         List<Appointments> appointmentsList = new();
-        string sql = @"SELECT a.id,a.PatientId,a.DoctorId,a.AppointmentDate,a.Status,p.FullName as PatientName,d.FullName as DoctorName
+        string sql = @"SELECT a.id,a.PatientId,a.DoctorId,a.AppointmentDate,a.MedicalRecordId,a.Status,p.FullName as PatientName,d.FullName as DoctorName,d2.FullName as Referall 
                        from appointments a
                        join patients p ON a.PatientId = p.Id 
-                       join doctors d ON a.DoctorId = d.Id  ";
+                       join doctors d ON a.DoctorId = d.Id
+                       LEFT  join medicalrecords m ON a.MedicalRecordId = m.Id
+                       LEFT  join appointments a2 on m.AppointmentId = a2.Id 
+                       LEFT  join doctors d2 on d2.id = a2.DoctorId ";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
@@ -37,6 +40,8 @@ public class ApointmentRep:Base
                            Status = reader.GetString("Status"),
                            PatientName = reader.GetString("PatientName"),
                            DoctorName = reader.GetString("DoctorName"),
+                           MedicalRecordID = reader.GetInt32("MedicalRecordId"),
+                           ReferralDoctor =  reader.GetString("Referall"),
                         });
                         
                     }

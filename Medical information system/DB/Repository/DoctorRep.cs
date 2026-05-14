@@ -16,9 +16,10 @@ public class DoctorRep:Base
     public List<Doctor> GetDoctors()
     {
         List<Doctor> doctors = new();
-        string sql = @"SELECT d.Id ,d.FullName,d.Phone,d.Specialization,d.Room,d.DepartmentId, d2.Name as DepartmentName
+        string sql = @"SELECT d.Id ,d.FullName,d.Phone,d.SpecializationId,d.Room,d.DepartmentId, d2.Name as DepartmentName,s.Name as Spec
                        from doctors d 
-                       JOIN departments d2 ON d.DepartmentId = d2.Id ";
+                       JOIN departments d2 ON d.DepartmentId = d2.Id
+                       join Specialization s on d.SpecializationId =  s.Id";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
@@ -34,10 +35,11 @@ public class DoctorRep:Base
                             Id = reader.GetInt32("id"),
                             FullName = reader.GetString("FullName"),
                             PhoneNumber = reader.GetString("Phone"),
-                            Speciality = reader.GetString("Specialization"),
+                            Speciality = reader.GetString("Spec"),
                             Room = reader.GetString("Room"),
                             DepartmentId = reader.GetInt32("DepartmentId"),
                             DepartmentName = reader.GetString("DepartmentName"),
+                            SpecialtyId = reader.GetInt32("SpecializationId"),
                         });
                     }
                 }

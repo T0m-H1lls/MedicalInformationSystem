@@ -35,6 +35,8 @@ public class PatientRep:Base
                              PhoneNumber = reader.GetString("Phone"),
                              Address = reader.GetString("Address"),
                              InsuranceNumber =  reader.GetString("InsuranceNumber"),
+                             Passport = reader.GetString("Passport"),
+                             Snils = reader.GetString("SNILS")
                         });
                     }
                 }

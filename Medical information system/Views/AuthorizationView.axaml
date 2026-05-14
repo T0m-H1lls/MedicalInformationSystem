@@ -26,10 +26,12 @@
                                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text ="{Binding UsPassword}"/>
                                 </StackPanel>
                                 
+                                <!--
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Label Content ="Нет аккаунта?"/>
                                         <HyperlinkButton Content="Регистрация" Command="{Binding OpenRegistrationCommand}"/>
                                 </StackPanel>
+                                <!-->
                                 
                                 <Button Content="Войти" Command="{Binding AuthorizationsCommand}"/>
                                 

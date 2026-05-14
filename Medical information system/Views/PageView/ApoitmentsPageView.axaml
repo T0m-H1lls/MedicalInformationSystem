@@ -24,6 +24,7 @@
                 <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
                 <DataGridTextColumn Header="Дата и время" Binding="{Binding AppointmentDate}"/>
                 <DataGridTextColumn Header="Статус" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Направление к врачу" Binding="{Binding ReferralDoctor}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
