@@ -18,12 +18,17 @@
                   BorderBrush="Black"
                   AutoGenerateColumns="False"
                   SelectedItem="{Binding }">
-            <DataGrid.Columns>
+            <DataGrid.Styles>
+                <Style Selector="TextBlock">
+                    <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns >
                 <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="ФИО пациента" Binding="{Binding PatientName}"/>
                 <DataGridTextColumn Header="ФИО врача" Binding="{Binding DoctorName}"/>
                 <DataGridTextColumn Header="Диагноз" Binding="{Binding DiagnoseName}"/>
-                <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="200"/>
                 <DataGridTextColumn Header="Лекарство" Binding="{Binding MedicineName}"/>
                 <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate}"/>
             </DataGrid.Columns>

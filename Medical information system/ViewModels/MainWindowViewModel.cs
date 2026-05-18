@@ -40,11 +40,17 @@ public partial class MainWindowViewModel : ViewModelBase
         _patientPageViewModel = patientPageViewModel;
         CurrentPage = _patientPageViewModel;
 
-        DocName = AccountName.User.Name;
-        DocPatronymic = AccountName.User.Patronymic;
-        DocSurname = AccountName.User.Surname;
-        Role = AccountName.User.Role;
-
+        using (var rep = serviceProvider.GetRequiredService<UserRep>())
+        { 
+            UsersList=new ObservableCollection<User>(rep.GetFullNameAndRole(AccountName.User.Login,AccountName.User.Password));
+        }
+        foreach (var user in UsersList)
+        {
+            DocName = user.Name;
+            DocSurname = user.Surname;
+            Role = user.Role;
+            DocPatronymic = user.Patronymic;
+        }
     }
 
     public ObservableCollection<ListItemTemplate> ListItemTemplates { get; } = new()

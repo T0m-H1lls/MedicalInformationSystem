@@ -54,7 +54,6 @@ public partial class AuthorizationViewModel:ViewModelBase
 
         if (Flag == true)
         {
-           
             var vm = ActivatorUtilities.CreateInstance<MainWindowViewModel>(_serviceProvider);
             var win = _serviceProvider.GetRequiredService<MainWindow>();
             win.DataContext = vm;

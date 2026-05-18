@@ -14,7 +14,7 @@ public partial class AddPatientViewModel:ViewModelBase
     private readonly PatientRep _patientRep;
 
     [ObservableProperty] string _fullName;
-    [ObservableProperty] DateOnly? _dateOfBirth;
+    [ObservableProperty] DateTimeOffset? _dateOfBirth;
     [ObservableProperty] bool _genderM;
     [ObservableProperty] private string _gender;
     [ObservableProperty] string _phoneNumber;
@@ -22,12 +22,18 @@ public partial class AddPatientViewModel:ViewModelBase
     [ObservableProperty] string _insuranceNumber;
     [ObservableProperty] string _passport;
     [ObservableProperty] string _snils;
-    [ObservableProperty] private ObservableCollection<Patient> _patientsList = new();
+    private Action _closeAction;
+    [ObservableProperty] private ObservableCollection<Patient> _patientsList;
     
     public AddPatientViewModel(IServiceProvider serviceProvider,PatientRep patientRep)
     {
         _serviceProvider = serviceProvider;
         _patientRep = patientRep;
+    }
+
+    public void SetClose(Action action)
+    {
+        _closeAction=action;
     }
 
     [RelayCommand]
@@ -38,7 +44,7 @@ public partial class AddPatientViewModel:ViewModelBase
             Gender = "М";
         }
         else
-        {
+        {   
             Gender = "Ж";
         }
         
@@ -52,19 +58,20 @@ public partial class AddPatientViewModel:ViewModelBase
             InsuranceNumber = InsuranceNumber,
             Passport = Passport,
             Snils = Snils,
+            DoctorId = AccountName.User.Id
         };
         _patientRep.AddPatient(patient);
-        using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
-        {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
-        }
+        PatientsList = new ObservableCollection<Patient>(_patientRep.GetAllPatient(AccountName.User.Id));
+        _closeAction?.Invoke();
        
-
-
-
-
     }
-    
+
+    [RelayCommand]
+    void Cansel()
+    {
+        _closeAction?.Invoke();
+    }
+
     
     
 }

@@ -20,9 +20,8 @@ public partial class PatientPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientRep _patientRep;
-    private readonly User _user;
-
-    [ObservableProperty] private bool _viewStyle = false;
+ 
+    
     
     [ObservableProperty] ObservableCollection<Patient> _patients;
     [ObservableProperty] private Patient _selectedPatient;
@@ -46,7 +45,6 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         _serviceProvider = serviceProvider;
         _patientRep = patientRep;
-        _user = user;
        
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
@@ -73,10 +71,13 @@ public partial class PatientPageViewModel:ViewModelBase
     [RelayCommand]
     void OpenAddPatient()
     {
+        bool flag = false;
         var vm =  ActivatorUtilities.CreateInstance<AddPatientViewModel>(_serviceProvider);
         var win = _serviceProvider.GetRequiredService<AddPatient>();
         win.DataContext = vm;
         win.Show();
+        vm.SetClose(win.Close);
+        
     }
 
     [RelayCommand]

@@ -25,7 +25,6 @@
                    AutoGenerateColumns="False"
                    SelectedItem="{Binding SelectedPatient}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="№"  Binding="{Binding Id }"/>
                     <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
                     <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}"/>
                     <DataGridTextColumn Header="Пол" Binding="{Binding Gender}"/>

@@ -6,6 +6,9 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Medical_information_system.Views.Add.AddMedicalRecord"
         x:DataType="addViewModel:AddMedicalRecordViewModel"
+        Width="600"
+        Height="600"
+        WindowStartupLocation="CenterScreen"
         Title="AddMedicalRecord">
     <Grid Background="Azure">
         
@@ -25,7 +28,7 @@
                 </ComboBox>
                 </StackPanel>
 
-                
+                <!-- пусть пока тут побудет
                 <StackPanel>
                 <TextBlock Text="Имя доктора"/>
                 <ComboBox ItemsSource="{Binding MedicalRecordsList}" Width="180">
@@ -36,7 +39,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 </StackPanel>
-                
+                <!-->
                 <StackPanel>
                     <Label Content="Диагноз"/>
                     <TextBox Text="{Binding Diagnose}"/>

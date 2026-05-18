@@ -31,7 +31,7 @@ public class PatientRep:Base
                         {
                              Id = reader.GetInt32("id"),
                              FullName = reader.GetString("FullName"),
-                             DateOfBirth = reader.GetDateOnly("BirthDate"),
+                             DateOfBirth = reader.GetDateTimeOffset("BirthDate"),
                              Gender = reader.GetString("Gender"),
                              PhoneNumber = reader.GetString("Phone"),
                              Address = reader.GetString("Address"),
@@ -53,7 +53,7 @@ public class PatientRep:Base
 
     public void AddPatient(Patient patient)
     {
-        string sql = @"insert into `patients` values(0,@FullName,@DateOfBirth,@Gender,@PhoneNumber,@Address,@InsuranceNumber,@Passport,@Snils)";
+        string sql = @"insert into `patients` values(0,@FullName,@DateOfBirth,@Gender,@Phone,@Address,@InsuranceNumber,@Passport,@Snils,@doctorId)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
@@ -61,11 +61,12 @@ public class PatientRep:Base
                 mc.Parameters.AddWithValue("FullName", patient.FullName);
                 mc.Parameters.AddWithValue("DateOfBirth", patient.DateOfBirth);
                 mc.Parameters.AddWithValue("Gender", patient.Gender);
-                mc.Parameters.AddWithValue("PhoneNumber", patient.PhoneNumber);
+                mc.Parameters.AddWithValue("Phone", patient.PhoneNumber);
                 mc.Parameters.AddWithValue("Address", patient.Address);
                 mc.Parameters.AddWithValue("InsuranceNumber", patient.InsuranceNumber);
                 mc.Parameters.AddWithValue("Passport", patient.Passport);
                 mc.Parameters.AddWithValue("Snils", patient.Snils);
+                mc.Parameters.AddWithValue("@doctorId", patient.DoctorId);
                 mc.ExecuteNonQuery();
             }
         }

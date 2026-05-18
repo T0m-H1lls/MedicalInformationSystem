@@ -13,50 +13,51 @@
         
         <Grid>
                 <Border Classes="medCard"  Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <StackPanel Spacing="10">
+                        <StackPanel Spacing="10" HorizontalAlignment="Center">
                                 <StackPanel>
                                         <Label Content="Введите ФИО"/>
-                                        <TextBox Text="{Binding FullName}" Watermark="ФИО"/>
+                                        <TextBox Text="{Binding FullName}" Width="300" Watermark="ФИО"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите дату рождения"/>
-                                        <DatePicker/>
+                                        <DatePicker SelectedDate="{Binding DateOfBirth}" />
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal" Spacing="10">
-                                       <RadioButton Content="М" />
+                                        <Label Content="Выберите пол"/>
+                                        <RadioButton Content="М" IsChecked="{Binding GenderM}" />
                                        <RadioButton Content="Ж"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите номер телефона"/>
-                                        <MaskedTextBox Mask="(+7) 000 000 0000" />
+                                        <MaskedTextBox Mask="(+7) 000 000 0000" Text="{Binding PhoneNumber}" Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите город"/>
-                                        <TextBox Text="{Binding Address}" Watermark="Город"/>
+                                        <TextBox Text="{Binding Address}" Watermark="Город"  Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите полис"/>
-                                        <TextBox Text="{Binding InsuranceNumber}" Watermark="Полис"/>
+                                        <TextBox Text="{Binding InsuranceNumber}" Watermark="Полис" MaxLength="6"  Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите паспорт"/>
-                                        <TextBox Text="{Binding Passport}" Watermark="Паспорт"/>
+                                        <MaskedTextBox Mask="00  00  000000" Text="{Binding Passport}" Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите СНИЛС"/>
-                                        <TextBox Text="{Binding Snils}" Watermark="СНИЛС"/>
+                                        <MaskedTextBox Mask="000-000-000- 00" Text="{Binding Snils}"  Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal">
-                                        <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding }"/>
-                                        <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding }"/>
+                                        <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding SavePatientCommand}"/>
+                                        <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding CanselCommand}"/>
                                 </StackPanel>
                                 
                         </StackPanel>
