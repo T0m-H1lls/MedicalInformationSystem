@@ -27,7 +27,7 @@
                 
                 <StackPanel>
                     <Label Content="Отчество"/>
-                    <TextBox Text="{Binding }"/>
+                    <TextBox Text="{Binding Patronymic}"/>
                 </StackPanel>
                 
                 <StackPanel>

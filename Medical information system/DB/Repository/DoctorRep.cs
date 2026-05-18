@@ -33,13 +33,14 @@ public class DoctorRep:Base
                         doctors.Add(new Doctor()
                         {
                             Id = reader.GetInt32("id"),
-                            FullName = reader.GetString("FullName"),
                             PhoneNumber = reader.GetString("Phone"),
                             Speciality = reader.GetString("Spec"),
                             Room = reader.GetString("Room"),
                             DepartmentId = reader.GetInt32("DepartmentId"),
                             DepartmentName = reader.GetString("DepartmentName"),
                             SpecialtyId = reader.GetInt32("SpecializationId"),
+                            FullName = reader.GetString("FullName"),
+                           
                         });
                     }
                 }

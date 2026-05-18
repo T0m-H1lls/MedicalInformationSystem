@@ -8,14 +8,16 @@ public class Appointments
     public int PatientId { get; set; }
     public int DoctorId { get; set; }
     public DateTime AppointmentDate { get; set; }
-    public string Status { get; set; }// вынести
+    public string Status { get; set; }
+    
+    public int StatusId { get; set; }
     
     public int MedicalRecordID { get; set; }
 
     public string PatientName { get; set; }
-    public string DoctorName { get; set; }
-
-    public string ReferralDoctor { get; set; }
+    public string DoctorFullName { get; set; }
+    public string DocFullNameReferall { get; set; }
+   
 
 
 }

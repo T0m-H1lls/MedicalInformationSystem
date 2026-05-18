@@ -4,7 +4,9 @@ using Medical_information_system.DB;
 using Medical_information_system.DB.Repository;
 using Medical_information_system.Models;
 using Medical_information_system.ViewModels;
+using Medical_information_system.ViewModels.AddViewModel;
 using Medical_information_system.Views;
+using Medical_information_system.Views.Add;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -61,17 +63,17 @@ sealed class Program
                 s.AddTransient<PrescriptionRep>();
                 s.AddTransient<PrescriptionsPageView>();
                 s.AddTransient<PrescriptionsPageViewModel>();
-                
-                s.AddTransient<RegistrationViewModel>();
-                s.AddTransient<RegistrationView>();
+
+                s.AddTransient<AddPatientViewModel>();
+                s.AddTransient<AddPatient>();
 
                 s.AddTransient<AccountPageViewModel>();
                 s.AddTransient<AccountPageView>();
-                s.AddSingleton<AccountName>();
                
                 
                 s.AddTransient<AuthorizationViewModel>();
                 s.AddTransient<AuthorizationView>();
+                
                 
                 s.AddTransient<StartViewModel>();
                 s.AddTransient<StartView>();
@@ -79,6 +81,7 @@ sealed class Program
                 s.AddSingleton<Navigation>();
 
                 s.AddTransient<UserRep>();
+                s.AddSingleton<User>();
 
             }).
             Build();

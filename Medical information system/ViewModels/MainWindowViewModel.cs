@@ -20,9 +20,7 @@ public partial class MainWindowViewModel : ViewModelBase
     
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientPageViewModel _patientPageViewModel;
-    private readonly PatientRep _patientRep;
-    private readonly UserRep _userRep;
-    private readonly AccountName _accountName;
+
     private Action _closeAction;
 
     [ObservableProperty] private bool _isPaneOpen = true;
@@ -32,26 +30,21 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty] private string _docName;
     [ObservableProperty] private string _docSurname;
+    [ObservableProperty] private string _docPatronymic;
     [ObservableProperty] private string _role;
     
     
-    public MainWindowViewModel(IServiceProvider serviceProvider, PatientPageViewModel patientPageViewModel,PatientRep patientRep,UserRep userRep,AccountName accountName)
+    public MainWindowViewModel(IServiceProvider serviceProvider,PatientPageViewModel patientPageViewModel)
     {
         _serviceProvider = serviceProvider;
         _patientPageViewModel = patientPageViewModel;
-        _patientRep = patientRep;
-        _userRep = userRep;
-        _accountName = accountName;
-        CurrentPage = new PatientPageViewModel(serviceProvider,patientRep);
-        
-        UsersList = new ObservableCollection<User>(userRep.GetNameAndSurname(accountName.Login,accountName.Password));
-        foreach (var user in UsersList)
-        {
-            DocName = user.Name;
-            DocSurname = user.Surname;
-            Role = user.Role;
-        }
-        
+        CurrentPage = _patientPageViewModel;
+
+        DocName = AccountName.User.Name;
+        DocPatronymic = AccountName.User.Patronymic;
+        DocSurname = AccountName.User.Surname;
+        Role = AccountName.User.Role;
+
     }
 
     public ObservableCollection<ListItemTemplate> ListItemTemplates { get; } = new()

@@ -16,17 +16,14 @@ public class UserRep:Base
 
     public void AddUser(User user)
     {
-        string sql = @"insert into `users`values(0,@Login,@Password,@Role,@Name,@Surname,@Patronymic)";
+        string sql = @"insert into `users`values(0,@Login,@Password,@RoleId,@doctorId)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
              mc.Parameters.AddWithValue("@Login", user.Login);
              mc.Parameters.AddWithValue("@Password", user.Password);
-             mc.Parameters.AddWithValue("@Role", user.Role);
-             mc.Parameters.AddWithValue("@Name", user.Name);
-             mc.Parameters.AddWithValue("@Surname", user.Surname);
-             mc.Parameters.AddWithValue("@Patronymic", user.Patronymic);
+             mc.Parameters.AddWithValue("@RoleId", user.RoleId);
              mc.ExecuteNonQuery();
             }
         }
@@ -55,12 +52,10 @@ public class UserRep:Base
                         users.Add(new User()
                         {
                             Id = reader.GetInt32("Id"),
-                            Name = reader.GetString("Name"),
-                            Surname = reader.GetString("Surname"),
-                            Patronymic = reader.GetString("Patronymic"),
                             Login = reader.GetString("Login"),
                             Password = reader.GetString("Password"),
-                            Role = reader.GetString("Role")
+                            RoleId = reader.GetInt32("RoleId")
+                           
                         });
                     }   
                 }
@@ -73,10 +68,13 @@ public class UserRep:Base
         return users;
     }
 
-    public List<User> GetNameAndSurname(string Login, string Password)
+    public List<User> GetFullNameAndRole(string Login, string Password)
     {
         List<User> usersList = new();
-        string sql = @"select * from users where `Login`= @Login and `Password`= @Password";
+        string sql = @"select u.Id ,u.doctorId ,u.RoleId,s.Name as Role,u.Name,u.Surname,u.Patronymic
+                        from users u 
+                        join Specialization s on u.RoleId  = s.Id
+                        where `Login`= @Login and `Password`= @Password";   
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
@@ -90,9 +88,12 @@ public class UserRep:Base
                         usersList.Add(new User()
                         {
                             Id = reader.GetInt32("Id"),
+                            RoleId = reader.GetInt32("RoleId"),
+                            Role = reader.GetString("Role"),
+                            DoctorId = reader.GetInt32("doctorId"),
                             Name = reader.GetString("Name"),
                             Surname = reader.GetString("Surname"),
-                            Role = reader.GetString("Role")
+                            Patronymic = reader.GetString("Patronymic")
                         });
                     }
                 }
@@ -104,6 +105,7 @@ public class UserRep:Base
         }
         return usersList;
     }
+    
 
     public void Dispose()
     {

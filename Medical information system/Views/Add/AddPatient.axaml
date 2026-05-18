@@ -1,0 +1,66 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:addViewModel="clr-namespace:Medical_information_system.ViewModels.AddViewModel"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Medical_information_system.Views.Add.AddPatient"
+        x:DataType="addViewModel:AddPatientViewModel"
+        Width="600"
+        Height="600"
+        WindowStartupLocation="CenterScreen"
+        Title="AddPatient">
+        
+        <Grid>
+                <Border Classes="medCard"  Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Spacing="10">
+                                <StackPanel>
+                                        <Label Content="Введите ФИО"/>
+                                        <TextBox Text="{Binding FullName}" Watermark="ФИО"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите дату рождения"/>
+                                        <DatePicker/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                       <RadioButton Content="М" />
+                                       <RadioButton Content="Ж"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите номер телефона"/>
+                                        <MaskedTextBox Mask="(+7) 000 000 0000" />
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите город"/>
+                                        <TextBox Text="{Binding Address}" Watermark="Город"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите полис"/>
+                                        <TextBox Text="{Binding InsuranceNumber}" Watermark="Полис"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите паспорт"/>
+                                        <TextBox Text="{Binding Passport}" Watermark="Паспорт"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите СНИЛС"/>
+                                        <TextBox Text="{Binding Snils}" Watermark="СНИЛС"/>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                        <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding }"/>
+                                        <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding }"/>
+                                </StackPanel>
+                                
+                        </StackPanel>
+                </Border>
+        </Grid>
+    
+</Window>

@@ -16,13 +16,12 @@ public class MedicalRecordRep:Base
     public List<MedicalRecord> GetMedicalRecords()
     {
         List<MedicalRecord> diagnosesList = new();
-        string sql = @"select m.Id,m.AppointmentId,m.DiagnosisId,m.RecordDate,m.MedicineId,p.FullName as PatientName,d2.FullName,d.Name as DiagnoseName,m3.Name as MedicineName, m.RecordDate 
+        string sql = @"select m.Id,m.AppointmentId,m.RecordDate,m.MedicineId,m.Description,m.Diagnostext, d2.FullName,m3.Name as MedicineName, m.RecordDate,p.FullName as PatientName 
                       from medicalrecords m
-					  join patients p ON m.PatientId = p.Id
                       join appointments a ON m.AppointmentId  = a.Id 
-                      join diagnoses d ON m.DiagnosisId  = d.Id 
                       join medications m3 on m.MedicineId  = m3.Id
-                      join doctors d2 on a.DoctorId  =d2.Id";
+                      join doctors d2 on a.DoctorId  =d2.Id
+                      join patients p  on a.PatientId = p.Id";
         try
         {
             using (var rep = new MySqlCommand(sql, connection))
@@ -34,16 +33,14 @@ public class MedicalRecordRep:Base
                         diagnosesList.Add(new MedicalRecord()
                         {
                             Id = reader.GetInt32("Id"),
-                            PatientId = reader.GetInt32("PatientId"),
-                            AppointmentId = reader.GetInt32("AppointmentId"),
-                            Description = reader.GetString("Description"),
-                            Medicineid = reader.GetInt32("MedicineId"),
-                            RecordDate = reader.GetDateTime("RecordDate"),
+                            AppointmentId = reader.GetInt32("AppointmentId"),//есть
+                            Description = reader.GetString("Description"),//есть
+                            Medicineid = reader.GetInt32("MedicineId"),//есть
+                            RecordDate = reader.GetDateTime("RecordDate"),//есть
                             PatientName = reader.GetString("PatientName"),
-                            DoctorName = reader.GetString("FullName"),
-                            DiagnoseName = reader.GetString("DiagnoseName"),
-                            MedicineName = reader.GetString("MedicineName"),
-                            
+                            DoctorName = reader.GetString("FullName"),//есть
+                            DiagnoseName = reader.GetString("Diagnostext"),
+                            MedicineName = reader.GetString("MedicineName")
                         });
                     }
                 }

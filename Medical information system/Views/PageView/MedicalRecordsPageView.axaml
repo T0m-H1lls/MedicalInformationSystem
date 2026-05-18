@@ -26,7 +26,6 @@
                 <DataGridTextColumn Header="Описание" Binding="{Binding Description}"/>
                 <DataGridTextColumn Header="Лекарство" Binding="{Binding MedicineName}"/>
                 <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate}"/>
-                <DataGridTextColumn Header="Направление" Binding="{Binding }"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

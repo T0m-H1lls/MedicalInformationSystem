@@ -15,31 +15,20 @@ public partial class AuthorizationViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Navigation _navigation;
-    private readonly AccountName _accountNames;
-    private readonly User _users;
 
     [ObservableProperty] private ObservableCollection<User> _userList;
     [ObservableProperty] private string _usLogin;
-    [ObservableProperty]private string _usPassword;
+    [ObservableProperty] private string _usPassword;
     [ObservableProperty] private bool _flag =  false;
     [ObservableProperty] private string _error;
     [ObservableProperty] private DispatcherTimer _timer;
-    public AuthorizationViewModel(IServiceProvider serviceProvider,Navigation navigation,AccountName accountNames)
+    public AuthorizationViewModel(IServiceProvider serviceProvider,Navigation navigation)
     {
         _serviceProvider = serviceProvider;
         _navigation = navigation;
-        _accountNames = accountNames;
         
-        
-       
     }
-
-    [RelayCommand]
-    void OpenRegistration()
-    {
-        var vm = _serviceProvider.GetRequiredService<RegistrationViewModel>();
-        _navigation.Navigate(vm);
-    }
+    
 
     [RelayCommand]
    async void Authorizations()
@@ -55,7 +44,7 @@ public partial class AuthorizationViewModel:ViewModelBase
             if (us.Login == UsLogin & us.Password == UsPassword)
             {
                 Flag = true;
-                
+                AccountName.User = us;
             }
             else
             {
@@ -65,8 +54,7 @@ public partial class AuthorizationViewModel:ViewModelBase
 
         if (Flag == true)
         {
-            _accountNames.Login = UsLogin;
-            _accountNames.Password = UsPassword;
+           
             var vm = ActivatorUtilities.CreateInstance<MainWindowViewModel>(_serviceProvider);
             var win = _serviceProvider.GetRequiredService<MainWindow>();
             win.DataContext = vm;

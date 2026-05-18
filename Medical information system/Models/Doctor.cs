@@ -9,6 +9,7 @@ public class Doctor
     public string PhoneNumber { get; set; }
     public string Room { get; set; } 
     public int DepartmentId { get; set; }
+  
     
     public string DepartmentName { get; set; }
     

@@ -14,6 +14,8 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     private readonly IServiceProvider _serviceProvider;
     private readonly ApointmentRep _apointmentRep;
     [ObservableProperty] private ObservableCollection<Appointments> _appointmentsList = new();
+    [ObservableProperty] private string _fullNameDoc;
+    [ObservableProperty] private string _fullNameDocRef;
     private string _searchText;
     public string SearchText
     {
@@ -46,7 +48,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         {
             AppointmentsList = new ObservableCollection<Appointments>(
                 _apointmentRep.GetAppointments().Where(s =>
-                    s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                    s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                     s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                     s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
         }

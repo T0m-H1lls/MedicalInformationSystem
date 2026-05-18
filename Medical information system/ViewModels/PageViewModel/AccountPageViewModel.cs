@@ -10,7 +10,6 @@ namespace Medical_information_system.ViewModels;
 public partial class AccountPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly AccountName _accountName;
     private readonly UserRep _userRep;
     [ObservableProperty] private string _surname;
     [ObservableProperty] private string _name;
@@ -19,18 +18,20 @@ public partial class AccountPageViewModel:ViewModelBase
     [ObservableProperty] private ObservableCollection<User> _usersList;
 
 
-    public AccountPageViewModel(IServiceProvider serviceProvider,AccountName accountName,UserRep userRep)
+    public AccountPageViewModel(IServiceProvider serviceProvider,UserRep userRep)
     {
         _serviceProvider = serviceProvider;
-        _accountName = accountName;
         _userRep = userRep;
         
-        UsersList = new ObservableCollection<User>(userRep.GetNameAndSurname(accountName.Login,accountName.Password));
+        UsersList = new ObservableCollection<User>(userRep.GetFullNameAndRole(AccountName.User.Login,AccountName.User.Password));
         foreach (var user in UsersList)
         {
+            
             Name = user.Name;
             Surname = user.Surname;
             Role = user.Role;
+            Patronymic = user.Patronymic;
+            
         }
     }
     

@@ -15,4 +15,6 @@ public class MedicalRecord
     public string DoctorName { get; set; }
     public string DiagnoseName { get; set; }
     public string MedicineName { get; set; }
+    
+    public string ReferallDoc { get; set; }
 }
