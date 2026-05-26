@@ -9,8 +9,10 @@
         <entry key="Medical information system/Assets/Icons.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Assets/RegistrationStyles.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/AccountPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/Add/AddApoitment.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/Add/AddMedicalRecord.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/Add/AddPatient.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/Add/ApoitmentAdd.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/ApoitmentsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/AuthorizationView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/AuthorizationWindow.axaml" value="Medical information system/Medical information system.csproj" />

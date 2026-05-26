@@ -28,7 +28,6 @@ public partial class AuthorizationViewModel:ViewModelBase
         _navigation = navigation;
         
     }
-    
 
     [RelayCommand]
    async void Authorizations()

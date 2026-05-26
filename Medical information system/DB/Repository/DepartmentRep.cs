@@ -42,8 +42,83 @@ public class DepartmentRep:Base
         return departmentsList;
     }
     
+    public bool AddDepartment(Departments department)
+    {
+        string sql = @"INSERT INTO departments(Name, Floor)
+                   VALUES(@Name, @Floor)";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Name", department.Name);
+                cm.Parameters.AddWithValue("@Floor", department.Floor);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
     
-    
+    public bool UpdateDepartment(Departments department)
+    {
+        string sql = @"UPDATE departments
+                   SET Name = @Name,
+                       Floor = @Floor
+                   WHERE Id = @Id";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Id", department.Id);
+                cm.Parameters.AddWithValue("@Name", department.Name);
+                cm.Parameters.AddWithValue("@Floor", department.Floor);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
+    public bool DeleteDepartment(int id)
+    {
+        string sql = @"UPDATE departments
+                   SET IsActive = 0,
+                       DeletedAt = NOW()
+                   WHERE Id = @Id";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Id", id);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
 
     public void Dispose()
     {

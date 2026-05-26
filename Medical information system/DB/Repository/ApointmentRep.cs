@@ -41,13 +41,12 @@ public class ApointmentRep:Base
                             refDoctorName = reader.GetString("DocFullNameReferall");
                         string refDoctorSurname = null;
                         
-                        
                         appointmentsList.Add(new Appointments()
                         {
                            Id = reader.GetInt32("id"),//e
                            PatientId = reader.GetInt32("PatientId"),//e
                            DoctorId = reader.GetInt32("DoctorId"),//e
-                           AppointmentDate = reader.GetDateTime("AppointmentDate"),//e
+                           AppointmentDate = reader.GetDateTimeOffset("AppointmentDate"),//e
                            StatusId = reader.GetInt32("StatusId"),//e
                            PatientName = reader.GetString("PatientName"),//e
                            DoctorFullName = reader.GetString("DoctorFullName"),//e
@@ -71,6 +70,93 @@ public class ApointmentRep:Base
         return appointmentsList;
     }
 
+    
+    public bool AddAppointment(Appointments appointment)
+    {
+        string sql = @"INSERT INTO appointments
+                   (PatientId, DoctorId, AppointmentDate, MedicalRecordId, StatusId)
+                   VALUES
+                   (@PatientId, @DoctorId, @AppointmentDate, @MedicalRecordId, @StatusId)";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@PatientId", appointment.PatientId);
+                cm.Parameters.AddWithValue("@DoctorId", appointment.DoctorId);
+                cm.Parameters.AddWithValue("@AppointmentDate", appointment.AppointmentDate);
+                cm.Parameters.AddWithValue("@MedicalRecordId", appointment.MedicalRecordID);
+                cm.Parameters.AddWithValue("@StatusId", appointment.StatusId);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
+    
+    public bool UpdateAppointment(Appointments appointment)
+    {
+        string sql = @"UPDATE appointments
+                   SET PatientId = @PatientId,
+                       DoctorId = @DoctorId,
+                       AppointmentDate = @AppointmentDate,
+                       StatusId = @StatusId
+                   WHERE Id = @Id";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Id", appointment.Id);
+                cm.Parameters.AddWithValue("@PatientId", appointment.PatientId);
+                cm.Parameters.AddWithValue("@DoctorId", appointment.DoctorId);
+                cm.Parameters.AddWithValue("@AppointmentDate", appointment.AppointmentDate);
+                cm.Parameters.AddWithValue("@StatusId", appointment.StatusId);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
+    public bool DeleteAppointment(int id)
+    {
+        string sql = @"UPDATE appointments
+                   SET IsActive = 0,
+                       DeletedAt = NOW()
+                   WHERE Id = @Id";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Id", id);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
     public void Dispose()
     {
         base.Dispose();

@@ -40,10 +40,6 @@
         <DependentUpon>ApoitmentsPageView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\PageView\DiagnosPageView.axaml.cs">
-        <DependentUpon>DiagnosPageView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\PageView\DoctorsPageView.axaml.cs">
         <DependentUpon>DoctorsPageView.axaml</DependentUpon>
         <SubType>Code</SubType>

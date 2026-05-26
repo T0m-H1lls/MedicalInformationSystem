@@ -50,9 +50,6 @@ public partial class App : Application
             desktop.MainWindow = win;
             vm.SetCloseAction(win.Close);
             */
-            
-            
-            
         }
 
         base.OnFrameworkInitializationCompleted();

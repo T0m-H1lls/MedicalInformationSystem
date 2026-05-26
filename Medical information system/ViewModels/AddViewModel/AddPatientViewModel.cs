@@ -1,30 +1,112 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
 using Medical_information_system.Models;
 using Microsoft.Extensions.DependencyInjection;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace Medical_information_system.ViewModels.AddViewModel;
 
-public partial class AddPatientViewModel:ViewModelBase
+public partial class AddPatientViewModel : ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly PatientRep _patientRep;
 
-    [ObservableProperty] string _fullName;
-    [ObservableProperty] DateTimeOffset? _dateOfBirth;
-    [ObservableProperty] bool _genderM;
+    public string FullName
+    {
+        get => _fullName;
+        set
+        {
+            if (value == _fullName) return;
+            _fullName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTimeOffset DateOfBirth
+    {
+        get => _dateOfBirth;
+        set
+        {
+            if (value.Equals(_dateOfBirth)) return;
+            _dateOfBirth = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool GenderM { set; get; }
+
+    public string PhoneNumber
+    {
+        set
+        {
+            if (value == _phoneNumber) return;
+            _phoneNumber = value;
+            OnPropertyChanged();
+        }
+        get => _phoneNumber;
+    }
+
+    public string Address
+    {
+        set
+        {
+            if (value == _address) return;
+            _address = value;
+            OnPropertyChanged();
+        }
+        get => _address;
+    }
+
+    public string InsuranceNumber
+    {
+        get => _insuranceNumber;
+        set
+        {
+            if (value == _insuranceNumber) return;
+            _insuranceNumber = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Passport
+    {
+        get => _passport;
+        set
+        {
+            if (value == _passport) return;
+            _passport = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Snils
+    {
+        get => _snils;
+        set
+        {
+            if (value == _snils) return;
+            _snils = value;
+            OnPropertyChanged();
+        }
+    }
+
     [ObservableProperty] private string _gender;
-    [ObservableProperty] string _phoneNumber;
-    [ObservableProperty] string _address;
-    [ObservableProperty] string _insuranceNumber;
-    [ObservableProperty] string _passport;
-    [ObservableProperty] string _snils;
+
+    private string _snils;
     private Action _closeAction;
-    [ObservableProperty] private ObservableCollection<Patient> _patientsList;
     
+    private string _fullName;
+    private DateTimeOffset _dateOfBirth;
+    private string _phoneNumber;
+    private string _address;
+    private string _insuranceNumber;
+    private string _passport;
+
     public AddPatientViewModel(IServiceProvider serviceProvider,PatientRep patientRep)
     {
         _serviceProvider = serviceProvider;
@@ -36,23 +118,57 @@ public partial class AddPatientViewModel:ViewModelBase
         _closeAction=action;
     }
 
-    [RelayCommand]
-    void SavePatient()
+    private bool Validate()
     {
-        if (GenderM == true)
+        if (string.IsNullOrWhiteSpace(FullName))
+            return false;
+
+        if (string.IsNullOrWhiteSpace(PhoneNumber))
+            return false;
+
+        if (PhoneNumber.Length < 11)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(Address))
+            return false;
+
+        if (string.IsNullOrWhiteSpace(InsuranceNumber))
+            return false;
+
+        if (string.IsNullOrWhiteSpace(Passport))
+            return false;
+
+        if (string.IsNullOrWhiteSpace(Snils))
+            return false;
+
+        return true;
+    }
+    
+    [RelayCommand]
+    async Task SavePatient()
+    {
+        if (!Validate())
         {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Ошибка",
+                "Заполните все поля корректно",
+                ButtonEnum.Ok);
+
+            await box.ShowAsync();
+
+            return;
+        }
+
+        if (GenderM)
             Gender = "М";
-        }
         else
-        {   
             Gender = "Ж";
-        }
-        
+
         var patient = new Patient
         {
             FullName = FullName,
-            DateOfBirth = DateOfBirth,
-            Gender = Gender ,
+            BirthDate = DateOfBirth,
+            Gender = Gender,
             PhoneNumber = PhoneNumber,
             Address = Address,
             InsuranceNumber = InsuranceNumber,
@@ -60,11 +176,12 @@ public partial class AddPatientViewModel:ViewModelBase
             Snils = Snils,
             DoctorId = AccountName.User.Id
         };
+
         _patientRep.AddPatient(patient);
-        PatientsList = new ObservableCollection<Patient>(_patientRep.GetAllPatient(AccountName.User.Id));
+
         _closeAction?.Invoke();
-       
     }
+    
 
     [RelayCommand]
     void Cansel()

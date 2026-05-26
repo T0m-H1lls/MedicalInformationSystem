@@ -17,7 +17,10 @@ public class PatientRep:Base
     public List<Patient> GetAllPatient(int doctorId)
     {
         List<Patient> patients = new();
-        string sql = @"Select * from `patients` where `doctorId` = @doctorId";
+        string sql = @"SELECT * 
+               FROM patients 
+               WHERE doctorId = @doctorId
+               AND IsActive = 1";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
@@ -31,7 +34,7 @@ public class PatientRep:Base
                         {
                              Id = reader.GetInt32("id"),
                              FullName = reader.GetString("FullName"),
-                             DateOfBirth = reader.GetDateTimeOffset("BirthDate"),
+                             BirthDate = reader.GetDateTimeOffset("BirthDate"),
                              Gender = reader.GetString("Gender"),
                              PhoneNumber = reader.GetString("Phone"),
                              Address = reader.GetString("Address"),
@@ -53,13 +56,13 @@ public class PatientRep:Base
 
     public void AddPatient(Patient patient)
     {
-        string sql = @"insert into `patients` values(0,@FullName,@DateOfBirth,@Gender,@Phone,@Address,@InsuranceNumber,@Passport,@Snils,@doctorId)";
+        string sql = @"insert into `patients` values(0,@FullName,@BirthDate,@Gender,@Phone,@Address,@InsuranceNumber,@Passport,@Snils,@doctorId,Null,1)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
                 mc.Parameters.AddWithValue("FullName", patient.FullName);
-                mc.Parameters.AddWithValue("DateOfBirth", patient.DateOfBirth);
+                mc.Parameters.AddWithValue("BirthDate", patient.BirthDate);
                 mc.Parameters.AddWithValue("Gender", patient.Gender);
                 mc.Parameters.AddWithValue("Phone", patient.PhoneNumber);
                 mc.Parameters.AddWithValue("Address", patient.Address);
@@ -79,51 +82,68 @@ public class PatientRep:Base
 
     public bool UpdatePatient(Patient patient)
     {
-        string sql = @"update `patients` set Fullname = @FullName, DateOfBirth=@DateOfBirth,
-                       Gender=@Gender,PhoneNumber=@PhoneNumber,Address=@Address,
-                       InsuranceNumber=@InsuranceNumber
-                       where id=@id";
+        string sql = @"UPDATE patients 
+                   SET FullName = @FullName,
+                       BirthDate = @BirthDate,
+                       Gender = @Gender,
+                       Phone = @Phone,
+                       Address = @Address,
+                       InsuranceNumber = @InsuranceNumber,
+                       Passport = @Passport,
+                       SNILS = @Snils
+                   WHERE Id = @Id";
+
         try
         {
-             using (var command = new MySqlCommand(sql, connection))
-             {
-                 command.Parameters.AddWithValue("@FullName",patient.FullName);
-                 command.Parameters.AddWithValue("@DateOfBirth",patient.DateOfBirth);
-                 command.Parameters.AddWithValue("@Gender",patient.Gender);
-                 command.Parameters.AddWithValue("@PhoneNumber",patient.PhoneNumber);
-                 command.Parameters.AddWithValue("@Address",patient.Address);
-                 command.Parameters.AddWithValue("@InsuranceNumber",patient.InsuranceNumber);
-                 command.ExecuteNonQuery();
-             }
-             return true;
+            using (var command = new MySqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Id", patient.Id);
+                command.Parameters.AddWithValue("@FullName", patient.FullName);
+                command.Parameters.AddWithValue("@BirthDate", patient.BirthDate);
+                command.Parameters.AddWithValue("@Gender", patient.Gender);
+                command.Parameters.AddWithValue("@Phone", patient.PhoneNumber);
+                command.Parameters.AddWithValue("@Address", patient.Address);
+                command.Parameters.AddWithValue("@InsuranceNumber", patient.InsuranceNumber);
+                command.Parameters.AddWithValue("@Passport", patient.Passport);
+                command.Parameters.AddWithValue("@Snils", patient.Snils);
+
+                command.ExecuteNonQuery();
+            }
+
+            return true;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
-        return false;
 
+        return false;
     }
     
 
-    public bool DeletePatient(int Id)
+    public bool DeletePatient(int id)
     {
-        string sql = @"delete from `patients` where `Id` = @Id";
+        string sql = @"UPDATE patients
+                   SET IsActive = 0,
+                       DeletedAt = NOW()
+                   WHERE Id = @Id";
+
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
-                mc.Parameters.AddWithValue("@Id",Id);
-                mc.ExecuteNonQuery();
-                
-            }
-            return true;
+                mc.Parameters.AddWithValue("@Id", id);
 
+                mc.ExecuteNonQuery();
+            }
+
+            return true;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
+
         return false;
     }
 

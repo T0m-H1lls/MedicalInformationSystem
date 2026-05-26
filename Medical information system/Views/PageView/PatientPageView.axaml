@@ -6,37 +6,72 @@
              x:DataType="viewmodel:PatientPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PatientPageView">
-    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin=" 0 5 0 0">
-                <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
-            </StackPanel>
-        <StackPanel  Spacing ="8" Orientation="Horizontal">
-            <Button Content="+" Background="LawnGreen"  Command="{Binding OpenAddPatientCommand}"/>
-            <Button Content="Удалить" Background="Red" Command="{Binding DeletePatientCommand}"/>
-            <Button Content="Изменить" Command="{Binding }"/>
+    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto" >
+
+        <StackPanel Spacing="8" Orientation="Horizontal">
+            <Button Content="+" Background="LawnGreen" Command="{Binding OpenAddPatientCommand}" />
+            <Button Content="Удалить" Background="Red" Command="{Binding DeletePatientCommand}" />
+            <Button Content="Изменить" Command="{Binding SwitchViewCommand}" />
+            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"
+                     Margin="10"
+                     Foreground="Black" Text="{Binding SearchText}" />
         </StackPanel>
-        <DataGrid  Grid.Row="1" Margin=" 0 10 0 0"
-                   ItemsSource="{Binding Patients}"
-                   AreRowDetailsFrozen="True"
-                   GridLinesVisibility="All"
-                   IsReadOnly="True"
-                   BorderThickness="1"
-                   BorderBrush="Black"
-                   AutoGenerateColumns="False"
-                   SelectedItem="{Binding SelectedPatient}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
-                    <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}"/>
-                    <DataGridTextColumn Header="Пол" Binding="{Binding Gender}"/>
-                    <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>
-                    <DataGridTextColumn Header="Адрес" Binding="{Binding Address}"/>
-                    <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}"/>
-                    <DataGridTextColumn Header="Паспорт" Binding="{Binding  Passport}"/>
-                    <DataGridTextColumn Header="СНИЛС" Binding="{Binding   Snils}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+       
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Width="300"
+                Background="White"
+                Classes="medCard"
+                IsVisible="{Binding ViewStyle}">
+            <StackPanel>
+                
+           
+                <Label Content="ФИО" />
+                <TextBox Text="{Binding EdFullname}" />
+                <Label Content="Дата рождения" />
+                <TextBox Text="{Binding EdDateOfBirth}" />
+                <Label Content="Пол" />
+                <TextBox Text="{Binding EdGender}" />
+                <Label Content="Номер телефона" />
+                <TextBox Text="{Binding EdPhone}" />
+                <Label Content="Адрес" />
+                <TextBox Text="{Binding EdAdress}" />
+                <Label Content="Номер полиса" />
+                <TextBox Text="{Binding EdInsuranseNumber}" />
+                <Label Content="Паспорт" />
+                <TextBox Text="{Binding EdPasport}" />
+                <Label Content="СНИЛС" />
+                <TextBox Text="{Binding EdSnils}" />
+                <Button Content="X"
+                        HorizontalAlignment="Right"
+                        Command="{Binding ClosePanelCommand}" />
+                <Button Content="Сохранить"
+                        Command="{Binding SaveEditCommand}" />
+            </StackPanel>
+        </Border>
+        
+        
+        <DataGrid Grid.Row="1" Margin=" 0 0  0 0"
+                  ItemsSource="{Binding Patients}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="Horizontal"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedPatient}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" />
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding BirthDate}" />
+                <DataGridTextColumn Header="Пол" Binding="{Binding Gender}" />
+                <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}" />
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" />
+                <DataGridTextColumn Header="Номер полиса" Binding="{Binding InsuranceNumber}" />
+                <DataGridTextColumn Header="Паспорт" Binding="{Binding Passport}" />
+                <DataGridTextColumn Header="СНИЛС" Binding="{Binding Snils}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
-    
-    
-    
+
+
 </UserControl>

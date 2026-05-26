@@ -47,10 +47,9 @@ sealed class Program
                 s.AddTransient<ApointmentRep>();
                 s.AddTransient<ApoitmentsPageViewModel>();
                 s.AddTransient<ApoitmentsPageView>();
+                s.AddTransient<AddApoitmentViewModel>();
+                s.AddTransient<AddApoitment>();
                 
-                s.AddTransient<DiagnosPageViewModel>();
-                s.AddTransient<DiagnoseRep>();
-                s.AddTransient<DiagnosPageView>();
                 
                 s.AddTransient<MedicalRecordRep>();
                 s.AddTransient<MedicalRecordsPageViewModel>();

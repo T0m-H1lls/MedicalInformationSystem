@@ -10,6 +10,7 @@ namespace Medical_information_system.ViewModels;
 
 public partial class DoctorsPageViewModel:ViewModelBase
 {
+    public bool IsAdmin => AccountName.User.Role == "Главный врач";
     private readonly IServiceProvider _serviceProvider;
     private readonly DoctorRep _doctorRep;
     [ObservableProperty] ObservableCollection<Doctor> _doctorsList = new();

@@ -7,8 +7,13 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.MedicalRecordsPageView">
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <TextBox Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Foreground="Black" Text="{Binding SearchText}"/>
+        <StackPanel Spacing="8" Orientation="Horizontal">
+            <Button Content="+" Background="LawnGreen" Command="{Binding }" />
+            <Button Content="Удалить" Background="Red" Command="{Binding }" />
+            <Button Content="Изменить" Command="{Binding }" />
+            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"
+                     Margin="10"
+                     Foreground="Black" Text="{Binding SearchText}" />
         </StackPanel>
         <DataGrid Grid.Row="1" ItemsSource="{Binding MedicalRecordsList}"
                   AreRowDetailsFrozen="True"

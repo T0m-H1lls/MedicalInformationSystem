@@ -53,7 +53,90 @@ public class DoctorRep:Base
         }
         return doctors;
     }
+    public bool AddDoctor(Doctor doctor)
+    {
+        string sql = @"INSERT INTO `doctors` VALUES(@FullName, @Phone, @SpecializationId, @Room, @DepartmentId)";
 
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@FullName", doctor.FullName);
+                cm.Parameters.AddWithValue("@Phone", doctor.PhoneNumber);
+                cm.Parameters.AddWithValue("@SpecializationId", doctor.SpecialtyId);
+                cm.Parameters.AddWithValue("@Room", doctor.Room);
+                cm.Parameters.AddWithValue("@DepartmentId", doctor.DepartmentId);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
+    public bool UpdateDoctor(Doctor doctor)
+    {
+        string sql = @"UPDATE doctors
+                   SET FullName = @FullName,
+                       Phone = @Phone,
+                       SpecializationId = @SpecializationId,
+                       Room = @Room,
+                       DepartmentId = @DepartmentId
+                   WHERE Id = @Id";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Id", doctor.Id);
+                cm.Parameters.AddWithValue("@FullName", doctor.FullName);
+                cm.Parameters.AddWithValue("@Phone", doctor.PhoneNumber);
+                cm.Parameters.AddWithValue("@SpecializationId", doctor.SpecialtyId);
+                cm.Parameters.AddWithValue("@Room", doctor.Room);
+                cm.Parameters.AddWithValue("@DepartmentId", doctor.DepartmentId);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
+    public bool DeleteDoctor(int id)
+    {
+        string sql = @"UPDATE doctors
+                   SET IsActive = 0,
+                       DeletedAt = NOW()
+                   WHERE Id = @Id";
+
+        try
+        {
+            using (var cm = new MySqlCommand(sql, connection))
+            {
+                cm.Parameters.AddWithValue("@Id", id);
+
+                cm.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return false;
+    }
     public void Dispose()
     {
         base.Dispose();
