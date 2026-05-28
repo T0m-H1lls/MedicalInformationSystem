@@ -101,7 +101,7 @@ public partial class AddPatientViewModel : ViewModelBase
     private Action _closeAction;
     
     private string _fullName;
-    private DateTimeOffset _dateOfBirth;
+    private DateTimeOffset _dateOfBirth = DateTimeOffset.Now;
     private string _phoneNumber;
     private string _address;
     private string _insuranceNumber;

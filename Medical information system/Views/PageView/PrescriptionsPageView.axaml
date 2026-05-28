@@ -8,10 +8,10 @@
              x:Class="Medical_information_system.Views.PrescriptionsPageView">
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
         <StackPanel Spacing="8" Orientation="Horizontal">
-            <Button Content="+" Background="LawnGreen" Command="{Binding }" />
-            <Button Content="Удалить" Background="Red" Command="{Binding }" />
-            <Button Content="Изменить" Command="{Binding }" />
-            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"/>
+            <Button Classes="add" Content="+"  Command="{Binding }" />
+            <Button Classes="delete" Content="Удалить" Command="{Binding }" />
+            <Button Classes="edit" Content="Изменить" Command="{Binding }" />
+            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Text="{Binding SearchText}"/>
         </StackPanel>
         <DataGrid Grid.Row="1" ItemsSource="{Binding PrescriptionsList}"
                   AreRowDetailsFrozen="True"
@@ -22,7 +22,6 @@
                   AutoGenerateColumns="False"
                   SelectedItem="{Binding }">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding  Id}"/>
                 <DataGridTextColumn Header="Врач" Binding="{Binding DoctorName}"/>
                 <DataGridTextColumn Header="Лекарство " Binding="{Binding MedicalName}"/>
                 <DataGridTextColumn Header="Пациент" Binding="{Binding PatientName}"/>

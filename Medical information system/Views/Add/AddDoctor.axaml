@@ -1,0 +1,64 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:addViewModel="clr-namespace:Medical_information_system.ViewModels.AddViewModel"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:DataType="addViewModel:AddDoctorViewModel"
+        x:Class="Medical_information_system.Views.Add.AddDoctor"
+        Title="AddDoctor">
+        
+        <Grid>
+                <Border Classes="medCard"  Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Spacing="10" HorizontalAlignment="Center">
+                                
+                                <StackPanel>
+                                        <Label Content="Введите ФИО"/>
+                                        <TextBox Text="{Binding AdFullName}"  Width="300" Watermark="ФИО"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Специалитет"/>
+                                        <ComboBox ItemsSource="{Binding SpecializationsList}" 
+                                                  Width="300"
+                                                  SelectedItem="{Binding SekectedSpec}">
+                                                <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                                <TextBlock Text="{Binding Name}"/>
+                                                        </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите номер телефона"/>
+                                        <MaskedTextBox Mask="+7 000 000 0000" Text="{Binding AdPhone}" Width="300"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Введите кабинет"/>
+                                        <TextBox Text="{Binding AdRoom}" Watermark="Кабинет"  Width="300"/>
+                                </StackPanel>
+                                
+                                <StackPanel>
+                                        <Label Content="Отдел"/>
+                                        <ComboBox ItemsSource="{Binding DepartmentsList}" SelectedItem="{Binding SelectedDepartment}"
+                                                  Width="300">
+                                                <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                                <TextBlock Text="{Binding Name}"/>
+                                                        </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal">
+                                        <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding  SaveDoctorCommand}"/>
+                                        <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding CanselCommand}"/>
+                                </StackPanel>
+                                
+                        </StackPanel>
+                </Border>
+        </Grid>
+    
+</Window>

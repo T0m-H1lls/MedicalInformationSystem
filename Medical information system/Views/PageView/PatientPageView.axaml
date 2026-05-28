@@ -9,9 +9,9 @@
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto" >
 
         <StackPanel Spacing="8" Orientation="Horizontal">
-            <Button Content="+" Background="LawnGreen" Command="{Binding OpenAddPatientCommand}" />
-            <Button Content="Удалить" Background="Red" Command="{Binding DeletePatientCommand}" />
-            <Button Content="Изменить" Command="{Binding SwitchViewCommand}" />
+            <Button Classes="add" Content="+" Command="{Binding OpenAddPatientCommand}" />
+            <Button Classes="delete" Content="Удалить" Command="{Binding DeletePatientCommand}" />
+            <Button Classes="edit" Content="Изменить" Command="{Binding SwitchViewCommand}" />
             <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"
                      Margin="10"
                      Foreground="Black" Text="{Binding SearchText}" />
@@ -24,32 +24,40 @@
                 Classes="medCard"
                 IsVisible="{Binding ViewStyle}">
             <StackPanel>
-                
-           
                 <Label Content="ФИО" />
                 <TextBox Text="{Binding EdFullname}" />
                 <Label Content="Дата рождения" />
-                <TextBox Text="{Binding EdDateOfBirth}" />
-                <Label Content="Пол" />
-                <TextBox Text="{Binding EdGender}" />
+                <DatePicker SelectedDate="{Binding EdDateOfBirth}" />
+                <StackPanel>
+                    <Label Content="Пол"/>
+                    <ComboBox SelectedItem="{Binding Gender}" Width="120">
+                        <x:String>М</x:String>
+                        <x:String>Ж</x:String>
+                    </ComboBox>
+                </StackPanel>
                 <Label Content="Номер телефона" />
-                <TextBox Text="{Binding EdPhone}" />
+                <MaskedTextBox Mask="+7 000 000 0000" Text="{Binding EdPhone}" />
                 <Label Content="Адрес" />
                 <TextBox Text="{Binding EdAdress}" />
                 <Label Content="Номер полиса" />
-                <TextBox Text="{Binding EdInsuranseNumber}" />
+                <MaskedTextBox Mask="000000" Text="{Binding EdInsuranseNumber}"  />
                 <Label Content="Паспорт" />
-                <TextBox Text="{Binding EdPasport}" />
+                <MaskedTextBox Mask="00 00 000000" Text="{Binding EdPasport}" />
                 <Label Content="СНИЛС" />
-                <TextBox Text="{Binding EdSnils}" />
-                <Button Content="X"
-                        HorizontalAlignment="Right"
-                        Command="{Binding ClosePanelCommand}" />
-                <Button Content="Сохранить"
-                        Command="{Binding SaveEditCommand}" />
+                <MaskedTextBox Mask="000-000-000-00" Text="{Binding EdSnils}" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="X"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ClosePanelCommand}" />
+                    <Button Content="Сохранить"
+                            Command="{Binding SaveEditCommand}" />
+                </StackPanel>
             </StackPanel>
         </Border>
-        
+         
+    
+                                
+   
         
         <DataGrid Grid.Row="1" Margin=" 0 0  0 0"
                   ItemsSource="{Binding Patients}"

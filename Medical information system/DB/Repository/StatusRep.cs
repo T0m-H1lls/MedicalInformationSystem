@@ -16,7 +16,7 @@ public class StatusRep:Base
     public List<Status> StatusList()
     {
         List<Status> statusList = new();
-        string sql =@"select * from `Status`";
+        string sql =@"select * from `status`";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))

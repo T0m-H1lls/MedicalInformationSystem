@@ -16,10 +16,10 @@
                 
                 <TextBlock Text="Имя пациента"/>
                 <StackPanel>
-                <ComboBox ItemsSource="{Binding AppointmentsList}" SelectedItem="{Binding SelectedAppointmentPatient}" Width="180">
+                <ComboBox ItemsSource="{Binding PatientsList}" SelectedItem="{Binding SelectedAppointmentPatient}" Width="180">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding PatientName}"/>
+                            <TextBlock Text="{Binding FullName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -32,11 +32,11 @@
                 
                 <TextBlock Text="Статус"/>
                 <StackPanel>
-                    <ComboBox ItemsSource="{Binding AppointmentsList}"
+                    <ComboBox ItemsSource="{Binding StatusList}"
                               SelectedItem="{Binding SelectedAppointmentStatus}" Width="180">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Status}"/>
+                                <TextBlock Text="{Binding Name}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -45,21 +45,25 @@
                 <StackPanel >
                     <TextBlock Text="Назначение к врачу"/>
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <ComboBox ItemsSource="{Binding }"
-                                  SelectedItem="{Binding SelectedMedicalRecord}" 
+                        <ComboBox ItemsSource="{Binding DoctorsList}"
+                                  SelectedItem="{Binding SelectedReferallDoctor}" 
                                   Width="180">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding}"/>
+                                    <TextBlock Text="{Binding FullName}"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
+                            <ComboBox.PlaceholderText>
+                                Не выбрано
+                            </ComboBox.PlaceholderText>
                         </ComboBox>
+                        <Button Content="Очистить" Command="{Binding ClearReferallCommand}"/>
                     </StackPanel>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding SaveApointmentCommand}"/>
-                    <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding CanselCommand}"/>
+                    <Button Classes="add" Content="Сохранить" Foreground="AliceBlue" Command="{Binding SaveApointmentCommand}"/>
+                    <Button Classes="delete" Content="Отмена" Foreground="Azure" Command="{Binding CanselCommand}"/>
                 </StackPanel>
             </StackPanel>
         </Border>

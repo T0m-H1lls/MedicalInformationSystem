@@ -19,7 +19,8 @@ public class DoctorRep:Base
         string sql = @"SELECT d.Id ,d.FullName,d.Phone,d.SpecializationId,d.Room,d.DepartmentId, d2.Name as DepartmentName,s.Name as Spec
                        from doctors d 
                        JOIN departments d2 ON d.DepartmentId = d2.Id
-                       join Specialization s on d.SpecializationId =  s.Id";
+                       join Specialization s on d.SpecializationId =  s.Id
+                       Where d.IsActive = 1";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
@@ -55,7 +56,7 @@ public class DoctorRep:Base
     }
     public bool AddDoctor(Doctor doctor)
     {
-        string sql = @"INSERT INTO `doctors` VALUES(@FullName, @Phone, @SpecializationId, @Room, @DepartmentId)";
+        string sql = @"INSERT INTO `doctors` VALUES(0,@FullName, @SpecializationId,@Phone, @Room, @DepartmentId,null,1)";
 
         try
         {

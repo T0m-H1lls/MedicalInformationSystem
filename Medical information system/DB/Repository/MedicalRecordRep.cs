@@ -19,7 +19,7 @@ public class MedicalRecordRep:Base
         string sql = @"select m.Id,m.AppointmentId,m.RecordDate,m.Medicine,m.Description,m.Diagnostext, d2.FullName,m.RecordDate,p.FullName as PatientName 
                       from medicalrecords m
                       join appointments a ON m.AppointmentId  = a.Id 
-                      join doctors d2 on a.DoctorId  =d2.Id
+                      join doctors d2 on a.DoctorId = d2.Id
                       join patients p  on a.PatientId = p.Id";
         try
         {
@@ -53,6 +53,46 @@ public class MedicalRecordRep:Base
         return diagnosesList;
     }
     
+    
+    public List<MedicalRecord> GetMedicalRecordsDoc()
+    {
+        List<MedicalRecord> diagnosesList = new();
+        string sql = @"select m.Id,m.AppointmentId,m.RecordDate,m.Medicine,m.Description,m.Diagnostext, d2.FullName,m.RecordDate,p.FullName as PatientName 
+                      from medicalrecords m
+                      join appointments a ON m.AppointmentId  = a.Id 
+                      join doctors d2 on a.DoctorId  =d2.Id
+                      join patients p  on a.PatientId = p.Id";
+        try
+        {
+            using (var rep = new MySqlCommand(sql, connection))
+            {
+                using (var reader = rep.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        diagnosesList.Add(new MedicalRecord()
+                        {
+                            Id = reader.GetInt32("Id"),
+                            AppointmentId = reader.GetInt32("AppointmentId"),//есть
+                            Description = reader.GetString("Description"),//есть
+                            RecordDate = reader.GetDateTime("RecordDate"),//есть
+                            PatientName = reader.GetString("PatientName"),
+                            DoctorName = reader.GetString("FullName"),//есть
+                            DiagnoseName = reader.GetString("Diagnostext"),
+                            MedicineName = reader.GetString("Medicine")
+                        });
+                    }
+                }
+            }
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            
+        }
+        return diagnosesList;
+    }
      
     
     

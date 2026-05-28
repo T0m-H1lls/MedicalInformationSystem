@@ -66,8 +66,26 @@ sealed class Program
                 s.AddTransient<AddPatientViewModel>();
                 s.AddTransient<AddPatient>();
 
+                s.AddTransient<AddApoitmentViewModel>();
+                s.AddTransient<AddApoitment>();
+                
+                s.AddTransient<AddDoctorViewModel>();
+                s.AddTransient<AddDoctor>();
+                
+                s.AddTransient<AddMedicalRecordViewModel>();
+                s.AddTransient<AddMedicalRecord>();
+                
+                s.AddTransient<AddPrescriptionViewModel>();
+                s.AddTransient<AddPrescription>();
+                
+                s.AddTransient<DepartmentRep>();
+
+                s.AddTransient<SpecializationRep>();
+
                 s.AddTransient<AccountPageViewModel>();
                 s.AddTransient<AccountPageView>();
+                
+                s.AddTransient<StatusRep>();
                
                 
                 s.AddTransient<AuthorizationViewModel>();

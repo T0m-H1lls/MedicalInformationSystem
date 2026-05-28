@@ -9,18 +9,68 @@
     
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
         
-        <StackPanel Spacing="8" Orientation="Horizontal">
-            <Button Content="+" Background="LawnGreen" Command="{Binding }" 
-                    IsVisible="{Binding IsAdmin}"/>
+        <StackPanel Spacing="8" Orientation="Horizontal" HorizontalAlignment="Center">
             
-            <Button Content="Удалить" Background="Red" Command="{Binding }" 
-                    IsVisible="{Binding IsAdmin}" />
+            <Button Classes="add" Content="+" Command="{Binding OpenAddDoctorWindowCommand}" />
+                   
+            <Button Classes="delete" Content="Удалить"  Command="{Binding DeletePatientCommand }" />
+                    
+            <Button Classes="edit" Content="Изменить" Command="{Binding SwitchViewCommand}" />
             
-            <Button Content="Изменить" Command="{Binding }" 
-                    IsVisible="{Binding IsAdmin}"/>
-            
-            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"/>
+            <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"/>
         </StackPanel>
+        
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Width="300"
+                Background="White"
+                Classes="medCard"
+                IsVisible="{Binding ViewStyle}">
+            <StackPanel>
+               <StackPanel>
+                   
+                   <Label Content="ФИО"/>
+                   <TextBox Text="{Binding AdFullName}"/>
+                   
+                   <Label Content="Специалитет"/>
+                   <ComboBox ItemsSource="{Binding SpecializationsList}" 
+                             Width="240"
+                             SelectedItem="{Binding SelectedSpec}">
+                       <ComboBox.ItemTemplate>
+                           <DataTemplate>
+                               <TextBlock Text="{Binding Name}" Width="240"/>
+                           </DataTemplate>
+                       </ComboBox.ItemTemplate>
+                   </ComboBox>
+                   
+                   <Label Content="Телефон"/>
+                   <MaskedTextBox Mask="+7 000 000 0000" Text="{Binding AdPhone}" Width="240"/>
+                   
+                   <Label Content="Кабинет"/>
+                   <TextBox Text="{Binding AdRoom}" Width="240"/>
+                   
+                   <Label Content="Отдел"/>
+                   <ComboBox ItemsSource="{Binding DepartmentsList}" 
+                             Width="240"
+                             SelectedItem="{Binding SelectedDepartment}">
+                       <ComboBox.ItemTemplate>
+                           <DataTemplate>
+                               <TextBlock Text="{Binding Name}"/>
+                           </DataTemplate>
+                       </ComboBox.ItemTemplate>
+                   </ComboBox>
+               </StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="X"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ClosePanelCommand}" />
+                    <Button Content="Сохранить"
+                            Command="{Binding SaveEditCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
         
         <DataGrid Grid.Row="1" ItemsSource="{Binding DoctorsList}"
                   AreRowDetailsFrozen="True"
@@ -29,9 +79,8 @@
                   BorderThickness="1"
                   BorderBrush="Black"
                   AutoGenerateColumns="False"
-                  SelectedItem="{Binding }">
+                  SelectedItem="{Binding SelectedDoctor }">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№"  Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}"/>
                 <DataGridTextColumn Header="Специализация" Binding="{Binding Speciality}"/>
                 <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}"/>

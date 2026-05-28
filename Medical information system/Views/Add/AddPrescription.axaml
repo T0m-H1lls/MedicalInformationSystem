@@ -4,60 +4,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:addViewModel="clr-namespace:Medical_information_system.ViewModels.AddViewModel"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Medical_information_system.Views.Add.AddPatient"
-        x:DataType="addViewModel:AddPatientViewModel"
-        Width="600"
-        Height="600"
-        WindowStartupLocation="CenterScreen"
-        Title="AddPatient">
-        
-        <Grid>
+        x:DataType="addViewModel:AddPrescriptionViewModel"
+        x:Class="Medical_information_system.Views.Add.AddPrescription"
+        Title="AddPrescription">
+         <Grid>
                 <Border Classes="medCard"  Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <StackPanel Spacing="10" HorizontalAlignment="Center">
                                 <StackPanel>
                                         <Label Content="Введите ФИО"/>
-                                        <TextBox Text="{Binding FullName}" Width="300" Watermark="ФИО"/>
+                                        <TextBox Text="{Binding }" Width="300" Watermark="ФИО"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите дату рождения"/>
-                                        <DatePicker SelectedDate="{Binding DateOfBirth}" />
+                                        <DatePicker SelectedDate="{Binding }" />
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                         <Label Content="Выберите пол"/>
-                                        <RadioButton Content="М" IsChecked="{Binding GenderM}" />
+                                        <RadioButton Content="М" IsChecked="{Binding }" />
                                        <RadioButton Content="Ж"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите номер телефона"/>
-                                        <MaskedTextBox Mask="+7 000 000 0000" Text="{Binding PhoneNumber}" Width="300"/>
+                                        <MaskedTextBox Mask="(+7) 000 000 0000" Text="{Binding }" Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите город"/>
-                                        <TextBox Text="{Binding Address}" Watermark="Город"  Width="300"/>
+                                        <TextBox Text="{Binding }" Watermark="Город"  Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите полис"/>
-                                        <MaskedTextBox Mask="000000" Text="{Binding InsuranceNumber}" Watermark="Полис" MaxLength="6"  Width="300"/>
+                                        <TextBox Text="{Binding }" Watermark="Полис" MaxLength="6"  Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите паспорт"/>
-                                        <MaskedTextBox Mask="00 00 000000" Text="{Binding Passport}" Width="300"/>
+                                        <MaskedTextBox Mask="00  00  000000" Text="{Binding }" Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel>
                                         <Label Content="Введите СНИЛС"/>
-                                        <MaskedTextBox Mask="000-000-000-00" Text="{Binding Snils}"  Width="300"/>
+                                        <MaskedTextBox Mask="000-000-000- 00" Text="{Binding }"  Width="300"/>
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal">
-                                        <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding SavePatientCommand}"/>
-                                        <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding CanselCommand}"/>
+                                        <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding }"/>
+                                        <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding }"/>
                                 </StackPanel>
                                 
                         </StackPanel>

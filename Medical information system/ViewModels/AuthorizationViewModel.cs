@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,22 +17,22 @@ public partial class AuthorizationViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly Navigation _navigation;
-
+    
     [ObservableProperty] private ObservableCollection<User> _userList;
     [ObservableProperty] private string _usLogin;
     [ObservableProperty] private string _usPassword;
     [ObservableProperty] private bool _flag =  false;
     [ObservableProperty] private string _error;
     [ObservableProperty] private DispatcherTimer _timer;
+    [ObservableProperty] private bool _rememberMe;
     public AuthorizationViewModel(IServiceProvider serviceProvider,Navigation navigation)
     {
         _serviceProvider = serviceProvider;
         _navigation = navigation;
-        
     }
 
     [RelayCommand]
-   async void Authorizations()
+   async Task Authorizations()
     {
         Console.WriteLine("Click");
         Flag = false;
@@ -40,18 +42,15 @@ public partial class AuthorizationViewModel:ViewModelBase
         }
         foreach (var us in UserList)
         {
-            if (us.Login == UsLogin & us.Password == UsPassword)
+            if (us.Login == UsLogin && us.Password == UsPassword)
             {
                 Flag = true;
                 AccountName.User = us;
-            }
-            else
-            {
-                Flag = false;
+                break;
             }
         }
 
-        if (Flag == true)
+        if (Flag)
         {
             var vm = ActivatorUtilities.CreateInstance<MainWindowViewModel>(_serviceProvider);
             var win = _serviceProvider.GetRequiredService<MainWindow>();
@@ -68,4 +67,5 @@ public partial class AuthorizationViewModel:ViewModelBase
         }
         
     }
+   
 }

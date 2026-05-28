@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
 using Medical_information_system.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,15 @@ public partial class MedicationsPageViewModel:ViewModelBase
     private readonly IServiceProvider _serviceProvider;
     private readonly MedicationRep _medicationRep;
     [ObservableProperty] ObservableCollection<Medication> _medicationList;
+    [ObservableProperty] private bool _viewStyle = false; 
+    
+    [RelayCommand]
+    void ClosePanel()
+    {
+    
+        ViewStyle = false;
+        
+    }
     
     private string _searchText;
 
@@ -26,6 +36,8 @@ public partial class MedicationsPageViewModel:ViewModelBase
             OnPropertyChanged(nameof(SearchMedications));
         }
     }
+    
+   
 
     
 
@@ -56,5 +68,14 @@ public partial class MedicationsPageViewModel:ViewModelBase
         }
     }
 
-   
+    [RelayCommand]
+    void UpdateMedication()
+    {
+        
+    }
+    [RelayCommand]
+    void Save()
+    {
+        
+    }
 }

@@ -19,7 +19,7 @@ public class PrescriptionRep:Base
         string sql = @"select p.Id, p.AppointmentId,p.Medicine,d.FullName as DoctorName,p2.FullName as PatientName,p.Dosage,p.Duration
                         from prescriptions p 
                         join appointments a on p.AppointmentId = a.Id 
-                        join doctors d on a.DoctorId  = p.Id 
+                        join doctors d on a.DoctorId  = d.Id 
                         join patients p2 on a.PatientId = p2.Id ";
         try
         {

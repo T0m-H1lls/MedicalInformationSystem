@@ -31,8 +31,6 @@ public partial class PatientPageViewModel:ViewModelBase
     [ObservableProperty] private string _edPasport;
     [ObservableProperty] private string _edSnils;
     
-    
-    
     [ObservableProperty] private bool _viewStyle = false;
     [ObservableProperty] ObservableCollection<Patient> _patients;
     
@@ -72,6 +70,8 @@ public partial class PatientPageViewModel:ViewModelBase
 
        
     }
+    [ObservableProperty]
+    private string _gender = "М";
     
     void SearchPatient()
     {
@@ -129,21 +129,16 @@ public partial class PatientPageViewModel:ViewModelBase
         
        
     }
-    private bool IsPhoneValid()
-    {
-        return Regex.IsMatch(EdPhone ?? "", @"^\+7\d{10}$");
-    }
-
     private bool IsSnilsValid()
     {
-        return Regex.IsMatch(EdSnils ?? "", @"^\d{11}$");
+        return Regex.IsMatch(EdSnils ?? "", @"^\d{3}-\d{3}-\d{3}-\d{2}$");
     }
 
     private bool IsPassportValid()
     {
-        return Regex.IsMatch(EdPasport ?? "", @"^\d{10}$");
+        return Regex.IsMatch(EdPasport ?? "", @"^\d{2}\s\d{2}\s\d{6}$");
     }
-
+    
     private bool ValidateEdit(out string errorMessage)
     {
         if (string.IsNullOrWhiteSpace(EdFullname))
@@ -158,21 +153,9 @@ public partial class PatientPageViewModel:ViewModelBase
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(EdGender))
-        {
-            errorMessage = "Введите пол";
-            return false;
-        }
-
         if (string.IsNullOrWhiteSpace(EdPhone))
         {
             errorMessage = "Введите номер телефона";
-            return false;
-        }
-
-        if (!IsPhoneValid())
-        {
-            errorMessage = "Телефон должен быть в формате +79991234567";
             return false;
         }
 
@@ -211,6 +194,11 @@ public partial class PatientPageViewModel:ViewModelBase
             errorMessage = "СНИЛС должен содержать 11 цифр";
             return false;
         }
+        if (EdDateOfBirth > DateTimeOffset.Now)
+        {
+            errorMessage = "Дата рождения не может быть больше текущей даты";
+            return false;
+        }
 
         errorMessage = "";
         return true;
@@ -221,9 +209,7 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(EdFullname))
             return false;
-
-        if (string.IsNullOrWhiteSpace(EdGender))
-            return false;
+        
 
         if (string.IsNullOrWhiteSpace(EdPhone))
             return false;
@@ -246,15 +232,24 @@ public partial class PatientPageViewModel:ViewModelBase
         return true;
     }
     
+  
     [RelayCommand]
-    void SwitchView()
+    async Task SwitchView()
     {
         if (SelectedPatient == null)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Ошибка", "Выберите пациента",
+                ButtonEnum.Ok);
+
+            await box.ShowAsync();
+
             return;
+        }
 
         EdFullname = SelectedPatient.FullName;
         EdDateOfBirth = SelectedPatient.BirthDate;
-        EdGender = SelectedPatient.Gender;
+        Gender = SelectedPatient.Gender;
         EdPhone = SelectedPatient.PhoneNumber;
         EdAdress = SelectedPatient.Address;
         EdInsuranseNumber = SelectedPatient.InsuranceNumber;
@@ -305,7 +300,7 @@ public partial class PatientPageViewModel:ViewModelBase
         {
             SelectedPatient.FullName = EdFullname;
             SelectedPatient.BirthDate = EdDateOfBirth.Value;
-            SelectedPatient.Gender = EdGender;
+            SelectedPatient.Gender = Gender;
             SelectedPatient.PhoneNumber = EdPhone;
             SelectedPatient.Address = EdAdress;
             SelectedPatient.InsuranceNumber = EdInsuranseNumber;

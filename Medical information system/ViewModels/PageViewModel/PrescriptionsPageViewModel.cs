@@ -26,7 +26,7 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
         }
     }
 
-    private void SearchPrescreption()
+    void SearchPrescreption()
     {
         if (string.IsNullOrWhiteSpace(_searchText))
         {
