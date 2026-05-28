@@ -6,9 +6,10 @@ using MySqlConnector;
 
 namespace Medical_information_system.DB.Repository;
 
-public class PrescriptionRep:Base
+public class PrescriptionRep : Base
 {
-    public PrescriptionRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
+    public PrescriptionRep(IOptions<DataBaseConnection> dataBaseConnection)
+        : base(dataBaseConnection)
     {
         OpenConnection();
     }
@@ -16,28 +17,31 @@ public class PrescriptionRep:Base
     public List<Prescription> GetPrescriptions()
     {
         List<Prescription> prescriptionsList = new();
-        string sql = @"select p.Id, p.AppointmentId,p.Medicine,d.FullName as DoctorName,p2.FullName as PatientName,p.Dosage,p.Duration
-                        from prescriptions p 
-                        join appointments a on p.AppointmentId = a.Id 
-                        join doctors d on a.DoctorId  = d.Id 
-                        join patients p2 on a.PatientId = p2.Id ";
+
+        string sql = @"SELECT p.Id,p.DoctorId,p.PatientId,p.Medicine,p.Dosage,p.Duration,d.FullName AS DoctorName,pt.FullName AS PatientName
+                   FROM prescriptions p
+                   JOIN doctors d ON p.DoctorId = d.Id
+                   JOIN patients pt ON p.PatientId = pt.Id
+                   WHERE p.IsActive = 1";
+
         try
         {
-            using (var mc = new MySqlCommand(sql, connection))
+            using (var cm = new MySqlCommand(sql, connection))
             {
-                using (var reader = mc.ExecuteReader())
+                using (var reader = cm.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         prescriptionsList.Add(new Prescription()
                         {
                             Id = reader.GetInt32("Id"),
-                            AppointmentID = reader.GetInt32("AppointmentId"),
+                            DoctorId = reader.GetInt32("DoctorId"),
+                            PatientId = reader.GetInt32("PatientId"),
                             DoctorName = reader.GetString("DoctorName"),
-                            MedicalName = reader.GetString("Medicine"),
                             PatientName = reader.GetString("PatientName"),
+                            MedicalName = reader.GetString("Medicine"),
                             Dosage = reader.GetString("Dosage"),
-                            Duration = reader.GetString("Duration"),
+                            Duration = reader.GetString("Duration")
                         });
                     }
                 }
@@ -47,21 +51,21 @@ public class PrescriptionRep:Base
         {
             Console.WriteLine(e);
         }
+
         return prescriptionsList;
     }
 
     public bool AddPrescription(Prescription prescription)
     {
-        string sql = @"INSERT INTO prescriptions
-                   (AppointmentId, Medicine, Dosage, Duration)
-                   VALUES
-                   (@AppointmentId, @Medicine, @Dosage, @Duration)";
+        string sql = @"INSERT INTO prescriptions VALUES(0,@DoctorId, @Medicine, @PatientId, @Dosage, @Duration, 1, null)";
+                       
 
         try
         {
-            using (var cm = new MySqlCommand(sql, connection))  
+            using (var cm = new MySqlCommand(sql, connection))
             {
-                cm.Parameters.AddWithValue("@AppointmentId", prescription.AppointmentID);
+                cm.Parameters.AddWithValue("@DoctorId", prescription.DoctorId);
+                cm.Parameters.AddWithValue("@PatientId", prescription.PatientId);
                 cm.Parameters.AddWithValue("@Medicine", prescription.MedicalName);
                 cm.Parameters.AddWithValue("@Dosage", prescription.Dosage);
                 cm.Parameters.AddWithValue("@Duration", prescription.Duration);
@@ -78,21 +82,20 @@ public class PrescriptionRep:Base
 
         return false;
     }
+
     public bool UpdatePrescription(Prescription prescription)
     {
         string sql = @"UPDATE prescriptions
-                   SET AppointmentId = @AppointmentId,
-                       Medicine = @Medicine,
-                       Dosage = @Dosage,
-                       Duration = @Duration
-                   WHERE Id = @Id";
+                       SET DoctorId = @DoctorId, PatientId = @PatientId, Medicine = @Medicine, Dosage = @Dosage, Duration = @Duration
+                       WHERE Id = @Id";
 
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
             {
                 cm.Parameters.AddWithValue("@Id", prescription.Id);
-                cm.Parameters.AddWithValue("@AppointmentId", prescription.AppointmentID);
+                cm.Parameters.AddWithValue("@DoctorId", prescription.DoctorId);
+                cm.Parameters.AddWithValue("@PatientId", prescription.PatientId);
                 cm.Parameters.AddWithValue("@Medicine", prescription.MedicalName);
                 cm.Parameters.AddWithValue("@Dosage", prescription.Dosage);
                 cm.Parameters.AddWithValue("@Duration", prescription.Duration);
@@ -109,13 +112,13 @@ public class PrescriptionRep:Base
 
         return false;
     }
-    
+
     public bool DeletePrescription(int id)
     {
         string sql = @"UPDATE prescriptions
-                   SET IsActive = 0,
-                       DeletedAt = NOW()
-                   WHERE Id = @Id";
+                       SET IsActive = 0,
+                           DeletedAt = NOW()
+                       WHERE Id = @Id";
 
         try
         {
@@ -134,5 +137,10 @@ public class PrescriptionRep:Base
         }
 
         return false;
+    }
+    public void Dispose()
+    {
+        base.Dispose();
+        CloseConnection();
     }
 }

@@ -55,7 +55,6 @@ public partial class AddApoitmentViewModel:ViewModelBase
         }
     }
     
-    
     public void SetClose(Action action)
     {
         _closeAction=action;
@@ -64,9 +63,8 @@ public partial class AddApoitmentViewModel:ViewModelBase
     [RelayCommand]
     void SaveApointment()
     {
-        var res = new Appointments()
+        var res = new Appointments
         {
-            
             PatientId = SelectedAppointmentPatient.Id,
             AppointmentDate = SelectedDate,
             StatusId = SelectedAppointmentStatus.Id,

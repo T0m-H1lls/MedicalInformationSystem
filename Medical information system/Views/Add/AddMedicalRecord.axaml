@@ -19,10 +19,10 @@
                 <TextBlock Text="Имя пациента"/>
                 
                 <StackPanel>
-                <ComboBox ItemsSource="{Binding MedicalRecordsList}" Width="180">
+                <ComboBox ItemsSource="{Binding PatientsList}" Width="180" SelectedItem="{Binding SelectedPatient}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding PatientName}"/>
+                            <TextBlock Text="{Binding FullName}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -45,12 +45,12 @@
                 
                 <StackPanel>
                     <Label Content="Дата"/>
-                    <TextBox Text="{Binding RecordDate}"/>
+                    <DatePicker SelectedDate="{Binding RecordDate}"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding }"/>
-                    <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding }"/>
+                    <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding SavePrescriptionCommand}"/>
+                    <Button Content="Отмена" Background ="Red" Foreground="Azure" Command="{Binding CancelCommand}"/>
                 </StackPanel>
             </StackPanel>
         </Border>

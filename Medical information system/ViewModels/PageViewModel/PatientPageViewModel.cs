@@ -67,7 +67,6 @@ public partial class PatientPageViewModel:ViewModelBase
         _patientRep = patientRep;
         
         Patients = new ObservableCollection<Patient>(patientRep.GetAllPatient(AccountName.User.Id));
-
        
     }
     [ObservableProperty]
@@ -139,99 +138,44 @@ public partial class PatientPageViewModel:ViewModelBase
         return Regex.IsMatch(EdPasport ?? "", @"^\d{2}\s\d{2}\s\d{6}$");
     }
     
-    private bool ValidateEdit(out string errorMessage)
+    private bool ValidateEdit(out string error)
     {
         if (string.IsNullOrWhiteSpace(EdFullname))
         {
-            errorMessage = "Введите ФИО";
+            error = "Введите ФИО";
             return false;
         }
-
-        if (EdDateOfBirth == null)
-        {
-            errorMessage = "Выберите дату рождения";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(EdPhone))
-        {
-            errorMessage = "Введите номер телефона";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(EdAdress))
-        {
-            errorMessage = "Введите адрес";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(EdInsuranseNumber))
-        {
-            errorMessage = "Введите номер полиса";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(EdPasport))
-        {
-            errorMessage = "Введите паспорт";
-            return false;
-        }
-
-        if (!IsPassportValid())
-        {
-            errorMessage = "Паспорт должен содержать 10 цифр";
-            return false;
-        }
-
-        if (string.IsNullOrWhiteSpace(EdSnils))
-        {
-            errorMessage = "Введите СНИЛС";
-            return false;
-        }
-
-        if (!IsSnilsValid())
-        {
-            errorMessage = "СНИЛС должен содержать 11 цифр";
-            return false;
-        }
-        if (EdDateOfBirth > DateTimeOffset.Now)
-        {
-            errorMessage = "Дата рождения не может быть больше текущей даты";
-            return false;
-        }
-
-        errorMessage = "";
-        return true;
-    }
-    
-    
-    private bool ValidateEdit()
-    {
-        if (string.IsNullOrWhiteSpace(EdFullname))
-            return false;
         
 
-        if (string.IsNullOrWhiteSpace(EdPhone))
-            return false;
-
-        if (EdPhone.Length < 11)
-            return false;
+        
 
         if (string.IsNullOrWhiteSpace(EdAdress))
+        {
+            error = "Введите адрес";
             return false;
-
-        if (string.IsNullOrWhiteSpace(EdInsuranseNumber))
-            return false;
+        }
 
         if (string.IsNullOrWhiteSpace(EdPasport))
+        {
+            error = "Введите паспорт";
             return false;
+        }
 
         if (string.IsNullOrWhiteSpace(EdSnils))
+        {
+            error = "Введите СНИЛС";
             return false;
+        }
+        
+        if (EdDateOfBirth > DateTimeOffset.Now)
+        {
+            error = "Дата рождения не может быть больше текущей даты";
+            return false;
+        }
 
+        error = "";
         return true;
     }
-    
   
     [RelayCommand]
     async Task SwitchView()

@@ -42,4 +42,10 @@ public class MedicationRep:Base
         }
         return medicationsList;
     }
+
+    public void Dispose()
+    {
+        CloseConnection();
+        base.Dispose();
+    }
 }

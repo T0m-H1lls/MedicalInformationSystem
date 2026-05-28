@@ -41,4 +41,9 @@ public class StatusRep:Base
         }
         return statusList;
     }
+    public void Dispose()
+    {
+        base.Dispose();
+        CloseConnection();
+    }
 }

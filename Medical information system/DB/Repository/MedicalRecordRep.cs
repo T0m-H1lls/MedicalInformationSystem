@@ -16,11 +16,11 @@ public class MedicalRecordRep:Base
     public List<MedicalRecord> GetMedicalRecords()
     {
         List<MedicalRecord> diagnosesList = new();
-        string sql = @"select m.Id,m.AppointmentId,m.RecordDate,m.Medicine,m.Description,m.Diagnostext, d2.FullName,m.RecordDate,p.FullName as PatientName 
+        string sql = @"select m.Id,m.PatientId,m.DoctorId,m.RecordDate,m.Medicine,m.Description,m.Diagnostext, d.FullName,m.RecordDate,p.FullName as PatientName 
                       from medicalrecords m
-                      join appointments a ON m.AppointmentId  = a.Id 
-                      join doctors d2 on a.DoctorId = d2.Id
-                      join patients p  on a.PatientId = p.Id";
+                      join doctors d on m.DoctorId = d.Id
+                      join patients p  on m.PatientId = p.Id
+                      Where m.IsActive = 1 ";
         try
         {
             using (var rep = new MySqlCommand(sql, connection))
@@ -32,13 +32,15 @@ public class MedicalRecordRep:Base
                         diagnosesList.Add(new MedicalRecord()
                         {
                             Id = reader.GetInt32("Id"),
-                            AppointmentId = reader.GetInt32("AppointmentId"),//есть
-                            Description = reader.GetString("Description"),//есть
-                            RecordDate = reader.GetDateTime("RecordDate"),//есть
+                            PatientId = reader.GetInt32("PatientId"),
+                            DoctorId = reader.GetInt32("DoctorId"),
+                            Description = reader.GetString("Description"),
+                            RecordDate = reader.GetDateTime("RecordDate"),
                             PatientName = reader.GetString("PatientName"),
-                            DoctorName = reader.GetString("FullName"),//есть
+                            DoctorName = reader.GetString("FullName"),
                             DiagnoseName = reader.GetString("Diagnostext"),
-                            MedicineName = reader.GetString("Medicine")
+                            MedicineName = reader.GetString("Medicine"),
+                            
                         });
                     }
                 }
@@ -52,62 +54,21 @@ public class MedicalRecordRep:Base
         }
         return diagnosesList;
     }
-    
-    
-    public List<MedicalRecord> GetMedicalRecordsDoc()
-    {
-        List<MedicalRecord> diagnosesList = new();
-        string sql = @"select m.Id,m.AppointmentId,m.RecordDate,m.Medicine,m.Description,m.Diagnostext, d2.FullName,m.RecordDate,p.FullName as PatientName 
-                      from medicalrecords m
-                      join appointments a ON m.AppointmentId  = a.Id 
-                      join doctors d2 on a.DoctorId  =d2.Id
-                      join patients p  on a.PatientId = p.Id";
-        try
-        {
-            using (var rep = new MySqlCommand(sql, connection))
-            {
-                using (var reader = rep.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        diagnosesList.Add(new MedicalRecord()
-                        {
-                            Id = reader.GetInt32("Id"),
-                            AppointmentId = reader.GetInt32("AppointmentId"),//есть
-                            Description = reader.GetString("Description"),//есть
-                            RecordDate = reader.GetDateTime("RecordDate"),//есть
-                            PatientName = reader.GetString("PatientName"),
-                            DoctorName = reader.GetString("FullName"),//есть
-                            DiagnoseName = reader.GetString("Diagnostext"),
-                            MedicineName = reader.GetString("Medicine")
-                        });
-                    }
-                }
-            }
-            
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            
-        }
-        return diagnosesList;
-    }
-     
-    
     
      public void AddMedicalRecords(MedicalRecord medicalRecord)
     {
-        string sql = @"insert into `medicalrecords` values(0,@PatientId,@AppointmentId,@DiagnoseId,@Description,@RecordDate)";
+        string sql = @"insert into `medicalrecords` values(0,@DoctorId,@PatientId,@DiagnoseText,@Description,@RecordDate,@Medicine,null,1)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
                 mc.Parameters.AddWithValue("@Id", medicalRecord.Id);
+                mc.Parameters.AddWithValue("@DoctorId", medicalRecord.DoctorId);
                 mc.Parameters.AddWithValue("@PatientId", medicalRecord.PatientId);
-                mc.Parameters.AddWithValue("@AppointmentId", medicalRecord.AppointmentId);
                 mc.Parameters.AddWithValue("@Description", medicalRecord.Description);
                 mc.Parameters.AddWithValue("@RecordDate", medicalRecord.RecordDate);
+                mc.Parameters.AddWithValue("@DiagnoseText", medicalRecord.DiagnoseName);
+                mc.Parameters.AddWithValue("@Medicine", medicalRecord.MedicineName);
                 mc.ExecuteNonQuery();
             }
         }
@@ -120,10 +81,7 @@ public class MedicalRecordRep:Base
     public bool UpdateMedicalRecord(MedicalRecord medicalRecord)
     {
         string sql = @"UPDATE medicalrecords
-                   SET AppointmentId = @AppointmentId,
-                       Description = @Description,
-                       RecordDate = @RecordDate,
-                       MedicineId = @MedicineId
+                   SET DoctorId = @DoctorId,PatientId = @PatientId,DiagnosText = @DiagnosText,Description = @Description,RecordDate = @RecordDate,Medicine = @Medicine
                    WHERE Id = @Id";
 
         try
@@ -131,10 +89,12 @@ public class MedicalRecordRep:Base
             using (var command = new MySqlCommand(sql, connection))
             {
                 command.Parameters.AddWithValue("@Id", medicalRecord.Id);
-                command.Parameters.AddWithValue("@AppointmentId", medicalRecord.AppointmentId);
                 command.Parameters.AddWithValue("@Description", medicalRecord.Description);
                 command.Parameters.AddWithValue("@RecordDate", medicalRecord.RecordDate);
-                command.Parameters.AddWithValue("@MedicineId", medicalRecord.Medicineid);
+                command.Parameters.AddWithValue("@Medicine", medicalRecord.MedicineName);
+                command.Parameters.AddWithValue("@DoctorId", medicalRecord.DoctorId);
+                command.Parameters.AddWithValue("@PatientId", medicalRecord.PatientId);
+                command.Parameters.AddWithValue("@DiagnosText", medicalRecord.DiagnoseName);
 
                 command.ExecuteNonQuery();
             }
@@ -173,5 +133,11 @@ public class MedicalRecordRep:Base
         }
 
         return false;
+    }
+
+    public void Dispose()
+    {
+        CloseConnection();
+        base.Dispose();
     }
 }

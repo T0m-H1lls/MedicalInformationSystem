@@ -38,7 +38,7 @@ public partial class AddPatientViewModel : ViewModelBase
         }
     }
 
-    public bool GenderM { set; get; }
+    [ObservableProperty] private bool _genderM = true; 
 
     public string PhoneNumber
     {
@@ -118,40 +118,62 @@ public partial class AddPatientViewModel : ViewModelBase
         _closeAction=action;
     }
 
-    private bool Validate()
+    private bool Validate(out string error)
     {
         if (string.IsNullOrWhiteSpace(FullName))
+        {
+            error = "Введите ФИО";
             return false;
+        }
 
         if (string.IsNullOrWhiteSpace(PhoneNumber))
+        {
+            error = "Введите телефон";
             return false;
-
-        if (PhoneNumber.Length < 11)
-            return false;
+        }
+        
 
         if (string.IsNullOrWhiteSpace(Address))
+        {
+            error = "Введите адрес";
             return false;
+        }
 
         if (string.IsNullOrWhiteSpace(InsuranceNumber))
+        {
+            error = "Введите полис";
             return false;
+        }
 
         if (string.IsNullOrWhiteSpace(Passport))
+        {
+            error = "Введите паспорт";
             return false;
+        }
 
         if (string.IsNullOrWhiteSpace(Snils))
+        {
+            error = "Введите СНИЛС";
             return false;
+        }
+        if (DateOfBirth>DateTimeOffset.Now)
+        {
+            error = "Дата рождения не может быть больше текущей даты";
+            return false;
+        }
 
+        error = "";
         return true;
     }
     
     [RelayCommand]
     async Task SavePatient()
     {
-        if (!Validate())
+        if (!Validate(out var error))
         {
             var box = MessageBoxManager.GetMessageBoxStandard(
                 "Ошибка",
-                "Заполните все поля корректно",
+                error,
                 ButtonEnum.Ok);
 
             await box.ShowAsync();

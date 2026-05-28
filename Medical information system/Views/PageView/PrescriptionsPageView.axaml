@@ -8,11 +8,45 @@
              x:Class="Medical_information_system.Views.PrescriptionsPageView">
     <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
         <StackPanel Spacing="8" Orientation="Horizontal">
-            <Button Classes="add" Content="+"  Command="{Binding }" />
-            <Button Classes="delete" Content="Удалить" Command="{Binding }" />
-            <Button Classes="edit" Content="Изменить" Command="{Binding }" />
-            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Text="{Binding SearchText}"/>
+            <Button Classes="add" Content="+"  Command="{Binding AddOpenWinCommand}" />
+            <Button Classes="delete" Content="Удалить" Command="{Binding DeletePrescriptionCommand}" />
+            <Button Classes="edit" Content="Изменить" Command="{Binding SwitchViewCommand}" />
+            <TextBox VerticalAlignment="Center" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" 
+                     Margin ="10" 
+                     Text="{Binding SearchText}"/>
         </StackPanel>
+        
+        <Border Grid.Row="1"
+                Grid.Column="1"
+                Width="300"
+                Background="White"
+                Classes="medCard"
+                IsVisible="{Binding ViewStyle}">
+            <StackPanel>
+               <Label Content="Выберите пациента"/>
+               <ComboBox ItemsSource="{Binding PatientsList}" 
+                         SelectedItem="{Binding SelectedPatient}">
+                   <ComboBox.ItemTemplate>
+                       <DataTemplate>
+                           <TextBlock Text="{Binding FullName}"/>
+                       </DataTemplate>
+                   </ComboBox.ItemTemplate>
+               </ComboBox>
+               
+               <Label Content="Лекарство"/>
+               <TextBox Text="{Binding EdMedicine}"/>
+               <Label Content="Дозировка"/>
+               <TextBox Text="{Binding EdDosage}"/>
+               <Label Content="Длительность"/>
+               <TextBox Text="{Binding EdDuration}"/>
+               <StackPanel Orientation="Horizontal">
+                   <Button Content="Сохранить" Command="{Binding SaveEditCommand}"
+                           Classes="add"/>
+                   <Button Content="X" Command="{Binding ClosePanelCommand}"
+                           Classes="delete"/>
+               </StackPanel>
+            </StackPanel>
+        </Border>
         <DataGrid Grid.Row="1" ItemsSource="{Binding PrescriptionsList}"
                   AreRowDetailsFrozen="True"
                   GridLinesVisibility="All"
@@ -20,7 +54,7 @@
                   BorderThickness="1"
                   BorderBrush="Black"
                   AutoGenerateColumns="False"
-                  SelectedItem="{Binding }">
+                  SelectedItem="{Binding SelectedPrescription}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Врач" Binding="{Binding DoctorName}"/>
                 <DataGridTextColumn Header="Лекарство " Binding="{Binding MedicalName}"/>

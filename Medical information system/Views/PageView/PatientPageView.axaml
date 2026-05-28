@@ -48,16 +48,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Content="X"
                             HorizontalAlignment="Right"
-                            Command="{Binding ClosePanelCommand}" />
+                            Command="{Binding ClosePanelCommand}" 
+                            Classes="delete"/>
                     <Button Content="Сохранить"
-                            Command="{Binding SaveEditCommand}" />
+                            Command="{Binding SaveEditCommand}" 
+                            Classes="add"/>
                 </StackPanel>
             </StackPanel>
         </Border>
-         
-    
-                                
-   
         
         <DataGrid Grid.Row="1" Margin=" 0 0  0 0"
                   ItemsSource="{Binding Patients}"

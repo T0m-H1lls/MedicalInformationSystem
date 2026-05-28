@@ -46,8 +46,8 @@ public partial class AccountPageViewModel:ViewModelBase
     [RelayCommand]
     void ExitAccount()
     {
-        var vm = ActivatorUtilities.CreateInstance<AuthorizationViewModel>(_serviceProvider);
-        _navigation.Navigate(vm);
+        var authVm = ActivatorUtilities.CreateInstance<AuthorizationViewModel>(_serviceProvider);
+        _navigation.Navigate(authVm);
     }
     
 }

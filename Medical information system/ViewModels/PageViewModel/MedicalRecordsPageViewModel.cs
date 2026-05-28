@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
@@ -24,14 +25,16 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
     [ObservableProperty] private bool _viewStyle = false; 
     [ObservableProperty] private ObservableCollection<Appointments> _appointmentsList = new();
     [ObservableProperty] private ObservableCollection<Medication> _medicinesList = new();
-    [ObservableProperty] private ObservableCollection<Doctor> _doctorsList = new();
+    [ObservableProperty] private ObservableCollection<Patient> _patientsList = new();
     
     [ObservableProperty] private Appointments _selectedAppointmentEdit;
     [ObservableProperty] private Medication _selectedMedicineEdit;
-    [ObservableProperty] private Doctor _selectedReferallDoctor;
+    
     [ObservableProperty] private string _descriptionEdit;
-    [ObservableProperty] private DateTime _recordDateEdit;
-   
+    [ObservableProperty] private string _diagnoseEdit;
+    [ObservableProperty] private string _medicineEdit;
+    [ObservableProperty] private DateTimeOffset _recordDateEdit = DateTime.Now;
+   [ObservableProperty] private Patient _selectedPatient;
   
     
     [RelayCommand]
@@ -61,24 +64,14 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
         _serviceProvider = serviceProvider;
         _medicalRecordRep = medicalRecordRep;
         MedicalRecordsList = new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
-            
-        using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
+
+        using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
         }
 
-        using (var rep = serviceProvider.GetRequiredService<MedicationRep>())
-        {
-            MedicinesList = new ObservableCollection<Medication>(rep.GetMedication());
-        }
+        SelectedPatient = PatientsList.FirstOrDefault();
 
-        using (var rep = serviceProvider.GetRequiredService<DoctorRep>())
-        {
-            DoctorsList =
-                new ObservableCollection<Doctor>(
-                    rep.GetDoctors());
-        }
-        
     }
     
     private void SearchMedicalRecord()
@@ -107,19 +100,36 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
         var vm = ActivatorUtilities.CreateInstance<AddMedicalRecordViewModel>(_serviceProvider);
         win.DataContext = vm;
         win.Show();
+        vm.SetClose(win.Close);
+        win.Closing += WinOnClosing;
     }
-    
+
+    private void WinOnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        MedicalRecordsList=new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+    }
     private bool Validate(out string error)
     {
-        if (SelectedAppointmentEdit == null)
+
+        if (string.IsNullOrWhiteSpace(MedicineEdit))
         {
-            error = "Выберите прием";
+            error = "Введите лекарство";
             return false;
         }
 
-        if (SelectedMedicineEdit == null)
+        if (string.IsNullOrWhiteSpace(DiagnoseEdit))
         {
-            error = "Выберите лекарство";
+            error = "Введите диагноз";
+            return false;
+        }
+        if (SelectedPatient == null)
+        {
+            error = "Выберите пациента";
+            return false;
+        }
+        if (RecordDateEdit>DateTimeOffset.Now)
+        {
+            error = "Введеная дата не может быть больше текущей даты";
             return false;
         }
 
@@ -131,67 +141,6 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
         error = "";
         return true;
-    }
-
-   
-
-   
-    [RelayCommand]
-    void EditMedicalRecord()
-    {
-        
-        if (SelectedMedicalRecord == null)
-            return;
-
-        SelectedAppointmentEdit = AppointmentsList.FirstOrDefault(x => x.Id == SelectedMedicalRecord.AppointmentId);
-        SelectedMedicineEdit = MedicinesList.FirstOrDefault(x => x.Id == SelectedMedicalRecord.Medicineid);
-        DescriptionEdit = SelectedMedicalRecord.Description;
-        RecordDateEdit = SelectedMedicalRecord.RecordDate;
-        SelectedReferallDoctor = DoctorsList.FirstOrDefault(x => x.FullName == SelectedMedicalRecord.ReferallDoc);
-        ViewStyle = true;
-    }
-    
-    [RelayCommand]
-    async Task Save()
-    {
-        if (SelectedMedicalRecord == null)
-            return;
-
-        if (!Validate(out string error))
-        {
-            var box = MessageBoxManager.GetMessageBoxStandard(
-                "Ошибка",
-                error,
-                ButtonEnum.Ok);
-
-            await box.ShowAsync();
-            return;
-        }
-
-        SelectedMedicalRecord.AppointmentId = SelectedAppointmentEdit.Id;
-        SelectedMedicalRecord.Medicineid = SelectedMedicineEdit.Id;
-        SelectedMedicalRecord.Description = DescriptionEdit;
-        SelectedMedicalRecord.RecordDate = RecordDateEdit;
-
-        if (SelectedReferallDoctor != null)
-        {
-            SelectedMedicalRecord.ReferallDoc = SelectedReferallDoctor.FullName;
-        }
-        else
-        {
-             SelectedMedicalRecord.ReferallDoc = null;
-        }
-        
-        _medicalRecordRep.UpdateMedicalRecord(SelectedMedicalRecord);
-        MedicalRecordsList = new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
-        ViewStyle = false;
-
-        var success = MessageBoxManager.GetMessageBoxStandard(
-            "Успех",
-            "Запись изменена",
-            ButtonEnum.Ok);
-
-        await success.ShowAsync();
     }
     
     [RelayCommand]
@@ -222,9 +171,72 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
             MedicalRecordsList = new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
         }
     }
+    
     [RelayCommand]
-    void ClearReferall()
+    async Task SwitchView()
     {
-        SelectedReferallDoctor = null;
+        if (SelectedMedicalRecord==null)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Ошибка", "Выберите запись",
+                ButtonEnum.Ok);
+
+            await box.ShowAsync();
+
+            return;
+        }
+        if (SelectedMedicalRecord == null)
+            return;
+
+        MedicineEdit = SelectedMedicalRecord.MedicineName;
+        DiagnoseEdit = SelectedMedicalRecord.DiagnoseName;
+        DescriptionEdit = SelectedMedicalRecord.Description;
+        RecordDateEdit = SelectedMedicalRecord.RecordDate.Value;
+        SelectedPatient = PatientsList.FirstOrDefault(x => x.Id == SelectedMedicalRecord.PatientId);
+        ViewStyle = true;
     }
+    [RelayCommand]
+    async Task SaveEdit()
+    {
+        if (!Validate(out string error))
+        {
+            var errorBox = MessageBoxManager.GetMessageBoxStandard(
+                "Ошибка", error,
+                ButtonEnum.Ok);
+
+            await errorBox.ShowAsync();
+
+            return;
+        }
+        
+
+        var confirmBox = MessageBoxManager.GetMessageBoxStandard(
+            "Редактирование", "Сохранить изменения?",
+            ButtonEnum.OkCancel);
+
+        var result = await confirmBox.ShowAsync();
+
+        if (result == ButtonResult.Ok)
+        {
+            SelectedMedicalRecord.MedicineName = MedicineEdit;
+            SelectedMedicalRecord.Description = DescriptionEdit;
+            SelectedMedicalRecord.DoctorId = AccountName.User.Id;
+            SelectedMedicalRecord.PatientId = SelectedPatient.Id;
+            SelectedMedicalRecord.RecordDate = SelectedMedicalRecord.RecordDate.Value;
+            SelectedMedicalRecord.DiagnoseName = DiagnoseEdit;
+            
+            _medicalRecordRep.UpdateMedicalRecord(SelectedMedicalRecord);
+
+            MedicalRecordsList=new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+            ViewStyle = false;
+            
+            var successBox = MessageBoxManager.GetMessageBoxStandard(
+                "Успех", "Запись успешно изменена",
+                ButtonEnum.Ok);
+
+            await successBox.ShowAsync();
+        }
+    }
+    
+    
 }
