@@ -14,7 +14,7 @@ namespace Medical_information_system.ViewModels;
 public partial class AccountPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly UserRep _userRep;
+
     private readonly Navigation _navigation;
     [ObservableProperty] private string _surname;
     [ObservableProperty] private string _name;
@@ -24,13 +24,16 @@ public partial class AccountPageViewModel:ViewModelBase
     private Action _exitAccount;
 
 
-    public AccountPageViewModel(IServiceProvider serviceProvider,UserRep userRep,Navigation navigation)
+    public AccountPageViewModel(IServiceProvider serviceProvider,Navigation navigation)
     {
         _serviceProvider = serviceProvider;
-        _userRep = userRep;
         _navigation = navigation;
 
-        UsersList = new ObservableCollection<User>(userRep.GetFullNameAndRole(AccountName.User.Login,AccountName.User.Password));
+        using (var rep = _serviceProvider.GetRequiredService<UserRep>())
+        {
+             UsersList = new ObservableCollection<User>(rep.GetFullNameAndRole(AccountName.User.Login,AccountName.User.Password));
+        }
+       
         foreach (var user in UsersList)
         {
             

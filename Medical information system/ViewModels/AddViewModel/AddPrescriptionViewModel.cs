@@ -15,7 +15,6 @@ namespace Medical_information_system.ViewModels.AddViewModel;
 public partial class AddPrescriptionViewModel : ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly PrescriptionRep _prescriptionRep;
     private Action _closeAction;
     [ObservableProperty] private ObservableCollection<Patient> _patientsList = new();
     [ObservableProperty] private ObservableCollection<Medication> _medicinesList = new();
@@ -24,10 +23,9 @@ public partial class AddPrescriptionViewModel : ViewModelBase
     [ObservableProperty] private string _duration;
     [ObservableProperty] private string _medicine;
 
-    public AddPrescriptionViewModel(IServiceProvider serviceProvider, PrescriptionRep prescriptionRep)
+    public AddPrescriptionViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
-        _prescriptionRep = prescriptionRep;
 
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
@@ -90,24 +88,13 @@ public partial class AddPrescriptionViewModel : ViewModelBase
             Dosage = Dosage,
             Duration = Duration
         };
+        
 
-        bool result = _prescriptionRep.AddPrescription(prescription);
-
-        if (result)
+        using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
         {
-            await MessageBoxManager
-                .GetMessageBoxStandard(
-                    "Успех",
-                    "Рецепт успешно добавлен",
-                    ButtonEnum.Ok)
-                .ShowAsync();
-
-            _closeAction?.Invoke();
+            rep.AddPrescription(prescription);
         }
-        else
-        {
-           return;
-        }
+       
     }
 
     [RelayCommand]

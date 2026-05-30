@@ -6,10 +6,9 @@ using MySqlConnector;
 
 namespace Medical_information_system.DB.Repository;
 
-public class PrescriptionRep : Base
+public class PrescriptionRep : Base, IDisposable
 {
-    public PrescriptionRep(IOptions<DataBaseConnection> dataBaseConnection)
-        : base(dataBaseConnection)
+    public PrescriptionRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
         OpenConnection();
     }
@@ -140,7 +139,8 @@ public class PrescriptionRep : Base
     }
     public void Dispose()
     {
-        base.Dispose();
-        CloseConnection();
+       CloseConnection();  
+       base.Dispose();
+       
     }
 }

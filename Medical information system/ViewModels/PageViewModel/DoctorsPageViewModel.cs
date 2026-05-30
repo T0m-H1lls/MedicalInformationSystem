@@ -17,9 +17,9 @@ namespace Medical_information_system.ViewModels;
 
 public partial class DoctorsPageViewModel : ViewModelBase
 {
-    public bool IsAdmin => AccountName.User.Role == "Главный врач";
+    [ObservableProperty] private bool _isAdmin;
     private readonly IServiceProvider _serviceProvider;
-    private readonly DoctorRep _doctorRep;
+ 
     [ObservableProperty] ObservableCollection<Doctor> _doctorsList = new();
     [ObservableProperty] private bool _viewStyle = false;
     
@@ -50,10 +50,9 @@ public partial class DoctorsPageViewModel : ViewModelBase
         }
     }
 
-    public DoctorsPageViewModel(IServiceProvider serviceProvider, DoctorRep doctorRep)
+    public DoctorsPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _doctorRep = doctorRep;
         using (var rep = serviceProvider.GetRequiredService<DoctorRep>())
         {
             DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
@@ -66,24 +65,31 @@ public partial class DoctorsPageViewModel : ViewModelBase
         {
             SpecializationsList = new ObservableCollection<Specialization>(rep.GetSpec());
         }
-        
+        IsAdmin = AccountName.User.Role == "Главный врач";   
     }
 
     private void SearchDoctors()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
-            DoctorsList = new ObservableCollection<Doctor>(_doctorRep.GetDoctors());
+            using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+            {
+                DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
+            }
         }
         else
         {
-            DoctorsList = new ObservableCollection<Doctor>(
-                _doctorRep.GetDoctors().Where(s =>
-                    s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.DepartmentName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Speciality.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Room.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+            {
+                 DoctorsList = new ObservableCollection<Doctor>(
+                                rep.GetDoctors().Where(s =>
+                                    s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.DepartmentName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Speciality.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Room.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            }
+           
         }
     }
 
@@ -100,7 +106,10 @@ public partial class DoctorsPageViewModel : ViewModelBase
 
     private void WinOnClosing(object? sender, WindowClosingEventArgs e)
     {
-        DoctorsList = new ObservableCollection<Doctor>(_doctorRep.GetDoctors());
+        using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+        {
+            DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
+        }
     }
 
 
@@ -119,8 +128,16 @@ public partial class DoctorsPageViewModel : ViewModelBase
             var result = await box.ShowAsync();
             if (result == ButtonResult.Ok)
             {
-                _doctorRep.DeleteDoctor(SelectedDoctor.Id);
-                DoctorsList = new ObservableCollection<Doctor>(_doctorRep.GetDoctors());
+                using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+                {
+                     rep.DeleteDoctor(SelectedDoctor.Id);
+                }
+               
+                
+                using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+                {
+                    DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
+                }
             }
         }
     }
@@ -207,9 +224,15 @@ public partial class DoctorsPageViewModel : ViewModelBase
             SelectedDoctor.SpecialtyId = SelectedSpec.Id;
             SelectedDoctor.Room = AdRoom;
             
-            _doctorRep.UpdateDoctor(SelectedDoctor);
+            using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+            {
+                  rep.UpdateDoctor(SelectedDoctor);
+            }
 
-            DoctorsList=new ObservableCollection<Doctor>(_doctorRep.GetDoctors());
+            using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+            {
+                DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
+            }
             ViewStyle = false;
             
             var successBox = MessageBoxManager.GetMessageBoxStandard(

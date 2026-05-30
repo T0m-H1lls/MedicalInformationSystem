@@ -6,7 +6,7 @@
              x:DataType="viewmodel:PatientPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PatientPageView">
-    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto" >
+    <Grid RowDefinitions="Auto Auto *" ColumnDefinitions="* Auto" >
 
         <StackPanel Spacing="8" Orientation="Horizontal">
             <Button Classes="add" Content="+" Command="{Binding OpenAddPatientCommand}" />
@@ -19,7 +19,7 @@
        
         <Border Grid.Row="1"
                 Grid.Column="1"
-                Width="300"
+                Width="380"
                 Background="White"
                 Classes="medCard"
                 IsVisible="{Binding ViewStyle}">
@@ -68,7 +68,7 @@
                   SelectedItem="{Binding SelectedPatient}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" />
-                <DataGridTextColumn Header="Дата рождения" Binding="{Binding BirthDate}" />
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding BirthDate, StringFormat=dd.MM.yyyy}" />
                 <DataGridTextColumn Header="Пол" Binding="{Binding Gender}" />
                 <DataGridTextColumn Header="Номер телефона" Binding="{Binding PhoneNumber}" />
                 <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" />
@@ -77,6 +77,16 @@
                 <DataGridTextColumn Header="СНИЛС" Binding="{Binding Snils}" />
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="&lt;&lt;" Command="{Binding ShowFirstPageCommand}"/>
+            <Button Content="&lt;" Command="{Binding ShowPrevPageCommand}"/>
+            <Label Content="{Binding PageInfo}"/>
+            <Button Content="&gt;" Command="{Binding ShowNextPageCommand}"/>
+            <Button Content="&gt;&gt;" Command="{Binding ShowLastPageCommand}"/>
+            <Label Content="Кол-во записей на странице:"/>
+            <ComboBox ItemsSource="{Binding PageSizes}"
+                      SelectedItem="{Binding CurrentPageSize}"/>
+        </StackPanel>
     </Grid>
 
 

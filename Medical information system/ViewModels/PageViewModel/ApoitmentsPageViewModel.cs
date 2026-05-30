@@ -18,7 +18,6 @@ namespace Medical_information_system.ViewModels;
 public partial class ApoitmentsPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ApointmentRep _apointmentRep;
     private Action _closeAction;
     [ObservableProperty] private ObservableCollection<Appointments> _appointmentsList = new();
     [ObservableProperty] private ObservableCollection<Patient> _patientsList = new();
@@ -35,7 +34,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     [ObservableProperty] private string _fullNameDoc;
     [ObservableProperty] private bool _viewStyle = false;
     
-    [ObservableProperty] private DateTimeOffset _edAppointmentDate;
+    [ObservableProperty] private DateTimeOffset? _edAppointmentDate;
     
     
     private string _searchText;
@@ -50,12 +49,14 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         }
     }
 
-    public ApoitmentsPageViewModel(IServiceProvider serviceProvider,ApointmentRep apointmentRep)
+    public ApoitmentsPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _apointmentRep = apointmentRep;
-        
-        AppointmentsList = new ObservableCollection<Appointments>(apointmentRep.GetAppointments(AccountName.User.Id));
+        using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
+        {
+             AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+        }
+       
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
@@ -79,15 +80,22 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(_searchText))
         {
-            AppointmentsList = new ObservableCollection<Appointments>(_apointmentRep.GetAppointments(AccountName.User.Id));
+            using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+            {
+                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+            }
         }
         else
         {
-            AppointmentsList = new ObservableCollection<Appointments>(
-                _apointmentRep.GetAppointments(AccountName.User.Id).Where(s =>
-                    s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+            {
+                 AppointmentsList = new ObservableCollection<Appointments>(
+                                rep.GetAppointments(AccountName.User.Id).Where(s =>
+                                    s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            }
+           
         }
     }
 
@@ -113,7 +121,10 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
 
     private void WinOnClosing(object? sender, WindowClosingEventArgs e)
     {
-        AppointmentsList = new ObservableCollection<Appointments>(_apointmentRep.GetAppointments(AccountName.User.Id));
+        using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+        {
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+        }
     }
 
     [RelayCommand]
@@ -130,8 +141,15 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             var result = await box.ShowAsync();
             if (result == ButtonResult.Ok)
             {
-                _apointmentRep.DeleteAppointment(SelectedAppointment.Id);
-                AppointmentsList = new ObservableCollection<Appointments>(_apointmentRep.GetAppointments(AccountName.User.Id));
+                using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+                {
+                    rep.DeleteAppointment(SelectedAppointment.Id);
+                }
+                
+                using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+                {
+                    AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+                }
             }
         }
     }
@@ -188,8 +206,17 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             SelectedAppointment.StatusId = SelectedStatusEdit.Id;
             SelectedAppointment.AppointmentDate = EdAppointmentDate;
             SelectedAppointment.ReferralDoctorId = SelectedReferralDoctor?.Id;
-            _apointmentRep.UpdateAppointment(SelectedAppointment);
-            AppointmentsList = new ObservableCollection<Appointments>(_apointmentRep.GetAppointments(AccountName.User.Id));
+            
+            using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+            {
+                rep.UpdateAppointment(SelectedAppointment);
+            }
+           
+            using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+            {
+                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+            }
+            
             ViewStyle = false;
 
             var successBox = MessageBoxManager.GetMessageBoxStandard(

@@ -15,7 +15,6 @@ namespace Medical_information_system.ViewModels.AddViewModel;
 public partial class AddDoctorViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly DoctorRep _doctorRep;
     private Action _closeAction;
     
     public void SetClose(Action action)
@@ -34,12 +33,15 @@ public partial class AddDoctorViewModel:ViewModelBase
     [ObservableProperty] private Departments _selectedDepartment;
   
 
-    public AddDoctorViewModel(IServiceProvider serviceProvider,DoctorRep doctorRep)
+    public AddDoctorViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
-        _doctorRep = doctorRep;
         
-        DoctorsList = new ObservableCollection<Doctor>(_doctorRep.GetDoctors());
+        
+        using (var rep = serviceProvider.GetRequiredService<DoctorRep>())
+        {
+            DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
+        }
         using (var rep = serviceProvider.GetRequiredService<DepartmentRep>())
         {
             DepartmentsList = new ObservableCollection<Departments>(rep.GetDepartments());
@@ -92,10 +94,13 @@ public partial class AddDoctorViewModel:ViewModelBase
             Room = AdRoom,
             DepartmentId = SelectedDepartment.Id
         };
-
-        _doctorRep.AddDoctor(res);
+        
+        using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+        {
+            rep.AddDoctor(res);
+        }
+        
         _closeAction?.Invoke();
-
     }
 
     

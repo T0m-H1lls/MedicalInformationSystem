@@ -47,6 +47,7 @@ public abstract class Base : IDisposable
     
     public void Dispose()
     {
+        connection.Close();
         connection.Dispose();
     }
 }

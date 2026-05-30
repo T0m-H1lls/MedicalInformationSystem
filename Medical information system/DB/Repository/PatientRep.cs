@@ -7,25 +7,34 @@ using Tmds.DBus.Protocol;
 
 namespace Medical_information_system.DB.Repository;
 
-public class PatientRep:Base
+public class PatientRep:Base, IDisposable
 {
     public PatientRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
         OpenConnection();
     }
 
-    public List<Patient> GetAllPatient(int doctorId)
+    public List<Patient> GetAllPatient(int doctorId,int? pageNumber = null, int? pageSize = null)
     {
         List<Patient> patients = new();
         string sql = @"SELECT * 
                FROM patients 
-               WHERE doctorId = @doctorId
-               AND IsActive = 1";
+               WHERE doctorId = @doctorId AND IsActive = 1";
+        if (pageNumber != null && pageSize != null)
+        {
+            sql+= " limit @limit offset @offset";
+        }
+        
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
             {
                 mc.Parameters.AddWithValue("@doctorId", doctorId);
+                if (pageNumber != null && pageSize != null)
+                {
+                    mc.Parameters.AddWithValue("@limit", pageSize);
+                    mc.Parameters.AddWithValue("@offset", (pageNumber.Value - 1) * pageSize.Value);
+                }
                 using (var reader = mc.ExecuteReader())
                 {
                     while (reader.Read())
@@ -51,6 +60,26 @@ public class PatientRep:Base
             Console.WriteLine(e);
         }
         return patients;
+    }
+
+    public int GetRowsCount(int doctorId)
+    {
+        string sql = @"SELECT COUNT(Id)
+                        FROM patients
+                        WHERE DoctorId = @doctorId AND IsActive = 1";
+
+        try
+        {
+            using var mc = new MySqlCommand(sql, connection);
+            mc.Parameters.AddWithValue("@doctorId", doctorId);
+
+            return Convert.ToInt32(mc.ExecuteScalar());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return 0;
+        }
     }
 
 
@@ -149,7 +178,8 @@ public class PatientRep:Base
 
     public void Dispose()
     {
-        base.Dispose();
         CloseConnection();
+        base.Dispose();
+      
     }
 }

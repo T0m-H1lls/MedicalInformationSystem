@@ -14,7 +14,6 @@ namespace Medical_information_system.ViewModels.AddViewModel;
 public partial class AddPatientViewModel : ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly PatientRep _patientRep;
 
     public string FullName
     {
@@ -107,10 +106,9 @@ public partial class AddPatientViewModel : ViewModelBase
     private string _insuranceNumber;
     private string _passport;
 
-    public AddPatientViewModel(IServiceProvider serviceProvider,PatientRep patientRep)
+    public AddPatientViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _patientRep = patientRep;
     }
 
     public void SetClose(Action action)
@@ -199,7 +197,11 @@ public partial class AddPatientViewModel : ViewModelBase
             DoctorId = AccountName.User.Id
         };
 
-        _patientRep.AddPatient(patient);
+        using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+        {
+               rep.AddPatient(patient);
+        }
+     
 
         _closeAction?.Invoke();
     }

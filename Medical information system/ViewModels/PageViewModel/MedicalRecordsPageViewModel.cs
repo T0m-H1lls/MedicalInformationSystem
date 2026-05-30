@@ -19,7 +19,6 @@ namespace Medical_information_system.ViewModels;
 public partial class MedicalRecordsPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly MedicalRecordRep _medicalRecordRep;
     [ObservableProperty] ObservableCollection<MedicalRecord> _medicalRecordsList = new();
     [ObservableProperty]  MedicalRecord _selectedMedicalRecord;
     [ObservableProperty] private bool _viewStyle = false; 
@@ -59,11 +58,14 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
    
 
 
-    public MedicalRecordsPageViewModel(IServiceProvider serviceProvider,MedicalRecordRep medicalRecordRep)
+    public MedicalRecordsPageViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
-        _medicalRecordRep = medicalRecordRep;
-        MedicalRecordsList = new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+        using (var rep = serviceProvider.GetRequiredService<MedicalRecordRep>())
+        {
+            MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords());
+        }
+        
 
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
@@ -78,16 +80,23 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
-            MedicalRecordsList = new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+            using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+            {
+                MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords());
+            }
         }
         else
         {
-            MedicalRecordsList = new ObservableCollection<MedicalRecord>(
-                _medicalRecordRep.GetMedicalRecords().Where(s =>
-                    s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.MedicineName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.DiagnoseName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+            {
+               MedicalRecordsList = new ObservableCollection<MedicalRecord>(
+                              rep.GetMedicalRecords().Where(s =>
+                                  s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                  s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                  s.MedicineName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                  s.DiagnoseName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            }
+           
         }
     }
     
@@ -106,7 +115,10 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
     private void WinOnClosing(object? sender, WindowClosingEventArgs e)
     {
-        MedicalRecordsList=new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+        using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+        {
+            MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords());
+        }
     }
     private bool Validate(out string error)
     {
@@ -166,9 +178,16 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
         if (result == ButtonResult.Ok)
         {
-            _medicalRecordRep.DeleteMedicalRecord(SelectedMedicalRecord.Id);
-
-            MedicalRecordsList = new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+            using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+            {
+               rep.DeleteMedicalRecord(SelectedMedicalRecord.Id);
+            }
+            
+          
+            using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+            {
+                MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords());
+            }
         }
     }
     
@@ -225,9 +244,17 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
             SelectedMedicalRecord.RecordDate = SelectedMedicalRecord.RecordDate.Value;
             SelectedMedicalRecord.DiagnoseName = DiagnoseEdit;
             
-            _medicalRecordRep.UpdateMedicalRecord(SelectedMedicalRecord);
+            using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+            {
+                rep.UpdateMedicalRecord(SelectedMedicalRecord);
+            }
+           
 
-            MedicalRecordsList=new ObservableCollection<MedicalRecord>(_medicalRecordRep.GetMedicalRecords());
+            using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+            {
+                MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords());
+            }
+            
             ViewStyle = false;
             
             var successBox = MessageBoxManager.GetMessageBoxStandard(

@@ -6,7 +6,7 @@ using MySqlConnector;
 
 namespace Medical_information_system.DB.Repository;
 
-public class ApointmentRep:Base
+public class ApointmentRep:Base, IDisposable
 {
     public ApointmentRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
@@ -73,10 +73,7 @@ public class ApointmentRep:Base
     
     public bool AddAppointment(Appointments appointment)
     {
-        string sql = @"INSERT INTO appointments
-                   (PatientId,DoctorId,AppointmentDate,StatusId,ReferralDoctorId,IsActive,DeletedAt)
-                   VALUES
-                   (@PatientId,@DoctorId,@AppointmentDate,@StatusId,@ReferralDoctorId,1,null)";
+        string sql = @"INSERT INTO appointments VALUES(@PatientId,@DoctorId,@AppointmentDate,@StatusId,@ReferralDoctorId,1,null)";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
@@ -168,7 +165,8 @@ public class ApointmentRep:Base
     
     public void Dispose()
     {
-        base.Dispose();
         CloseConnection();
+        base.Dispose();
+       
     }
 }

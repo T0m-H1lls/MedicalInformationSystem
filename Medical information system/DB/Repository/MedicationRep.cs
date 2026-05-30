@@ -6,7 +6,7 @@ using MySqlConnector;
 
 namespace Medical_information_system.DB.Repository;
 
-public class MedicationRep:Base
+public class MedicationRep:Base, IDisposable
 {
     public MedicationRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {

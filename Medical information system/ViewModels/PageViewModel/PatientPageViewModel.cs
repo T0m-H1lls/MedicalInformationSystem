@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
@@ -20,7 +21,6 @@ namespace Medical_information_system.ViewModels;
 public partial class PatientPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly PatientRep _patientRep;
 
     [ObservableProperty] private string _edFullname;
     [ObservableProperty] private DateTimeOffset? _edDateOfBirth;
@@ -33,6 +33,12 @@ public partial class PatientPageViewModel:ViewModelBase
     
     [ObservableProperty] private bool _viewStyle = false;
     [ObservableProperty] ObservableCollection<Patient> _patients;
+    
+    [ObservableProperty] private int _currentPageSize;
+    [ObservableProperty] List<int> pageSizes;
+    [ObservableProperty]private string pageInfo;
+    private int currentPage = 1;
+    private int totalPages;
     
     
     private Patient _selectedPatient;
@@ -56,18 +62,77 @@ public partial class PatientPageViewModel:ViewModelBase
         {
            _searchText = value;
            SearchPatient();
-           SwitchView();
            OnPropertyChanged(nameof(SearchText));
         }
     }
 
-    public PatientPageViewModel(IServiceProvider serviceProvider, PatientRep patientRep,User user)
+    public PatientPageViewModel(IServiceProvider serviceProvider, User user)
     {
         _serviceProvider = serviceProvider;
-        _patientRep = patientRep;
-        
-        Patients = new ObservableCollection<Patient>(patientRep.GetAllPatient(AccountName.User.Id));
+        PageSizes = new List<int>([5,10,20]);
+        CurrentPageSize = PageSizes.First();
+        using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+        {
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+        }
        
+        
+       
+    }
+    
+    partial void OnCurrentPageSizeChanged(int value)
+    {
+        CalculatePages();
+    }
+
+    void CalculatePages()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+        {
+             var rowsCount = rep.GetRowsCount(AccountName.User.Id);
+             totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
+             
+             currentPage = 1;
+             ShowPage(currentPage);
+        }
+       
+    }
+
+    void ShowPage(int pageIndex)
+    {
+        currentPage = pageIndex;
+
+        using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+        {
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id, pageIndex, CurrentPageSize));
+            PageInfo = $"Страница {currentPage} из {totalPages}";
+        }
+    }
+
+    [RelayCommand]
+    private void ShowFirstPage()
+    {
+        ShowPage(1);
+    }
+    
+    [RelayCommand]
+    private void ShowLastPage()
+    {
+        ShowPage(totalPages);
+    }
+
+    [RelayCommand]
+    private void ShowNextPage()
+    {
+        if (currentPage < totalPages)
+            ShowPage(currentPage + 1);
+    }
+    
+    [RelayCommand]
+    private void ShowPrevPage()
+    {
+        if (currentPage > 1)
+            ShowPage(currentPage - 1);
     }
     [ObservableProperty]
     private string _gender = "М";
@@ -76,19 +141,26 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(_searchText))
         {
-            Patients =  new ObservableCollection<Patient>(_patientRep.GetAllPatient(AccountName.User.Id));
+            using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+            {
+                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+
+            }
         }
         else
         {
-            Patients = new ObservableCollection<Patient>(
-                _patientRep.GetAllPatient(AccountName.User.Id).Where(s =>
-                    s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.InsuranceNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+            {
+                Patients = new ObservableCollection<Patient>(
+                    rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize).Where(s =>
+                        s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                        s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                        s.InsuranceNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+                   
+            }
+           
         }
     }
-    
-    
     
     [RelayCommand]
     void OpenAddPatient()
@@ -104,7 +176,11 @@ public partial class PatientPageViewModel:ViewModelBase
 
     private void WinOnClosing(object? sender, WindowClosingEventArgs e)
     {
-        Patients = new ObservableCollection<Patient>(_patientRep.GetAllPatient(AccountName.User.Id));
+        using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+        {
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+
+        }
     }
 
     [RelayCommand]
@@ -120,23 +196,24 @@ public partial class PatientPageViewModel:ViewModelBase
             var box = MessageBoxManager.GetMessageBoxStandard("Удалить","Удалить выбранного пациента",ButtonEnum.OkCancel);
             var result = await box.ShowAsync();
             if (result == ButtonResult.Ok)
-            {
-                _patientRep.DeletePatient(SelectedPatient.Id);
-                Patients = new ObservableCollection<Patient>(_patientRep.GetAllPatient(AccountName.User.Id));
+            { 
+                using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+                {
+                      rep.DeletePatient(SelectedPatient.Id);
+
+                }
+              
+                using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+                {
+                    Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+
+                }
             }
         }
         
        
     }
-    private bool IsSnilsValid()
-    {
-        return Regex.IsMatch(EdSnils ?? "", @"^\d{3}-\d{3}-\d{3}-\d{2}$");
-    }
-
-    private bool IsPassportValid()
-    {
-        return Regex.IsMatch(EdPasport ?? "", @"^\d{2}\s\d{2}\s\d{6}$");
-    }
+  
     
     private bool ValidateEdit(out string error)
     {
@@ -145,8 +222,6 @@ public partial class PatientPageViewModel:ViewModelBase
             error = "Введите ФИО";
             return false;
         }
-        
-
         
 
         if (string.IsNullOrWhiteSpace(EdAdress))
@@ -251,10 +326,18 @@ public partial class PatientPageViewModel:ViewModelBase
             SelectedPatient.Passport = EdPasport;
             SelectedPatient.Snils = EdSnils;
 
-            _patientRep.UpdatePatient(SelectedPatient);
+            using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+            {
+                
+                rep.UpdatePatient(SelectedPatient);
 
-            Patients = new ObservableCollection<Patient>(
-                _patientRep.GetAllPatient(AccountName.User.Id));
+            }
+            
+            using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
+            {
+                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+
+            }
 
             ViewStyle = false;
 

@@ -8,7 +8,7 @@
         x:DataType="vm:MainWindowViewModel"
         WindowStartupLocation="CenterScreen"
         Icon="/Assets/Icon.png"
-        Title="Medical_information_system">
+        Title="Медицинская Информационная Система">
     
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
                OpenPaneLength="300"

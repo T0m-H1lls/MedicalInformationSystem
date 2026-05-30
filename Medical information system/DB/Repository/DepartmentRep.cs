@@ -6,7 +6,7 @@ using MySqlConnector;
 
 namespace Medical_information_system.DB.Repository;
 
-public class DepartmentRep:Base
+public class DepartmentRep:Base, IDisposable
 {
     public DepartmentRep(IOptions<DataBaseConnection> dataBaseConnection) : base(dataBaseConnection)
     {
@@ -122,7 +122,8 @@ public class DepartmentRep:Base
 
     public void Dispose()
     {
+       connection.Close();
         base.Dispose();
-        CloseConnection();
+       
     }
 }

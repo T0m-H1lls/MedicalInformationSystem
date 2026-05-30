@@ -19,7 +19,6 @@ namespace Medical_information_system.ViewModels;
 public partial class PrescriptionsPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly PrescriptionRep _prescriptionRep;
     [ObservableProperty] ObservableCollection<Prescription> _prescriptionsList = new();
     [ObservableProperty] private ObservableCollection<Patient> _patientsList = new();
     [ObservableProperty] private ObservableCollection<Medication> _medicinesList = new();
@@ -51,25 +50,31 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(_searchText))
         {
-            PrescriptionsList = new ObservableCollection<Prescription>(_prescriptionRep.GetPrescriptions());
+            using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+            {
+                PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions());
+            }
         }
         else
         {
-            PrescriptionsList = new ObservableCollection<Prescription>(
-                _prescriptionRep.GetPrescriptions().Where(s =>
-                    s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Dosage.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Duration.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.MedicalName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+            {
+                PrescriptionsList = new ObservableCollection<Prescription>(
+                                rep.GetPrescriptions().Where(s =>
+                                    s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Dosage.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Duration.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.MedicalName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            }
+            
 
         }
     }
 
-    public PrescriptionsPageViewModel(IServiceProvider serviceProvider, PrescriptionRep prescriptionRep)
+    public PrescriptionsPageViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
-        _prescriptionRep = prescriptionRep;
         using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
         {
             PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions());
@@ -96,7 +101,10 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
 
     private void WinOnClosing(object? sender, WindowClosingEventArgs e)
     {
-       PrescriptionsList = new ObservableCollection<Prescription>(_prescriptionRep.GetPrescriptions());
+        using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+        {
+            PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions());
+        }
     }
 
     [RelayCommand]
@@ -113,8 +121,15 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
             var result = await box.ShowAsync();
             if (result == ButtonResult.Ok)
             {
-                _prescriptionRep.DeletePrescription(SelectedPrescription.Id);
-                PrescriptionsList=new ObservableCollection<Prescription>(_prescriptionRep.GetPrescriptions());
+                using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+                {
+                     rep.DeletePrescription(SelectedPrescription.Id);
+                }
+               
+                using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+                {
+                    PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions());
+                }
             }
         }
         
@@ -214,9 +229,16 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
             SelectedPrescription.MedicalName = EdMedicine;
            
 
-            _prescriptionRep.UpdatePrescription(SelectedPrescription);
+            using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+            {
+                rep.UpdatePrescription(SelectedPrescription);
+            }
+           
 
-            PrescriptionsList=new ObservableCollection<Prescription>(_prescriptionRep.GetPrescriptions());
+            using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+            {
+                PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions());
+            }
 
             ViewStyle = false;
 

@@ -13,7 +13,6 @@ namespace Medical_information_system.ViewModels.AddViewModel;
 public partial class AddApoitmentViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly ApointmentRep _apointmentRep;
     private Action _closeAction;
     [ObservableProperty] private ObservableCollection<Appointments> _appointmentsList;
     [ObservableProperty] private ObservableCollection<Patient> _patientsList;
@@ -27,13 +26,15 @@ public partial class AddApoitmentViewModel:ViewModelBase
     [ObservableProperty] private Doctor? _selectedDoctor;
     [ObservableProperty] private Doctor? _selectedReferallDoctor;
 
-    public AddApoitmentViewModel(IServiceProvider serviceProvider,ApointmentRep apointmentRep)
+    public AddApoitmentViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _apointmentRep = apointmentRep;
+       
         
-        
-        AppointmentsList = new ObservableCollection<Appointments>(_apointmentRep.GetAppointments(AccountName.User.Id));
+        using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
+        {
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+        }
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
@@ -66,13 +67,17 @@ public partial class AddApoitmentViewModel:ViewModelBase
         var res = new Appointments
         {
             PatientId = SelectedAppointmentPatient.Id,
-            AppointmentDate = SelectedDate,
+            AppointmentDate = SelectedDate.Value,
             StatusId = SelectedAppointmentStatus.Id,
             DoctorId = AccountName.User.Id,
             ReferralDoctorId = SelectedReferallDoctor?.Id
         };
 
-        _apointmentRep.AddAppointment(res);
+        using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+        {
+             rep.AddAppointment(res);
+        }
+       
         _closeAction?.Invoke();
 
     }

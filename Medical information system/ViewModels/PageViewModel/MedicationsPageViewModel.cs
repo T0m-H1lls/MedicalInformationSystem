@@ -12,7 +12,6 @@ namespace Medical_information_system.ViewModels;
 public partial class MedicationsPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly MedicationRep _medicationRep;
     [ObservableProperty] ObservableCollection<Medication> _medicationList;
     [ObservableProperty] private bool _viewStyle = false; 
     
@@ -37,15 +36,10 @@ public partial class MedicationsPageViewModel:ViewModelBase
         }
     }
     
-   
 
-    
-
-
-    public MedicationsPageViewModel(IServiceProvider serviceProvider, MedicationRep medicationRep)
+    public MedicationsPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _medicationRep = medicationRep;
         using (var rep = serviceProvider.GetRequiredService<MedicationRep>())
         {
             MedicationList = new ObservableCollection<Medication>(rep.GetMedication());
@@ -55,15 +49,23 @@ public partial class MedicationsPageViewModel:ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
-            MedicationList= new ObservableCollection<Medication>(_medicationRep.GetMedication());
+            using (var rep = _serviceProvider.GetRequiredService<MedicationRep>())
+            {
+                MedicationList = new ObservableCollection<Medication>(rep.GetMedication());
+            }
         }
         else
         {
-            MedicationList = new ObservableCollection<Medication>(
-                _medicationRep.GetMedication().Where(s =>
-                    s.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Description.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                    s.Manufacturer.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            using (var rep = _serviceProvider.GetRequiredService<MedicationRep>())
+            {
+                 MedicationList = new ObservableCollection<Medication>(
+                                rep.GetMedication().Where(s =>
+                                    s.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Description.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                                    s.Manufacturer.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+            }
+
+           
 
         }
     }

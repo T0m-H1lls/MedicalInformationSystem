@@ -15,7 +15,6 @@ namespace Medical_information_system.ViewModels.AddViewModel;
 public partial class AddMedicalRecordViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly MedicalRecordRep _medicalRecordRep;
     [ObservableProperty] private string _medicine;
     [ObservableProperty] private string _diagnose;
     [ObservableProperty] private string _description;
@@ -27,10 +26,9 @@ public partial class AddMedicalRecordViewModel:ViewModelBase
     [ObservableProperty] private MedicalRecord _selectedMedicalRecord;
     [ObservableProperty] private Patient _selectedPatient;
     
-    public AddMedicalRecordViewModel(IServiceProvider serviceProvider, MedicalRecordRep medicalRecordRep)
+    public AddMedicalRecordViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
-        _medicalRecordRep = medicalRecordRep;
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
             PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
@@ -97,7 +95,12 @@ public partial class AddMedicalRecordViewModel:ViewModelBase
             DiagnoseName = Diagnose
         };
 
-        _medicalRecordRep.AddMedicalRecords(medrecord);
+        using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+        {
+             rep.AddMedicalRecords(medrecord);
+        }
+
+       
         _closeAction?.Invoke();
     }
 
