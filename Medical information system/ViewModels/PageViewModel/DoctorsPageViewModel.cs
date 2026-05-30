@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,12 @@ public partial class DoctorsPageViewModel : ViewModelBase
 
     private Action _closeAction;
     
+    [ObservableProperty] private int _currentPageSize;
+    [ObservableProperty] List<int> pageSizes;
+    [ObservableProperty]private string pageInfo;
+    private int currentPage = 1;
+    private int totalPages;
+    
 
     private string _searchText;
 
@@ -53,6 +60,8 @@ public partial class DoctorsPageViewModel : ViewModelBase
     public DoctorsPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        PageSizes = new List<int>([5,10,20]);
+        CurrentPageSize = PageSizes.First();
         using (var rep = serviceProvider.GetRequiredService<DoctorRep>())
         {
             DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors());
@@ -66,6 +75,60 @@ public partial class DoctorsPageViewModel : ViewModelBase
             SpecializationsList = new ObservableCollection<Specialization>(rep.GetSpec());
         }
         IsAdmin = AccountName.User.Role == "Главный врач";   
+    }
+    partial void OnCurrentPageSizeChanged(int value)
+    {
+        CalculatePages();
+    }
+
+    void CalculatePages()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+        {
+            var rowsCount = rep.GetRowsCount();
+            totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
+             
+            currentPage = 1;
+            ShowPage(currentPage);
+        }
+       
+    }
+
+    void ShowPage(int pageIndex)
+    {
+        currentPage = pageIndex;
+
+        using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+        {
+            DoctorsList = new ObservableCollection<Doctor>(rep.GetDoctors(pageIndex, CurrentPageSize));
+            PageInfo = $"Страница {currentPage} из {totalPages}";
+        }
+    }
+
+    [RelayCommand]
+    private void ShowFirstPage()
+    {
+        ShowPage(1);
+    }
+    
+    [RelayCommand]
+    private void ShowLastPage()
+    {
+        ShowPage(totalPages);
+    }
+
+    [RelayCommand]
+    private void ShowNextPage()
+    {
+        if (currentPage < totalPages)
+            ShowPage(currentPage + 1);
+    }
+    
+    [RelayCommand]
+    private void ShowPrevPage()
+    {
+        if (currentPage > 1)
+            ShowPage(currentPage - 1);
     }
 
     private void SearchDoctors()
@@ -82,12 +145,12 @@ public partial class DoctorsPageViewModel : ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
             {
                  DoctorsList = new ObservableCollection<Doctor>(
-                                rep.GetDoctors().Where(s =>
-                                    s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                    s.DepartmentName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                    s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                    s.Speciality.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                    s.Room.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+                     rep.GetDoctors().Where(s =>
+                         s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                         s.DepartmentName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                         s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                         s.Speciality.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
+                         s.Room.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
             }
            
         }

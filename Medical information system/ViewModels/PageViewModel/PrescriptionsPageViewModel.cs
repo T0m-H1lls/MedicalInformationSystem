@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,12 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
     [ObservableProperty] private string _edMedicine;
     [ObservableProperty] private string _edDosage;
     [ObservableProperty] private string _EdDuration;
+    
+    [ObservableProperty] private int _currentPageSize;
+    [ObservableProperty] List<int> pageSizes;
+    [ObservableProperty]private string pageInfo;
+    private int currentPage = 1;
+    private int totalPages;
     
     
     [ObservableProperty] private bool _viewStyle = false;
@@ -75,6 +82,8 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
     public PrescriptionsPageViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
+        PageSizes = new List<int>([5,10,20]);
+        CurrentPageSize = PageSizes.First();
         using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
         {
             PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions());
@@ -85,6 +94,61 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
             PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id)); 
         }
         SelectedPatient = PatientsList.FirstOrDefault();
+    }
+    
+    partial void OnCurrentPageSizeChanged(int value)
+    {
+        CalculatePages();
+    }
+
+    void CalculatePages()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<DoctorRep>())
+        {
+            var rowsCount = rep.GetRowsCount();
+            totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
+             
+            currentPage = 1;
+            ShowPage(currentPage);
+        }
+       
+    }
+
+    void ShowPage(int pageIndex)
+    {
+        currentPage = pageIndex;
+
+        using (var rep = _serviceProvider.GetRequiredService<PrescriptionRep>())
+        {
+            PrescriptionsList = new ObservableCollection<Prescription>(rep.GetPrescriptions(pageIndex, CurrentPageSize));
+            PageInfo = $"Страница {currentPage} из {totalPages}";
+        }
+    }
+
+    [RelayCommand]
+    private void ShowFirstPage()
+    {
+        ShowPage(1);
+    }
+    
+    [RelayCommand]
+    private void ShowLastPage()
+    {
+        ShowPage(totalPages);
+    }
+
+    [RelayCommand]
+    private void ShowNextPage()
+    {
+        if (currentPage < totalPages)
+            ShowPage(currentPage + 1);
+    }
+    
+    [RelayCommand]
+    private void ShowPrevPage()
+    {
+        if (currentPage > 1)
+            ShowPage(currentPage - 1);
     }
 
     [RelayCommand]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,12 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
     [ObservableProperty] private string _medicineEdit;
     [ObservableProperty] private DateTimeOffset _recordDateEdit = DateTime.Now;
    [ObservableProperty] private Patient _selectedPatient;
+   
+   [ObservableProperty] private int _currentPageSize;
+   [ObservableProperty] List<int> pageSizes;
+   [ObservableProperty]private string pageInfo;
+   private int currentPage = 1;
+   private int totalPages;
   
     
     [RelayCommand]
@@ -61,6 +68,8 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
     public MedicalRecordsPageViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
+        PageSizes = new List<int>([5,10,20]);
+        CurrentPageSize = PageSizes.First();
         using (var rep = serviceProvider.GetRequiredService<MedicalRecordRep>())
         {
             MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords());
@@ -100,7 +109,60 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
         }
     }
     
+    partial void OnCurrentPageSizeChanged(int value)
+    {
+        CalculatePages();
+    }
+
+    void CalculatePages()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+        {
+            var rowsCount = rep.GetRowsCount();
+            totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
+             
+            currentPage = 1;
+            ShowPage(currentPage);
+        }
+       
+    }
+
+    void ShowPage(int pageIndex)
+    {
+        currentPage = pageIndex;
+
+        using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
+        {
+            MedicalRecordsList = new ObservableCollection<MedicalRecord>(rep.GetMedicalRecords(pageIndex, CurrentPageSize));
+            PageInfo = $"Страница {currentPage} из {totalPages}";
+        }
+    }
+
+    [RelayCommand]
+    private void ShowFirstPage()
+    {
+        ShowPage(1);
+    }
     
+    [RelayCommand]
+    private void ShowLastPage()
+    {
+        ShowPage(totalPages);
+    }
+
+    [RelayCommand]
+    private void ShowNextPage()
+    {
+        if (currentPage < totalPages)
+            ShowPage(currentPage + 1);
+    }
+    
+    [RelayCommand]
+    private void ShowPrevPage()
+    {
+        if (currentPage > 1)
+            ShowPage(currentPage - 1);
+    }
 
     [RelayCommand]
     void OpenAddMedicalRecord()

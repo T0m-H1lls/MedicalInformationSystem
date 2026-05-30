@@ -13,18 +13,27 @@ public class MedicalRecordRep:Base,IDisposable
         OpenConnection();
     }
     
-    public List<MedicalRecord> GetMedicalRecords()
+    public List<MedicalRecord> GetMedicalRecords(int? pageNumber = null, int? pageSize = null)
     {
         List<MedicalRecord> diagnosesList = new();
         string sql = @"select m.Id,m.PatientId,m.DoctorId,m.RecordDate,m.Medicine,m.Description,m.Diagnostext, d.FullName,m.RecordDate,p.FullName as PatientName 
                       from medicalrecords m
                       join doctors d on m.DoctorId = d.Id
                       join patients p  on m.PatientId = p.Id
-                      Where m.IsActive = 1 ";
+                      Where m.IsActive = 1";
+        if (pageNumber != null && pageSize != null)
+        {
+            sql+= " limit @limit offset @offset";
+        }
         try
         {
             using (var rep = new MySqlCommand(sql, connection))
             {
+                if (pageNumber != null && pageSize != null)
+                {
+                    rep.Parameters.AddWithValue("@limit", pageSize);
+                    rep.Parameters.AddWithValue("@offset", (pageNumber.Value - 1) * pageSize.Value);
+                }
                 using (var reader = rep.ExecuteReader())
                 {
                     while (reader.Read())
@@ -53,6 +62,21 @@ public class MedicalRecordRep:Base,IDisposable
             
         }
         return diagnosesList;
+    }
+    public int GetRowsCount()
+    {
+        string sql = @"SELECT COUNT(Id)
+                       FROM `medicalrecords`";
+        try
+        {
+            using var mc = new MySqlCommand(sql, connection);
+            return Convert.ToInt32(mc.ExecuteScalar());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return 0;
+        }
     }
     
      public void AddMedicalRecords(MedicalRecord medicalRecord)

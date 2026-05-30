@@ -13,7 +13,7 @@ public class ApointmentRep:Base, IDisposable
         OpenConnection();
     }
 
-    public List<Appointments> GetAppointments(int id)
+    public List<Appointments> GetAppointments(int id,int? pageNumber = null, int? pageSize = null )
     {
         List<Appointments> appointmentsList = new();
         string sql = @"SELECT a.id,a.PatientId,a.DoctorId,a.AppointmentDate,a.StatusId,a.ReferralDoctorId,p.FullName as PatientName,d.FullName as DoctorFullName,d2.FullName as DocFullNameReferal,s.Name  as Status
@@ -23,11 +23,20 @@ public class ApointmentRep:Base, IDisposable
                        Left join doctors d2 on a.ReferralDoctorId =d2.Id 
                        Left join status s  on a.StatusId  = s.id 
                        Where a.DoctorId  = @id AND a.IsActive = 1";
+        if (pageNumber != null && pageSize != null)
+        {
+            sql+= " limit @limit offset @offset";
+        }
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
             {
                 cm.Parameters.AddWithValue("id", id);
+                if (pageNumber != null && pageSize != null)
+                {
+                    cm.Parameters.AddWithValue("@limit", pageSize);
+                    cm.Parameters.AddWithValue("@offset", (pageNumber.Value - 1) * pageSize.Value);
+                }
                 using (var reader = cm.ExecuteReader())
                 {
                     while (reader.Read())
@@ -40,6 +49,7 @@ public class ApointmentRep:Base, IDisposable
                         if (!reader.IsDBNull(8))
                             refDoctorName = reader.GetString("DocFullNameReferal");
                         string refDoctorSurname = null;
+                        
                         
                         appointmentsList.Add(new Appointments()
                         {
@@ -68,6 +78,25 @@ public class ApointmentRep:Base, IDisposable
             Console.WriteLine(e);
         }
         return appointmentsList;
+    }
+    public int GetRowsCount(int doctorId)
+    {
+        string sql = @"SELECT COUNT(Id)
+                        FROM `appointments`
+                        WHERE DoctorId = @doctorId AND IsActive = 1";
+
+        try
+        {
+            using var mc = new MySqlCommand(sql, connection);
+            mc.Parameters.AddWithValue("@doctorId", doctorId);
+
+            return Convert.ToInt32(mc.ExecuteScalar());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return 0;
+        }
     }
 
     

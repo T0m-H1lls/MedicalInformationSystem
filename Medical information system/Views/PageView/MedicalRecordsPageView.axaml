@@ -6,7 +6,7 @@
              x:DataType="viewmodel:MedicalRecordsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.MedicalRecordsPageView">
-    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+    <Grid RowDefinitions="Auto Auto *" ColumnDefinitions="* Auto">
         <StackPanel Spacing="8" Orientation="Horizontal">
             <Button Classes="add" Content="+" 
                     Command="{Binding OpenAddMedicalRecordCommand}" 
@@ -84,5 +84,15 @@
                 <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="&lt;&lt;" Command="{Binding ShowFirstPageCommand}"/>
+            <Button Content="&lt;" Command="{Binding ShowPrevPageCommand}"/>
+            <Label Content="{Binding PageInfo}"/>
+            <Button Content="&gt;" Command="{Binding ShowNextPageCommand}"/>
+            <Button Content="&gt;&gt;" Command="{Binding ShowLastPageCommand}"/>
+            <Label Content="Кол-во записей на странице:"/>
+            <ComboBox ItemsSource="{Binding PageSizes}"
+                      SelectedItem="{Binding CurrentPageSize}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

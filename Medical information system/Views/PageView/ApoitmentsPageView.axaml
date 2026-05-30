@@ -6,7 +6,7 @@
              x:DataType="viewmodel:ApoitmentsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.ApoitmentsPageView">
-    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+    <Grid RowDefinitions="Auto Auto *" ColumnDefinitions="* Auto">
         <StackPanel Spacing="8" Orientation="Horizontal">
             <Button Classes="add" Content="+"  Command="{Binding OpenAddAppointmentCommand}" />
             <Button Classes="delete" Content="Удалить"  Command="{Binding DeleteAppointmentCommand}" />
@@ -17,7 +17,7 @@
         </StackPanel>
         <Border Grid.Row="1"
                 Grid.Column="1"
-                Width="300"
+                Width="380"
                 Background="White"
                 Classes="medCard"
                 IsVisible="{Binding ViewStyle}">
@@ -88,5 +88,15 @@
                 <DataGridTextColumn Header="Направление к врачу" Binding="{Binding DocFullNameReferall}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="&lt;&lt;" Command="{Binding ShowFirstPageCommand}"/>
+            <Button Content="&lt;" Command="{Binding ShowPrevPageCommand}"/>
+            <Label Content="{Binding PageInfo}"/>
+            <Button Content="&gt;" Command="{Binding ShowNextPageCommand}"/>
+            <Button Content="&gt;&gt;" Command="{Binding ShowLastPageCommand}"/>
+            <Label Content="Кол-во записей на странице:"/>
+            <ComboBox ItemsSource="{Binding PageSizes}"
+                      SelectedItem="{Binding CurrentPageSize}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

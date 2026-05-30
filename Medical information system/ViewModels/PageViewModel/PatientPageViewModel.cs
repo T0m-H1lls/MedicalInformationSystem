@@ -134,6 +134,7 @@ public partial class PatientPageViewModel:ViewModelBase
         if (currentPage > 1)
             ShowPage(currentPage - 1);
     }
+    
     [ObservableProperty]
     private string _gender = "М";
     

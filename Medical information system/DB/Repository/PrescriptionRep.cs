@@ -13,7 +13,7 @@ public class PrescriptionRep : Base, IDisposable
         OpenConnection();
     }
 
-    public List<Prescription> GetPrescriptions()
+    public List<Prescription> GetPrescriptions(int? pageNumber = null, int? pageSize = null)
     {
         List<Prescription> prescriptionsList = new();
 
@@ -22,11 +22,20 @@ public class PrescriptionRep : Base, IDisposable
                    JOIN doctors d ON p.DoctorId = d.Id
                    JOIN patients pt ON p.PatientId = pt.Id
                    WHERE p.IsActive = 1";
+        if (pageNumber != null && pageSize != null)
+        {
+            sql+= " limit @limit offset @offset";
+        }
 
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
             {
+                if (pageNumber != null && pageSize != null)
+                {
+                    cm.Parameters.AddWithValue("@limit", pageSize);
+                    cm.Parameters.AddWithValue("@offset", (pageNumber.Value - 1) * pageSize.Value);
+                }
                 using (var reader = cm.ExecuteReader())
                 {
                     while (reader.Read())
@@ -52,6 +61,21 @@ public class PrescriptionRep : Base, IDisposable
         }
 
         return prescriptionsList;
+    }
+    public int GetRowsCount()
+    {
+        string sql = @"SELECT COUNT(Id)
+                       FROM `prescriptions`";
+        try
+        {
+            using var mc = new MySqlCommand(sql, connection);
+            return Convert.ToInt32(mc.ExecuteScalar());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return 0;
+        }
     }
 
     public bool AddPrescription(Prescription prescription)

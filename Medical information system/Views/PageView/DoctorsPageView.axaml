@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.DoctorsPageView">
     
-    <Grid RowDefinitions="Auto *" ColumnDefinitions="* Auto">
+    <Grid RowDefinitions="Auto Auto *" ColumnDefinitions="* Auto">
         
         <StackPanel Spacing="8" Orientation="Horizontal" HorizontalAlignment="Center">
             
@@ -78,7 +78,6 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-
         
         <DataGrid Grid.Row="1" ItemsSource="{Binding DoctorsList}"
                   AreRowDetailsFrozen="True"
@@ -96,5 +95,17 @@
                 <DataGridTextColumn Header="Отделение" Binding="{Binding DepartmentName}"/>
             </DataGrid.Columns>
         </DataGrid>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="&lt;&lt;" Command="{Binding ShowFirstPageCommand}"/>
+            <Button Content="&lt;" Command="{Binding ShowPrevPageCommand}"/>
+            <Label Content="{Binding PageInfo}"/>
+            <Button Content="&gt;" Command="{Binding ShowNextPageCommand}"/>
+            <Button Content="&gt;&gt;" Command="{Binding ShowLastPageCommand}"/>
+            <Label Content="Кол-во записей на странице:"/>
+            <ComboBox ItemsSource="{Binding PageSizes}"
+                      SelectedItem="{Binding CurrentPageSize}"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

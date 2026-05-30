@@ -24,27 +24,26 @@
                 Classes="medCard"
                 IsVisible="{Binding ViewStyle}">
             <StackPanel>
-                <Label Content="ФИО" />
-                <TextBox Text="{Binding EdFullname}" />
-                <Label Content="Дата рождения" />
-                <DatePicker SelectedDate="{Binding EdDateOfBirth}" />
-                <StackPanel>
+                    <Label Content="ФИО" />
+                    <TextBox Text="{Binding EdFullname}" Width="300"/>
+                    <Label Content="Дата рождения" />
+                    <DatePicker SelectedDate="{Binding EdDateOfBirth}" Width="300"/>
+                    
                     <Label Content="Пол"/>
-                    <ComboBox SelectedItem="{Binding Gender}" Width="120">
+                    <ComboBox SelectedItem="{Binding Gender}" Width="300">
                         <x:String>М</x:String>
                         <x:String>Ж</x:String>
                     </ComboBox>
-                </StackPanel>
-                <Label Content="Номер телефона" />
-                <MaskedTextBox Mask="+7 000 000 0000" Text="{Binding EdPhone}" />
-                <Label Content="Адрес" />
-                <TextBox Text="{Binding EdAdress}" />
-                <Label Content="Номер полиса" />
-                <MaskedTextBox Mask="000000" Text="{Binding EdInsuranseNumber}"  />
-                <Label Content="Паспорт" />
-                <MaskedTextBox Mask="00 00 000000" Text="{Binding EdPasport}" />
-                <Label Content="СНИЛС" />
-                <MaskedTextBox Mask="000-000-000-00" Text="{Binding EdSnils}" />
+                    <Label Content="Номер телефона"/>
+                    <MaskedTextBox Mask="+7 000 000 0000" Text="{Binding EdPhone}" Width="300"/>
+                    <Label Content="Адрес" />
+                    <TextBox Text="{Binding EdAdress}" Width="300"/>
+                    <Label Content="Номер полиса" />
+                    <MaskedTextBox Mask="000000" Text="{Binding EdInsuranseNumber}" Width="300" />
+                    <Label Content="Паспорт" />
+                    <MaskedTextBox Mask="00 00 000000" Text="{Binding EdPasport}" Width="300" />
+                    <Label Content="СНИЛС" />
+                    <MaskedTextBox Mask="000-000-000-00" Text="{Binding EdSnils}" Width="300" />
                 <StackPanel Orientation="Horizontal">
                     <Button Content="X"
                             HorizontalAlignment="Right"

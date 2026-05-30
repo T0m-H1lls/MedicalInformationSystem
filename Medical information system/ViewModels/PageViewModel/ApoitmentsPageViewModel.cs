@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,12 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     
     [ObservableProperty] private DateTimeOffset? _edAppointmentDate;
     
+    [ObservableProperty] private int _currentPageSize;
+    [ObservableProperty] List<int> pageSizes;
+    [ObservableProperty]private string pageInfo;
+    private int currentPage = 1;
+    private int totalPages;
+    
     
     private string _searchText;
     public string SearchText
@@ -52,11 +59,13 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     public ApoitmentsPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        PageSizes = new List<int>([5,10,20]);
+        CurrentPageSize = PageSizes.First();
+        
         using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
         {
              AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
         }
-       
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
@@ -74,6 +83,60 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         }
         
         ReferralDoctorsList = new ObservableCollection<Doctor>(DoctorList.Where(x => x.Id != AccountName.User.Id));
+    }
+    partial void OnCurrentPageSizeChanged(int value)
+    {
+        CalculatePages();
+    }
+
+    void CalculatePages()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+        {
+            var rowsCount = rep.GetRowsCount(AccountName.User.Id);
+            totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
+             
+            currentPage = 1;
+            ShowPage(currentPage);
+        }
+       
+    }
+
+    void ShowPage(int pageIndex)
+    {
+        currentPage = pageIndex;
+
+        using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
+        {
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id, pageIndex, CurrentPageSize));
+            PageInfo = $"Страница {currentPage} из {totalPages}";
+        }
+    }
+
+    [RelayCommand]
+    private void ShowFirstPage()
+    {
+        ShowPage(1);
+    }
+    
+    [RelayCommand]
+    private void ShowLastPage()
+    {
+        ShowPage(totalPages);
+    }
+
+    [RelayCommand]
+    private void ShowNextPage()
+    {
+        if (currentPage < totalPages)
+            ShowPage(currentPage + 1);
+    }
+    
+    [RelayCommand]
+    private void ShowPrevPage()
+    {
+        if (currentPage > 1)
+            ShowPage(currentPage - 1);
     }
     
     void SearchAppointment()
