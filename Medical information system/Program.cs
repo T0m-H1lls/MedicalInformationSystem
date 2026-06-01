@@ -97,6 +97,9 @@ sealed class Program
                 
                 s.AddSingleton<Navigation>();
 
+                s.AddTransient<StatisticPageViewModel>();
+                s.AddTransient<StatisticPageView>();
+
                 s.AddTransient<UserRep>();
                 s.AddSingleton<User>();
 

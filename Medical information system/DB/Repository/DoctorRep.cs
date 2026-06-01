@@ -66,7 +66,8 @@ public class DoctorRep:Base, IDisposable
     public int GetRowsCount()
     {
         string sql = @"SELECT COUNT(Id)
-                        FROM `doctors`";
+                        FROM `doctors`
+                        Where IsActive = 1";
 
         try
         {

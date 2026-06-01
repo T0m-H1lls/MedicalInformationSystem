@@ -153,10 +153,10 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
                  AppointmentsList = new ObservableCollection<Appointments>(
-                                rep.GetAppointments(AccountName.User.Id).Where(s =>
-                                    s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                    s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                    s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+                     rep.GetAppointments(AccountName.User.Id).Where(s =>
+                         s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
+                         s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
+                         s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
             }
            
         }

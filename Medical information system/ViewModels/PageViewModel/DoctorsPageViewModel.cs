@@ -74,7 +74,7 @@ public partial class DoctorsPageViewModel : ViewModelBase
         {
             SpecializationsList = new ObservableCollection<Specialization>(rep.GetSpec());
         }
-        IsAdmin = AccountName.User.Role == "Главный врач";   
+        IsAdmin = AccountName.User.RoleId == 7;   
     }
     partial void OnCurrentPageSizeChanged(int value)
     {

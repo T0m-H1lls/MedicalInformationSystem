@@ -21,14 +21,14 @@
         </StackPanel>
         <Border Grid.Row="1"
                 Grid.Column="1"
-                Width="300"
+                Width="370"
                 Background="White"
                 Classes="medCard"
                 IsVisible="{Binding ViewStyle}">
             <StackPanel>
                 <StackPanel>
                     <ComboBox ItemsSource="{Binding PatientsList}"
-                              SelectedItem="{Binding SelectedPatient}" Width="180">
+                              SelectedItem="{Binding SelectedPatient}" Width="300">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding FullName}"/>
@@ -37,16 +37,16 @@
                     </ComboBox>
                     
                     <Label Content="Диагноз"/>
-                    <TextBox  Text="{Binding  DiagnoseEdit}"/>
+                    <TextBox  Text="{Binding  DiagnoseEdit}" Width="300"/>
                     
                     <Label Content="Описание"/>
-                    <TextBox Text="{Binding  DescriptionEdit}"/>
+                    <TextBox Text="{Binding  DescriptionEdit}" Width="300"/>
                     
                     <Label Content="Дата"/>
-                    <DatePicker SelectedDate="{Binding RecordDateEdit}"/>
+                    <DatePicker SelectedDate="{Binding RecordDateEdit}" Width="300"/>
                     
                     <Label Content="Лекарство"/>
-                    <TextBox Text="{Binding MedicineEdit}"/>
+                    <TextBox Text="{Binding MedicineEdit}" Width="300"/>
                     
                 </StackPanel>
                <StackPanel Orientation="Horizontal">

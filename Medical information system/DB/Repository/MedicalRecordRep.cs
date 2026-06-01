@@ -66,7 +66,8 @@ public class MedicalRecordRep:Base,IDisposable
     public int GetRowsCount()
     {
         string sql = @"SELECT COUNT(Id)
-                       FROM `medicalrecords`";
+                       FROM `medicalrecords`
+                       Where IsActive = 1";
         try
         {
             using var mc = new MySqlCommand(sql, connection);

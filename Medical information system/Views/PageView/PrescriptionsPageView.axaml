@@ -6,6 +6,7 @@
              x:DataType="viewmodel:PrescriptionsPageViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Medical_information_system.Views.PrescriptionsPageView">
+    
     <Grid RowDefinitions="Auto Auto *" ColumnDefinitions="* Auto">
         <StackPanel Spacing="8" Orientation="Horizontal">
             <Button Classes="add" Content="+"  Command="{Binding AddOpenWinCommand}" />

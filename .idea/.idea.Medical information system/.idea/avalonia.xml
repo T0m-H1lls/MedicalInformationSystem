@@ -8,6 +8,7 @@
         <entry key="Medical information system/Assets/AutorizationStyles.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Assets/Icons.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Assets/RegistrationStyles.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/StatisticPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/AccountPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/Add/AddApoitment.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/Add/AddDoctor.axaml" value="Medical information system/Medical information system.csproj" />
@@ -33,11 +34,13 @@
         <entry key="Medical information system/Views/PageView/MedicationsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PageView/PatientPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PageView/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/PageView/StatisticPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PatientPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/PrescriptionsPageView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/RegistrationView.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/RegistrationWindow.axaml" value="Medical information system/Medical information system.csproj" />
         <entry key="Medical information system/Views/StartView.axaml" value="Medical information system/Medical information system.csproj" />
+        <entry key="Medical information system/Views/StatisticPageView.axaml" value="Medical information system/Medical information system.csproj" />
       </map>
     </option>
   </component>

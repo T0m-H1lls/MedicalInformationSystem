@@ -24,7 +24,7 @@
             <StackPanel Spacing="10">
                 <Label Content="Пациент"/>
                 <ComboBox ItemsSource="{Binding PatientsList}"
-                          SelectedItem="{Binding  SelectedPatientEdit}" Width="180">
+                          SelectedItem="{Binding  SelectedPatientEdit}" Width="300">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding FullName}"/>
@@ -33,11 +33,11 @@
                 </ComboBox>
                 
                 <Label Content="Дата"/>
-                <DatePicker SelectedDate="{Binding EdAppointmentDate}"  Width="150"/>
+                <DatePicker SelectedDate="{Binding EdAppointmentDate}"  Width="300"/>
                 
                 <Label Content="Статус"/>
                 <ComboBox ItemsSource="{Binding StatusList}"
-                          SelectedItem="{Binding SelectedStatusEdit}" Width="180">
+                          SelectedItem="{Binding SelectedStatusEdit}" Width="300">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
@@ -47,7 +47,7 @@
                 
                 <Label Content="Направление к врачу"/> 
                 <ComboBox ItemsSource="{Binding ReferralDoctorsList}"
-                          SelectedItem="{Binding SelectedReferralDoctor}" Width="180">
+                          SelectedItem="{Binding SelectedReferralDoctor}" Width="300">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding FullName}"/>

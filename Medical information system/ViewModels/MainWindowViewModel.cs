@@ -55,12 +55,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public ObservableCollection<ListItemTemplate> ListItemTemplates { get; } = new()
     {
-        new ListItemTemplate(typeof(PatientPageViewModel), "person_regular", "Пациенты"),
-        new ListItemTemplate(typeof(DoctorsPageViewModel), "doctors_d", "Врачи"),
-        new ListItemTemplate(typeof(ApoitmentsPageViewModel), "calendar_month_regular", "Приемы"),
-        new ListItemTemplate(typeof(MedicalRecordsPageViewModel), "reading_mode_mobile_regular", "Медицинские записи"),
-        new ListItemTemplate(typeof(PrescriptionsPageViewModel), "naznachenie", "Назначения"),
-        new ListItemTemplate(typeof(AccountPageViewModel),"person_regular","Профиль")
+        new ListItemTemplate(typeof(PatientPageViewModel),"person_regular", "Пациенты"),
+        new ListItemTemplate(typeof(DoctorsPageViewModel),"doctors_d", "Врачи"),
+        new ListItemTemplate(typeof(ApoitmentsPageViewModel),"calendar_month_regular", "Приемы"),
+        new ListItemTemplate(typeof(MedicalRecordsPageViewModel),"reading_mode_mobile_regular", "Медицинские записи"),
+        new ListItemTemplate(typeof(PrescriptionsPageViewModel),"naznachenie", "Назначения"),
+        new ListItemTemplate(typeof(AccountPageViewModel),"person_regular","Профиль"),
+        new ListItemTemplate(typeof(StatisticPageViewModel),"","Статистика")
 
     };
 
