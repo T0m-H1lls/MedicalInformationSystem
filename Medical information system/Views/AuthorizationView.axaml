@@ -28,7 +28,8 @@
                                 
                                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center"> 
                                          <Button Content="Войти" Command="{Binding AuthorizationsCommand}"
-                                                 Classes="add" Width="100" Height="50"/>
+                                                 Classes="add" Width="130" Height="40"
+                                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                 </StackPanel>
                                 
                         </StackPanel>
