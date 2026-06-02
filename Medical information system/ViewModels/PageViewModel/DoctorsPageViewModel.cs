@@ -131,7 +131,7 @@ public partial class DoctorsPageViewModel : ViewModelBase
             ShowPage(currentPage - 1);
     }
 
-    private void SearchDoctors()
+    void SearchDoctors()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {

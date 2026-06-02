@@ -282,10 +282,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             
             ViewStyle = false;
 
-            var successBox = MessageBoxManager.GetMessageBoxStandard(
-                "Успех",
-                "Запись успешно изменена",
-                ButtonEnum.Ok);
+            var successBox = MessageBoxManager.GetMessageBoxStandard("Успех", "Запись успешно изменена", ButtonEnum.Ok);
 
             await successBox.ShowAsync();
         }

@@ -23,7 +23,7 @@
                     Command="{Binding SwitchViewCommand}"
                     IsVisible="{Binding IsAdmin}"/>
             
-            <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center"/>
+            <TextBox VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" Width="300" Watermark="Поиск" HorizontalContentAlignment="Center" Text="{Binding SearchText}"/>
         </StackPanel>
         
         <Border Grid.Row="1"

@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia.Controls.Converters;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Medical_information_system.DB.Repository;
+using Medical_information_system.Models;
+using Microsoft.Extensions.DependencyInjection;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using Spire.Xls;
 
 namespace Medical_information_system.ViewModels;
@@ -10,23 +17,41 @@ namespace Medical_information_system.ViewModels;
 public partial class StatisticPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly Workbook _workbook;
 
     [ObservableProperty] private DateTimeOffset? _date =  DateTimeOffset.Now;
-    [ObservableProperty] private string _countPatient;
+    [ObservableProperty] private int _countPatient;
     [ObservableProperty] private string _countMedicalRecord;
+    [ObservableProperty] private string _docFullName;
+    [ObservableProperty] private string _completedText; 
+    [ObservableProperty] private ObservableCollection<Statistic>  _statistics = new();
+    [ObservableProperty] private ObservableCollection<Statistic> _activeDoctorCount = new();
+    [ObservableProperty] private ObservableCollection<Statistic> _patientsByGender = new();
     
 
-    public StatisticPageViewModel(IServiceProvider serviceProvider,Workbook workbook)
+    public StatisticPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _workbook = workbook;
+
+        using (var rep = serviceProvider.GetRequiredService<StatisticRep>())
+        {
+            Statistics = new ObservableCollection<Statistic>(rep.GetPatientColor());
+        }
+
+        using (var rep = serviceProvider.GetRequiredService<StatisticRep>())
+        {
+            ActiveDoctorCount = new ObservableCollection<Statistic>(rep.GetActiveDoctorsCount());
+        }
+        using (var rep = serviceProvider.GetRequiredService<StatisticRep>())
+        {
+            PatientsByGender=new ObservableCollection<Statistic>(rep.GetPatientsByGender());
+        }
     }
 
     [RelayCommand]
-    void GenerateStatisticsFromToExel()
+    async Task GenerateStatisticsFromToExel()
     {
-        Worksheet sheet = _workbook.Worksheets[0];
+        Workbook workbook = new();
+        Worksheet sheet = workbook.Worksheets[0];
         sheet.Name = "Статистика";
         FileStream file_stream = new FileStream("Статистика.xls", FileMode.Create);
         
@@ -36,25 +61,86 @@ public partial class StatisticPageViewModel:ViewModelBase
         
         sheet.Range["A3"].Text = $"Дата: {Date.ToString()}";
         
-        sheet.Range["A4"].Text = "Кол-во добавленных пациентов";
-        sheet.Range["B4"].Text = "Кол-во добавленных записей";
+        sheet.Range["A4"].Text = "ФИО доктора";
+        sheet.Range["B4"].Text = "Кол-во обслуживаемых пациентов";
         sheet.Range["A4"].Style.Font.IsBold = true;
         sheet.Range["B4"].Style.Font.IsBold = true;
+
+        sheet.Range["D4"].Text = "Название специлизации";
+        sheet.Range["E4"].Text = "Сколько докторов в данной\nспециализации";
+        sheet.Range["D4"].Style.Font.IsBold = true;
+        sheet.Range["E4"].Style.Font.IsBold = true;
         
-        sheet.Range["A5"].Text = CountPatient;
-        sheet.Range["B5"].Text =CountMedicalRecord;
+        sheet.Range["G4"].Text = "Пол";
+        sheet.Range["H4"].Text = "Кол-во пациентов";
+        sheet.Range["G4"].Style.Font.IsBold = true;
+        sheet.Range["H4"].Style.Font.IsBold = true;
+            
         
-        sheet.Range["A4:B5"].Style.Borders[BordersLineType.EdgeTop].LineStyle = LineStyleType.Thin;
-        sheet.Range["A4:B5"].Style.Borders[BordersLineType.EdgeBottom].LineStyle = LineStyleType.Thin;
-        sheet.Range["A4:B5"].Style.Borders[BordersLineType.EdgeLeft].LineStyle = LineStyleType.Thin;
-        sheet.Range["A4:B5"].Style.Borders[BordersLineType.EdgeRight].LineStyle = LineStyleType.Thin;
+        int currentRow = 5;
+        foreach (var statistic in Statistics)
+        {
+            string doctorName = statistic.DocFullName;
+            int patientCount = statistic.CountPatient;
+            sheet.Range[$"A{currentRow}"].Text = doctorName;
+            sheet.Range[$"B{currentRow}"].Text = patientCount.ToString();
+
+            currentRow++;
+        }
+        
+        int currentRow2 = 5;
+        foreach (var statistic in ActiveDoctorCount)
+        {
+            string specName = statistic.SpecializationName;
+            int activeDocCount = statistic.ActiveDoctorsCount;
+            sheet.Range[$"D{currentRow2}"].Text = specName;
+            sheet.Range[$"E{currentRow2}"].Text = activeDocCount.ToString();
+            
+            currentRow2++;
+        }
+        
+        int currentRow3 = 5;
+        foreach (var statistic in PatientsByGender)
+        {
+            string gender = statistic.Gender;
+            int patientCount = statistic.PatientCount;
+            sheet.Range[$"G{currentRow3}"].Text = gender;
+            sheet.Range[$"H{currentRow3}"].Text = patientCount.ToString();
+            
+            
+            currentRow3++;
+        }
+       
+        
+        string lastRow = (4 + Statistics.Count).ToString();
+        var dataRange = sheet.Range[$"A4:B{lastRow}"];
+        
+        dataRange.Style.Borders[BordersLineType.EdgeTop].LineStyle = LineStyleType.Thin;
+        dataRange.Style.Borders[BordersLineType.EdgeBottom].LineStyle = LineStyleType.Thin;
+        dataRange.Style.Borders[BordersLineType.EdgeLeft].LineStyle = LineStyleType.Thin;
+        dataRange.Style.Borders[BordersLineType.EdgeRight].LineStyle = LineStyleType.Thin;
+        
+        string lastRow2 = (4 + ActiveDoctorCount.Count).ToString();
+        var dataRange2 = sheet.Range[$"D4:E{lastRow2}"];
+        
+        dataRange2.Style.Borders[BordersLineType.EdgeTop].LineStyle = LineStyleType.Thin;
+        dataRange2.Style.Borders[BordersLineType.EdgeBottom].LineStyle = LineStyleType.Thin;
+        dataRange2.Style.Borders[BordersLineType.EdgeLeft].LineStyle = LineStyleType.Thin;
+        dataRange2.Style.Borders[BordersLineType.EdgeRight].LineStyle = LineStyleType.Thin;
+        
+        string lastRow3 = (4 + PatientsByGender.Count).ToString();
+        var dataRange3 = sheet.Range[$"G4:H{lastRow3}"];
+        
+        dataRange3.Style.Borders[BordersLineType.EdgeTop].LineStyle = LineStyleType.Thin;
+        dataRange3.Style.Borders[BordersLineType.EdgeBottom].LineStyle = LineStyleType.Thin;
+        dataRange3.Style.Borders[BordersLineType.EdgeLeft].LineStyle = LineStyleType.Thin;
+        dataRange3.Style.Borders[BordersLineType.EdgeRight].LineStyle = LineStyleType.Thin;
         
         sheet.AllocatedRange.AutoFitColumns();
         
-        _workbook.SaveToStream(file_stream);
+        workbook.SaveToStream(file_stream);
+        await MessageBoxManager.GetMessageBoxStandard("Успех", "Экспорт успешно завершён!", ButtonEnum.Ok).ShowAsync();
         file_stream.Close();
-        System.Diagnostics.Process.Start("Статистика.xls");
-
     }
     
 }

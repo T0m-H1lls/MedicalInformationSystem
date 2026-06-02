@@ -6,9 +6,45 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="viewModels:StatisticPageViewModel"
              x:Class="Medical_information_system.Views.StatisticPageView">
-    <StackPanel>
-        <TextBlock Text=""/>
-        <TextBlock Text=""/>
+    
+    <StackPanel Spacing="5">
+        <DataGrid ItemsSource="{Binding Statistics}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО Доктора" Binding="{Binding DocFullName}"/>
+                <DataGridTextColumn Header="Кол-во обслуживаемых пациентов" Binding="{Binding CountPatient}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid ItemsSource="{Binding  ActiveDoctorCount}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название специализации" Binding="{Binding  SpecializationName}"/>
+                <DataGridTextColumn Header="Кол-во докторов" Binding="{Binding ActiveDoctorsCount}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid ItemsSource="{Binding PatientsByGender}"
+                  AreRowDetailsFrozen="True"
+                  GridLinesVisibility="All"
+                  IsReadOnly="True"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Пол" Binding="{Binding  Gender}"/>
+                <DataGridTextColumn Header="Кол-во пациентов" Binding="{Binding PatientCount}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Command="{Binding GenerateStatisticsFromToExelCommand}" Content="Импортировать"/>
     </StackPanel>
+    
 </UserControl>

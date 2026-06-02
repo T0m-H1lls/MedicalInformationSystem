@@ -45,7 +45,7 @@ public partial class MedicationsPageViewModel:ViewModelBase
             MedicationList = new ObservableCollection<Medication>(rep.GetMedication());
         }
     }
-    private void SearchMedications()
+    void SearchMedications()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {

@@ -61,11 +61,11 @@ public partial class MainWindowViewModel : ViewModelBase
         new ListItemTemplate(typeof(MedicalRecordsPageViewModel),"reading_mode_mobile_regular", "Медицинские записи"),
         new ListItemTemplate(typeof(PrescriptionsPageViewModel),"naznachenie", "Назначения"),
         new ListItemTemplate(typeof(AccountPageViewModel),"person_regular","Профиль"),
-        new ListItemTemplate(typeof(StatisticPageViewModel),"","Статистика")
+        new ListItemTemplate(typeof(StatisticPageViewModel),"statisticsBar","Статистика")
 
     };
 
-  
+   
 
     partial void OnSelectedListItemChanged(ListItemTemplate? value)
     {

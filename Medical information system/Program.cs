@@ -99,6 +99,7 @@ sealed class Program
 
                 s.AddTransient<StatisticPageViewModel>();
                 s.AddTransient<StatisticPageView>();
+                s.AddTransient<StatisticRep>();
 
                 s.AddTransient<UserRep>();
                 s.AddSingleton<User>();

@@ -62,9 +62,7 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
         }
     }
 
-   
-
-
+    
     public MedicalRecordsPageViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
@@ -85,7 +83,7 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
     }
     
-    private void SearchMedicalRecord()
+     void SearchMedicalRecord()
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
@@ -99,11 +97,11 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
             {
                MedicalRecordsList = new ObservableCollection<MedicalRecord>(
-                              rep.GetMedicalRecords().Where(s =>
-                                  s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                  s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                  s.MedicineName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
-                                  s.DiagnoseName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
+                   rep.GetMedicalRecords().Where(s => 
+                       s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
+                       s.DoctorName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
+                       s.MedicineName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
+                       s.DiagnoseName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
             }
            
         }
