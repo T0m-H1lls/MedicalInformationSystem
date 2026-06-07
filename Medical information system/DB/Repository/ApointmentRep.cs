@@ -102,7 +102,7 @@ public class ApointmentRep:Base, IDisposable
     
     public bool AddAppointment(Appointments appointment)
     {
-        string sql = @"INSERT INTO appointments VALUES(@PatientId,@DoctorId,@AppointmentDate,@StatusId,@ReferralDoctorId,1,null)";
+        string sql = @"INSERT INTO appointments VALUES(0,@PatientId,@DoctorId,@AppointmentDate,@StatusId,@ReferralDoctorId,1,null)";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))

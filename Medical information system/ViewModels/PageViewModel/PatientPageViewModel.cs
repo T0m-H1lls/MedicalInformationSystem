@@ -180,7 +180,6 @@ public partial class PatientPageViewModel:ViewModelBase
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
             Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
-
         }
     }
 
@@ -231,13 +230,13 @@ public partial class PatientPageViewModel:ViewModelBase
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(EdPasport))
+        if (EdPasport.Length < 12)
         {
             error = "Введите паспорт";
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(EdSnils))
+        if (EdSnils.Length < 6)
         {
             error = "Введите СНИЛС";
             return false;

@@ -8,6 +8,13 @@
              x:Class="Medical_information_system.Views.StatisticPageView">
     
     <StackPanel Spacing="5">
+        <Button Command="{Binding GenerateStatisticsFromToExelCommand}" Background="Moccasin">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <PathIcon  Data="{StaticResource saveButton}"/>
+                <TextBlock Text="Сохранить"/>
+                
+            </StackPanel>
+        </Button>
         <DataGrid ItemsSource="{Binding Statistics}"
                   AreRowDetailsFrozen="True"
                   GridLinesVisibility="All"
@@ -44,7 +51,6 @@
                 <DataGridTextColumn Header="Кол-во пациентов" Binding="{Binding PatientCount}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Command="{Binding GenerateStatisticsFromToExelCommand}" Content="Импортировать"/>
     </StackPanel>
     
 </UserControl>

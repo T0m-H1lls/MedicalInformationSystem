@@ -35,16 +35,6 @@
                     <TextBox Text="{Binding Role}"/>
                 </StackPanel>
                  
-                 <StackPanel Margin="15" Orientation="Horizontal">
-                     <Button Background="Red" Foreground="AliceBlue" Command="{Binding ExitAccountCommand}">
-                         <StackPanel Spacing="15" Orientation="Horizontal">
-                             <PathIcon Data="{StaticResource exit}" Foreground="Black"  
-                                       Width="20"
-                                       Height="20"/>
-                             <TextBlock Text="Выйти" Foreground="AliceBlue"/>
-                         </StackPanel>
-                     </Button>
-                 </StackPanel>
             </StackPanel>
         </Border>
     </Grid>
