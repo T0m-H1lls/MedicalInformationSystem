@@ -17,7 +17,7 @@ public class SpecializationRep:Base, IDisposable
     {
         List<Specialization> specializationsList = new();
 
-        string sql = @"select * from Specialization";
+        string sql = @"select * from `specialization`";
 
         try
         {

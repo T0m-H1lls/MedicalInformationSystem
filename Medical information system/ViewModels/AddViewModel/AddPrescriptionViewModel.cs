@@ -94,7 +94,7 @@ public partial class AddPrescriptionViewModel : ViewModelBase
         {
             rep.AddPrescription(prescription);
         }
-       
+        _closeAction?.Invoke();
     }
 
     [RelayCommand]

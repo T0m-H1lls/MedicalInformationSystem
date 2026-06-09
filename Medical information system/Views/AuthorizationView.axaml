@@ -28,6 +28,10 @@
                                                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text ="{Binding UsPassword}"/>
                                 </StackPanel>
                                 
+                                <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Foreground="DarkRed" Text="{Binding Error}"/>
+                                </StackPanel>
+                                
                                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center"> 
                                          <Button Content="Войти" Command="{Binding AuthorizationsCommand}"
                                                  Classes="add" Width="130" Height="40"

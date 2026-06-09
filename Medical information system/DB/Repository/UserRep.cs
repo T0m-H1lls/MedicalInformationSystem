@@ -16,7 +16,7 @@ public class UserRep:Base, IDisposable
 
     public void AddUser(User user)
     {
-        string sql = @"insert into `users`values(0,@Login,@Password,@RoleId,@doctorId)";
+        string sql = @"insert into `users`values(0,@Login,@Password,@RoleId,@DoctorId)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
@@ -55,7 +55,7 @@ public class UserRep:Base, IDisposable
                             Login = reader.GetString("Login"),
                             Password = reader.GetString("Password"),
                             RoleId = reader.GetInt32("RoleId"),
-                            DoctorId = reader.GetInt32("doctorId"),
+                            DoctorId = reader.GetInt32("DoctorId"),
                            
                         });
                     }   
@@ -72,9 +72,9 @@ public class UserRep:Base, IDisposable
     public List<User> GetFullNameAndRole(string Login, string Password)
     {
         List<User> usersList = new();
-        string sql = @"select u.Id ,u.doctorId ,u.RoleId,s.Name as Role,u.Name,u.Surname,u.Patronymic
+        string sql = @"select u.Id ,u.DoctorId ,u.RoleId,s.Name as Role,u.Name,u.Surname,u.Patronymic
                         from users u 
-                        join Specialization s on u.RoleId  = s.Id
+                        join specialization s on u.RoleId  = s.Id
                         where `Login`= @Login and `Password`= @Password";   
         try
         {

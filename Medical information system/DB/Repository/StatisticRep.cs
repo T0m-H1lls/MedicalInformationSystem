@@ -70,7 +70,7 @@ public class StatisticRep:Base,IDisposable
         List<Statistic> activeDoctorsCount = new();
         string sql = @"SELECT sp.Name AS SpecializationName, COUNT(d.Id) AS ActiveDoctorsCount
                       FROM doctors d
-                      JOIN Specialization sp ON d.SpecializationId = sp.Id
+                      JOIN specialization sp ON d.SpecializationId = sp.Id
                       WHERE d.IsActive = 1";
         
         if (month.HasValue)

@@ -20,7 +20,7 @@ public class DoctorRep:Base, IDisposable
             @"SELECT d.Id ,d.FullName,d.Phone,d.SpecializationId,d.Room,d.DepartmentId, d2.Name as DepartmentName,s.Name as Spec
                        from doctors d 
                        JOIN departments d2 ON d.DepartmentId = d2.Id
-                       join Specialization s on d.SpecializationId =  s.Id
+                       join specialization s on d.SpecializationId =  s.Id
                        Where d.IsActive = 1";
             if (pageNumber != null && pageSize != null)
             {

@@ -55,9 +55,7 @@ sealed class Program
                 s.AddTransient<MedicalRecordsPageViewModel>();
                 s.AddTransient<MedicalRecordsPageView>();
 
-                s.AddTransient<MedicationRep>();
-                s.AddTransient<MedicationsPageViewModel>();
-                s.AddTransient<MedicationsPageView>();
+              
 
                 s.AddTransient<PrescriptionRep>();
                 s.AddTransient<PrescriptionsPageView>();
