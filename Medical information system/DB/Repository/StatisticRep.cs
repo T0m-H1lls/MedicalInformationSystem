@@ -15,17 +15,34 @@ public class StatisticRep:Base,IDisposable
     }
 
 
-    public List<Statistic> GetPatientColor()
+    public List<Statistic> GetPatientColor(int? month = null, int? year = null)
     {
         List<Statistic> patientCount = new();
         string sql = @"SELECT d.FullName AS DoctorName, COUNT(p.Id) AS PatientCount
                        FROM doctors d
-                       JOIN patients p ON d.Id = p.doctorId
-                       GROUP BY d.Id";
+                       JOIN patients p ON d.Id = p.doctorId";
+        if (month.HasValue)
+        {
+            sql += @" WHERE MONTH(p.CreatedAt) = @month";
+            if (year.HasValue)
+            {
+                sql += @" AND YEAR(p.CreatedAt) = @year";
+            }
+        }
+        sql += @" GROUP BY d.Id";
         try
         {
             using (var cm = new MySqlCommand(sql, connection))
             {
+                if (month.HasValue)
+                {
+                    cm.Parameters.AddWithValue("@month", month.Value);
+                    if (year.HasValue)
+                    {
+                        cm.Parameters.AddWithValue("@year", year.Value);
+                    }
+                }
+
                 using (var reader = cm.ExecuteReader())
                 {
                     while (reader.Read())
@@ -48,18 +65,36 @@ public class StatisticRep:Base,IDisposable
         return patientCount;
     }
 
-    public List<Statistic> GetActiveDoctorsCount()
+    public List<Statistic> GetActiveDoctorsCount(int? month = null, int? year = null)
     {
         List<Statistic> activeDoctorsCount = new();
         string sql = @"SELECT sp.Name AS SpecializationName, COUNT(d.Id) AS ActiveDoctorsCount
                       FROM doctors d
                       JOIN Specialization sp ON d.SpecializationId = sp.Id
-                      WHERE d.IsActive = 1
-                      GROUP BY d.SpecializationId";
+                      WHERE d.IsActive = 1";
+        
+        if (month.HasValue)
+        {
+            sql += @" AND MONTH(d.CreatedAt) = @month";
+            if (year.HasValue)
+            {
+                sql += @" AND YEAR(d.CreatedAt) = @year";
+            }
+        }
+    
+        sql += @" GROUP BY d.SpecializationId";
         try
         {
             using (var  cm = new MySqlCommand(sql, connection))
             {
+                if (month.HasValue)
+                {
+                    cm.Parameters.AddWithValue("@month", month.Value);
+                    if (year.HasValue)
+                    {
+                        cm.Parameters.AddWithValue("@year", year.Value);
+                    }
+                }
                 using (var reader = cm.ExecuteReader())
                 {
                     while (reader.Read())
@@ -80,16 +115,34 @@ public class StatisticRep:Base,IDisposable
 
         return activeDoctorsCount;
     }
-    public List<Statistic> GetPatientsByGender()
+    public List<Statistic> GetPatientsByGender(int? month = null, int? year = null)
     {
         List<Statistic> patientsByGender = new();
-        string sql = @"SELECT Gender, COUNT(Id) AS PatientCount
-                        FROM patients
-                        GROUP BY Gender;";
+        string sql = @"SELECT `Gender`, COUNT(Id) AS PatientCount
+                   FROM patients";
+    
+        if (month.HasValue)
+        {
+            sql += @" WHERE MONTH(CreatedAt) = @month";
+            if (year.HasValue)
+            {
+                sql += @" AND YEAR(CreatedAt) = @year";
+            }
+        }
+    
+        sql += @" GROUP BY Gender;";
         try
         {
             using (var  cm = new MySqlCommand(sql, connection))
             {
+                if (month.HasValue)
+                {
+                    cm.Parameters.AddWithValue("@month", month.Value);
+                    if (year.HasValue)
+                    {
+                        cm.Parameters.AddWithValue("@year", year.Value);
+                    }
+                }
                 using (var reader = cm.ExecuteReader())
                 {
                     while (reader.Read())

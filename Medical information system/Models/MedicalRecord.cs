@@ -8,7 +8,7 @@ public class MedicalRecord
     public int PatientId { get; set; }
     public int AppointmentId { get; set; }
     public string Description { get; set; }
-    public DateTimeOffset? RecordDate { get; set; }
+    public DateTime? RecordDate { get; set; }
     public int Medicineid { get; set; }
 
     public string PatientName { get; set; }

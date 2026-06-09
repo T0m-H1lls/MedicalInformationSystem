@@ -45,6 +45,11 @@
                     <Label Content="Дата"/>
                     <DatePicker SelectedDate="{Binding RecordDateEdit}" Width="300"/>
                     
+                   
+                    <Label Content="Время"/>
+                    <TimePicker SelectedTime="{Binding RecordTimeEdit}"
+                                Width="300"/>
+                    
                     <Label Content="Лекарство"/>
                     <TextBox Text="{Binding MedicineEdit}" Width="300"/>
                     
@@ -81,9 +86,10 @@
                 <DataGridTextColumn Header="Диагноз" Binding="{Binding DiagnoseName}"/>
                 <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="200"/>
                 <DataGridTextColumn Header="Лекарство" Binding="{Binding MedicineName}"/>
-                <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate}"/>
+                <DataGridTextColumn Header="Дата посещения" Binding="{Binding RecordDate,  StringFormat=dd.MM.yyyy hh:mm}"/>
             </DataGrid.Columns>
         </DataGrid>
+        
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="&lt;&lt;" Command="{Binding ShowFirstPageCommand}"/>
             <Button Content="&lt;" Command="{Binding ShowPrevPageCommand}"/>

@@ -19,7 +19,13 @@ public partial class AddMedicalRecordViewModel:ViewModelBase
     [ObservableProperty] private string _diagnose;
     [ObservableProperty] private string _description;
     private Action _closeAction;
-    [ObservableProperty] private DateTimeOffset _recordDate = DateTime.Now; 
+    
+    [ObservableProperty] private DateTimeOffset _recordDate = DateTime.Now;
+    [ObservableProperty] private TimeSpan _recordTime = DateTime.Now.TimeOfDay;
+    
+    public DateTime RecordDateTime => RecordDate.Date + RecordTime;
+    
+    
     [ObservableProperty] private ObservableCollection<MedicalRecord> _medicalRecordsList;
     [ObservableProperty] private ObservableCollection<Patient> _patientsList;
     
@@ -31,7 +37,7 @@ public partial class AddMedicalRecordViewModel:ViewModelBase
         _serviceProvider = serviceProvider;
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
         }
         SelectedPatient = PatientsList.FirstOrDefault();
     }
@@ -89,9 +95,9 @@ public partial class AddMedicalRecordViewModel:ViewModelBase
         {
             MedicineName = Medicine,
             Description = Description,
-            RecordDate = RecordDate,
+            RecordDate = RecordDateTime,
             PatientId = SelectedPatient.Id,
-            DoctorId = AccountName.User.Id,
+            DoctorId = AccountName.User.DoctorId,
             DiagnoseName = Diagnose
         };
 

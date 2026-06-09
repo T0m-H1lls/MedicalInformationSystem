@@ -54,7 +54,8 @@ public class UserRep:Base, IDisposable
                             Id = reader.GetInt32("Id"),
                             Login = reader.GetString("Login"),
                             Password = reader.GetString("Password"),
-                            RoleId = reader.GetInt32("RoleId")
+                            RoleId = reader.GetInt32("RoleId"),
+                            DoctorId = reader.GetInt32("doctorId"),
                            
                         });
                     }   

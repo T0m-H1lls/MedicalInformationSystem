@@ -194,7 +194,7 @@ public partial class AddPatientViewModel : ViewModelBase
             InsuranceNumber = InsuranceNumber,
             Passport = Passport,
             Snils = Snils,
-            DoctorId = AccountName.User.Id
+            DoctorId = AccountName.User.DoctorId
         };
 
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())

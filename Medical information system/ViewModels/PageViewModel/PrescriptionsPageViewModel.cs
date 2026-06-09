@@ -91,7 +91,7 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id)); 
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId)); 
         }
         SelectedPatient = PatientsList.FirstOrDefault();
     }
@@ -214,10 +214,10 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
 
             return;
         }
-        else if (SelectedPrescription.DoctorId != AccountName.User.Id)
+        else if (SelectedPrescription.DoctorId != AccountName.User.DoctorId)
         {
             var box = MessageBoxManager.GetMessageBoxStandard(
-                "Ошибка", "Вы не можете изменять чужие записи",
+                "Ошибка", "Вы не можете изменять чужие назначения",
                 ButtonEnum.Ok);
 
             await box.ShowAsync();
@@ -286,7 +286,7 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
 
         if (result == ButtonResult.Ok)
         {
-            SelectedPrescription.DoctorId = AccountName.User.Id;
+            SelectedPrescription.DoctorId = AccountName.User.DoctorId;
             SelectedPrescription.PatientId = SelectedPatient.Id;
             SelectedPrescription.Dosage = EdDosage;
             SelectedPrescription.Duration = EdDuration;

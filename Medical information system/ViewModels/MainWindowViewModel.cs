@@ -74,6 +74,11 @@ public partial class MainWindowViewModel : ViewModelBase
         var vm = ActivatorUtilities.CreateInstance(_serviceProvider, value.ModelType);
         if (vm is null)
             return;
+        
+        if (vm is AccountPageViewModel accountVm)
+        {
+            accountVm.SetCloseAction(_closeAction);
+        }
         CurrentPage = (ViewModelBase)vm;
     }
 

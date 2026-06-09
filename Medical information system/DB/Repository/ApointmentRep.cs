@@ -56,7 +56,7 @@ public class ApointmentRep:Base, IDisposable
                            Id = reader.GetInt32("id"),//e
                            PatientId = reader.GetInt32("PatientId"),//e
                            DoctorId = reader.GetInt32("DoctorId"),//e
-                           AppointmentDate = reader.GetDateTimeOffset("AppointmentDate"),//e
+                           AppointmentDate = reader.GetDateTime("AppointmentDate"),//e
                            StatusId = reader.GetInt32("StatusId"),//e
                            PatientName = reader.GetString("PatientName"),//e
                            DoctorFullName = reader.GetString("DoctorFullName"),//e

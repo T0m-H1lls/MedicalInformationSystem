@@ -8,13 +8,45 @@
              x:Class="Medical_information_system.Views.StatisticPageView">
     
     <StackPanel Spacing="5">
-        <Button Command="{Binding GenerateStatisticsFromToExelCommand}" Background="Moccasin">
-            <StackPanel Orientation="Horizontal" Spacing="5">
-                <PathIcon  Data="{StaticResource saveButton}"/>
-                <TextBlock Text="Сохранить"/>
-                
+        <StackPanel Margin="10" Spacing="10">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <CheckBox Content="Фильтр по месяцу" IsChecked="{Binding UseDateFilter}"/>
+        
+                <TextBlock Text="Месяц:" VerticalAlignment="Center"/>
+                <ComboBox ItemsSource="{Binding Months}" 
+                          SelectedIndex="{Binding SelectedMonth}"
+                          IsEnabled="{Binding UseDateFilter}"
+                          Width="120"/>
+        
+                <TextBlock Text="Год:" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding SelectedYear}" 
+                         IsEnabled="{Binding UseDateFilter}"
+                         Width="80"/>
+        
+                <Button Content="Применить" Classes="add"  Command="{Binding ApplyDateFilterCommand}" 
+                        IsEnabled="{Binding UseDateFilter}"/>
+                <Button Content="Сбросить" Classes="delete" Command="{Binding ClearDateFilterCommand}"/>
+                <Button Content="Текущий месяц" Command="{Binding SetCurrentMonthCommand}"/>
             </StackPanel>
-        </Button>
+            
+            <TextBlock Text="{Binding StatisticsPeriod}" 
+                       FontWeight="Bold" 
+                       Margin="10"
+                       HorizontalAlignment="Center"/>
+            
+            <Button 
+                    Command="{Binding GenerateStatisticsFromToExelCommand}"
+                    HorizontalAlignment="Center"
+                    Width="150"
+                    Margin="10">
+                
+                <StackPanel Orientation="Horizontal">
+                    <PathIcon Data="{StaticResource saveButton}"/>
+                    <TextBlock Text="Экспорт в Excel"/> 
+                </StackPanel>
+            </Button>
+            
+        </StackPanel>
         <DataGrid ItemsSource="{Binding Statistics}"
                   AreRowDetailsFrozen="True"
                   GridLinesVisibility="All"

@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Medical_information_system.Views.Add.AddApoitment"
         x:DataType="addViewModel:AddApoitmentViewModel"
-        Title="AddApoitment">
+        Title="Добавить прием">
     
     <Grid Background="Azure">
         
@@ -27,7 +27,11 @@
                 
                 <StackPanel>
                     <Label Content="Дата"/>
-                    <DatePicker SelectedDate="{Binding SelectedDate}"/>
+                    <DatePicker SelectedDate="{Binding RecordDate}"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="Время"/>
+                    <TimePicker SelectedTime="{Binding RecordTime}"/>
                 </StackPanel>
                 
                 <TextBlock Text="Статус"/>

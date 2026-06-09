@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Medical_information_system.DB.Repository;
 using Medical_information_system.Models;
 using Microsoft.Extensions.DependencyInjection;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using Tmds.DBus.Protocol;
 
 namespace Medical_information_system.ViewModels.AddViewModel;
@@ -20,9 +23,13 @@ public partial class AddApoitmentViewModel:ViewModelBase
     [ObservableProperty] private ObservableCollection<Doctor> _doctorsList;
     [ObservableProperty] private ObservableCollection<MedicalRecord> _medicalRecordList;
     
+    [ObservableProperty] private DateTimeOffset _recordDate = DateTime.Now;
+    [ObservableProperty] private TimeSpan _recordTime = DateTime.Now.TimeOfDay;
+    
+    public DateTime RecordDateTime => RecordDate.Date + RecordTime;
+    
     [ObservableProperty] private Patient _selectedAppointmentPatient;
     [ObservableProperty] private Status _selectedAppointmentStatus;
-    [ObservableProperty] private DateTimeOffset? _selectedDate = DateTimeOffset.Now;
     [ObservableProperty] private Doctor? _selectedDoctor;
     [ObservableProperty] private Doctor? _selectedReferallDoctor;
 
@@ -33,12 +40,12 @@ public partial class AddApoitmentViewModel:ViewModelBase
         
         using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
         }
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
         }
 
         SelectedAppointmentPatient = PatientsList.FirstOrDefault();
@@ -61,15 +68,19 @@ public partial class AddApoitmentViewModel:ViewModelBase
         _closeAction=action;
     }
 
+
+
+    
     [RelayCommand]
-    void SaveApointment()
+    async Task SaveApointment()
     {
+      
         var res = new Appointments
         {
             PatientId = SelectedAppointmentPatient.Id,
-            AppointmentDate = SelectedDate.Value,
+            AppointmentDate = RecordDateTime,
             StatusId = SelectedAppointmentStatus.Id,
-            DoctorId = AccountName.User.Id,
+            DoctorId = AccountName.User.DoctorId,
             ReferralDoctorId = SelectedReferallDoctor?.Id
         };
 

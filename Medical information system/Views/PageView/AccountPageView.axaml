@@ -10,7 +10,7 @@
     
     <Grid>
         <Border Classes="medButton" HorizontalAlignment="Center">
-            <StackPanel>
+            <StackPanel Spacing="5">
                  <Image Source="/Assets/USER.jpg" Height="100" Width="100"/> 
                 <StackPanel>
                     <TextBlock Classes="title" Text="Профиль"/>
@@ -35,6 +35,15 @@
                     <TextBox Text="{Binding Role}"/>
                 </StackPanel>
                  
+                 
+                 <StackPanel Spacing="5">
+                     <Button Classes="delete" Command="{Binding ExitAccountCommand}">
+                         <StackPanel Orientation="Horizontal">
+                             <PathIcon Data="{StaticResource  exit}"/>
+                             <TextBlock Text="Выйти из аккаунта"/>
+                         </StackPanel>
+                     </Button>
+                 </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

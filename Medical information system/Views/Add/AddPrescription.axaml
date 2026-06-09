@@ -8,7 +8,7 @@
         d:DesignHeight="450"
         x:DataType="addViewModel:AddPrescriptionViewModel"
         x:Class="Medical_information_system.Views.Add.AddPrescription"
-        Title="Добавление рецепта">
+        Title="Добавить рецепт">
 
     <Grid Background="Azure">
 

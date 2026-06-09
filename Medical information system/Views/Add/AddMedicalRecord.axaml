@@ -9,7 +9,7 @@
         Width="600"
         Height="600"
         WindowStartupLocation="CenterScreen"
-        Title="AddMedicalRecord">
+        Title="Добавить запись">
     <Grid Background="Azure">
         
         <Border Classes="medCard" HorizontalAlignment="Center"
@@ -47,6 +47,13 @@
                     <Label Content="Дата"/>
                     <DatePicker SelectedDate="{Binding RecordDate}"/>
                 </StackPanel>
+                
+                <StackPanel>
+                    <Label Content="Время"/>
+                    <TimePicker SelectedTime="{Binding RecordTime}"
+                                Width="200"
+                                ClockIdentifier="24HourClock"/>
+                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <Button Content="Сохранить" Background="Green" Foreground="AliceBlue" Command="{Binding SavePrescriptionCommand}"/>

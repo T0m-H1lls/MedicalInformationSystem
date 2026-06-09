@@ -36,11 +36,11 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             
             
-            var vm = _serviceProvider.GetRequiredService<StartViewModel>();
-            var win = _serviceProvider.GetRequiredService<StartView>();
-            vm.SetClose(win.Close);
+            var vm = _serviceProvider.GetRequiredService<AuthorizationViewModel>();
+            var win = _serviceProvider.GetRequiredService<AuthorizationView>();
             win.DataContext = vm;
             desktop.MainWindow = win;
+            vm.SetCloseAction(win.Close);
             
             
             /*

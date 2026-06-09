@@ -9,7 +9,7 @@
         Width="600"
         Height="600"
         WindowStartupLocation="CenterScreen"
-        Title="AddPatient">
+        Title="Добавить пациента">
         
         <Grid>
                 <Border Classes="medCard"  Width="450" HorizontalAlignment="Center" VerticalAlignment="Center">

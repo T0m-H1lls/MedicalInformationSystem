@@ -4,8 +4,6 @@ public class Statistic
 {
     public string PatientName { get; set; }
     
-    
-    
     public string DocFullName { get; set; }
     public int CountPatient { get; set; }
 

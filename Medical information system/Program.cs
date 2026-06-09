@@ -93,7 +93,6 @@ sealed class Program
                 
                 
                 s.AddTransient<StartViewModel>();
-                s.AddTransient<StartView>();
                 
                 s.AddSingleton<Navigation>();
 

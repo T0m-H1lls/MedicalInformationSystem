@@ -32,10 +32,12 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     [ObservableProperty] private Doctor? _selectedDoctorEdit;
     [ObservableProperty] private Appointments _selectedAppointment;
     
+    [ObservableProperty] private TimeSpan _recordTime = DateTime.Now.TimeOfDay;
+    [ObservableProperty] private TimeSpan _recordTimeEdit = DateTime.Now.TimeOfDay;
+    [ObservableProperty] private DateTimeOffset _recordDateEdit = DateTime.Now;
+    
     [ObservableProperty] private string _fullNameDoc;
     [ObservableProperty] private bool _viewStyle = false;
-    
-    [ObservableProperty] private DateTimeOffset? _edAppointmentDate;
     
     [ObservableProperty] private int _currentPageSize;
     [ObservableProperty] List<int> pageSizes;
@@ -64,12 +66,12 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         
         using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
         {
-             AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+             AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
         }
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
         }
         
         using (var rep = serviceProvider.GetRequiredService<DoctorRep>())
@@ -82,7 +84,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             StatusList = new ObservableCollection<Status>(rep.StatusList());
         }
         
-        ReferralDoctorsList = new ObservableCollection<Doctor>(DoctorList.Where(x => x.Id != AccountName.User.Id));
+        ReferralDoctorsList = new ObservableCollection<Doctor>(DoctorList.Where(x => x.Id != AccountName.User.DoctorId));
     }
     partial void OnCurrentPageSizeChanged(int value)
     {
@@ -93,7 +95,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            var rowsCount = rep.GetRowsCount(AccountName.User.Id);
+            var rowsCount = rep.GetRowsCount(AccountName.User.DoctorId);
             totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
              
             currentPage = 1;
@@ -108,7 +110,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
 
         using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id, pageIndex, CurrentPageSize));
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId, pageIndex, CurrentPageSize));
             PageInfo = $"Страница {currentPage} из {totalPages}";
         }
     }
@@ -145,7 +147,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         {
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
-                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
             }
         }
         else
@@ -153,7 +155,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
                  AppointmentsList = new ObservableCollection<Appointments>(
-                     rep.GetAppointments(AccountName.User.Id).Where(s =>
+                     rep.GetAppointments(AccountName.User.DoctorId).Where(s =>
                          s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
                          s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
                          s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
@@ -186,7 +188,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
         }
     }
 
@@ -211,7 +213,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
                 
                 using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
                 {
-                    AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+                    AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
                 }
             }
         }
@@ -230,8 +232,12 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             await box.ShowAsync();
             return;
         }
-
-        EdAppointmentDate = SelectedAppointment.AppointmentDate.Value;
+        
+        if (SelectedAppointment.AppointmentDate.HasValue)
+        {
+            RecordDateEdit = SelectedAppointment.AppointmentDate.Value;
+            RecordTimeEdit = SelectedAppointment.AppointmentDate.Value.TimeOfDay;
+        }
         SelectedPatientEdit = PatientsList.FirstOrDefault(x => x.Id == SelectedAppointment.PatientId);
         SelectedStatusEdit = StatusList.FirstOrDefault(x => x.Id == SelectedAppointment.StatusId);
         SelectedReferralDoctor = DoctorList.FirstOrDefault(x => x.Id == SelectedAppointment.ReferralDoctorId);
@@ -264,10 +270,11 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
 
         if (result == ButtonResult.Ok)
         {
+            DateTime fullDateTime = RecordDateEdit.Date + RecordTimeEdit;
             SelectedAppointment.PatientId = SelectedPatientEdit.Id;
-            SelectedAppointment.DoctorId = AccountName.User.Id;
+            SelectedAppointment.DoctorId = AccountName.User.DoctorId;
             SelectedAppointment.StatusId = SelectedStatusEdit.Id;
-            SelectedAppointment.AppointmentDate = EdAppointmentDate;
+            SelectedAppointment.AppointmentDate = fullDateTime;
             SelectedAppointment.ReferralDoctorId = SelectedReferralDoctor?.Id;
             
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
@@ -277,7 +284,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
            
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
-                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.Id));
+                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
             }
             
             ViewStyle = false;

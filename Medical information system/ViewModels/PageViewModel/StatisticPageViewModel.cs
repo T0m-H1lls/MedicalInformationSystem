@@ -17,6 +17,15 @@ namespace Medical_information_system.ViewModels;
 public partial class StatisticPageViewModel:ViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
+    
+    [ObservableProperty] private DateTimeOffset? _selectedDate = DateTimeOffset.Now;
+    [ObservableProperty] private bool _useDateFilter = false;
+    [ObservableProperty] private int _selectedMonth = DateTime.Now.Month;
+    [ObservableProperty] private int _selectedYear = DateTime.Now.Year;
+    [ObservableProperty] private string[] _months = { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
+    
+    
+    
 
     [ObservableProperty] private DateTimeOffset? _date =  DateTimeOffset.Now;
     [ObservableProperty] private int _countPatient;
@@ -26,25 +35,93 @@ public partial class StatisticPageViewModel:ViewModelBase
     [ObservableProperty] private ObservableCollection<Statistic>  _statistics = new();
     [ObservableProperty] private ObservableCollection<Statistic> _activeDoctorCount = new();
     [ObservableProperty] private ObservableCollection<Statistic> _patientsByGender = new();
+    [ObservableProperty] private string _statisticsPeriod = "За всё время";
     
 
     public StatisticPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        
+        LoadStatistics();      
+        LoadActiveDoctors();  
+        LoadPatientsByGender();
+    }
+    [RelayCommand]
+    private void LoadStatistics()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<StatisticRep>())
+        {
+            if (UseDateFilter)
+            {
+                int monthNumber = SelectedMonth + 1;
+                Statistics = new ObservableCollection<Statistic>(rep.GetPatientColor(monthNumber, SelectedYear));
+                StatisticsPeriod = $"За {Months[SelectedMonth]} {SelectedYear} г.";
+            }
+            else
+            {
+                Statistics = new ObservableCollection<Statistic>(rep.GetPatientColor());
+                StatisticsPeriod = "За всё время";
+            }
+        }
+    }
 
-        using (var rep = serviceProvider.GetRequiredService<StatisticRep>())
+    
+    [RelayCommand]
+    private void LoadActiveDoctors()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<StatisticRep>())
         {
-            Statistics = new ObservableCollection<Statistic>(rep.GetPatientColor());
+            if (UseDateFilter)
+            {
+                int monthNumber = SelectedMonth + 1;
+                ActiveDoctorCount = new ObservableCollection<Statistic>(rep.GetActiveDoctorsCount(monthNumber,SelectedYear));
+            }
+            else
+            {
+                ActiveDoctorCount = new ObservableCollection<Statistic>(rep.GetActiveDoctorsCount());
+            }
         }
-
-        using (var rep = serviceProvider.GetRequiredService<StatisticRep>())
+    }
+    
+    [RelayCommand]
+    private void LoadPatientsByGender()
+    {
+        using (var rep = _serviceProvider.GetRequiredService<StatisticRep>())
         {
-            ActiveDoctorCount = new ObservableCollection<Statistic>(rep.GetActiveDoctorsCount());
+            if (UseDateFilter)
+            {
+                int monthNumber = SelectedMonth + 1;
+                PatientsByGender = new ObservableCollection<Statistic>(rep.GetPatientsByGender(monthNumber,SelectedYear));
+            }
+            else
+            {
+                PatientsByGender = new ObservableCollection<Statistic>(rep.GetPatientsByGender());
+            }
         }
-        using (var rep = serviceProvider.GetRequiredService<StatisticRep>())
-        {
-            PatientsByGender=new ObservableCollection<Statistic>(rep.GetPatientsByGender());
-        }
+    }
+    
+    [RelayCommand]
+    private void ApplyDateFilter()
+    {
+        LoadStatistics();
+        LoadActiveDoctors();
+        LoadPatientsByGender();
+    }
+    
+    [RelayCommand]
+    private void SetCurrentMonth()
+    {
+        UseDateFilter = true;
+        SelectedMonth = DateTime.Now.Month-1;
+        SelectedYear = DateTime.Now.Year;
+        ApplyDateFilter();
+    }
+    
+    [RelayCommand]
+    private void ClearDateFilter()
+    {
+        UseDateFilter = false;
+        ApplyDateFilter();
     }
 
     [RelayCommand]

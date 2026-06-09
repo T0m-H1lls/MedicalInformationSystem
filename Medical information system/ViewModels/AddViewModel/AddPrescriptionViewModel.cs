@@ -29,7 +29,7 @@ public partial class AddPrescriptionViewModel : ViewModelBase
 
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id)); 
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId)); 
         }
         SelectedPatient = PatientsList.FirstOrDefault();
         
@@ -82,7 +82,7 @@ public partial class AddPrescriptionViewModel : ViewModelBase
 
         var prescription = new Prescription
         {
-            DoctorId = AccountName.User.Id,
+            DoctorId = AccountName.User.DoctorId,
             PatientId = SelectedPatient.Id,
             MedicalName = Medicine,
             Dosage = Dosage,

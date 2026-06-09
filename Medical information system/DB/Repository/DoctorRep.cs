@@ -83,7 +83,7 @@ public class DoctorRep:Base, IDisposable
 
     public bool AddDoctor(Doctor doctor)
     {
-        string sql = @"INSERT INTO `doctors` VALUES(0,@FullName, @SpecializationId,@Phone, @Room, @DepartmentId,null,1)";
+        string sql = @"INSERT INTO `doctors` VALUES(0,@FullName, @SpecializationId,@Phone, @Room, @DepartmentId,null,1,@CreatedAt)";
 
         try
         {
@@ -94,6 +94,7 @@ public class DoctorRep:Base, IDisposable
                 cm.Parameters.AddWithValue("@SpecializationId", doctor.SpecialtyId);
                 cm.Parameters.AddWithValue("@Room", doctor.Room);
                 cm.Parameters.AddWithValue("@DepartmentId", doctor.DepartmentId);
+                cm.Parameters.AddWithValue("@CreatedAt", DateTimeOffset.Now);
 
                 cm.ExecuteNonQuery();
             }

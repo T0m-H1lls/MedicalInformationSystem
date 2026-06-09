@@ -59,7 +59,6 @@ public class MedicalRecordRep:Base,IDisposable
         catch (Exception e)
         {
             Console.WriteLine(e);
-            
         }
         return diagnosesList;
     }

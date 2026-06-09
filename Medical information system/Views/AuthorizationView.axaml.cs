@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Medical_information_system.Views;
 
-public partial class AuthorizationView : UserControl
+public partial class AuthorizationView : Window
 {
     public AuthorizationView()
     {

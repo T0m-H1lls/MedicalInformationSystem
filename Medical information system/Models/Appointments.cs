@@ -7,7 +7,7 @@ public class Appointments
     public int Id { get; set; }
     public int PatientId { get; set; }
     public int DoctorId { get; set; }
-    public DateTimeOffset? AppointmentDate { get; set; }
+    public DateTime? AppointmentDate { get; set; }
     public string Status { get; set; }
     
     public int? ReferralDoctorId { get; set; }

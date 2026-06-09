@@ -85,7 +85,7 @@ public class PatientRep:Base, IDisposable
 
     public void AddPatient(Patient patient)
     {
-        string sql = @"insert into `patients` values(0,@FullName,@BirthDate,@Gender,@Phone,@Address,@InsuranceNumber,@Passport,@Snils,@doctorId,Null,1)";
+        string sql = @"insert into `patients` values(0,@FullName,@BirthDate,@Gender,@Phone,@Address,@InsuranceNumber,@Passport,@Snils,@doctorId,Null,1,@CreatedAt)";
         try
         {
             using (var mc = new MySqlCommand(sql, connection))
@@ -98,7 +98,8 @@ public class PatientRep:Base, IDisposable
                 mc.Parameters.AddWithValue("InsuranceNumber", patient.InsuranceNumber);
                 mc.Parameters.AddWithValue("Passport", patient.Passport);
                 mc.Parameters.AddWithValue("Snils", patient.Snils);
-                mc.Parameters.AddWithValue("@doctorId", patient.DoctorId);
+                mc.Parameters.AddWithValue("doctorId",patient.DoctorId);
+                mc.Parameters.AddWithValue("CreatedAt", DateTimeOffset.Now);
                 mc.ExecuteNonQuery();
             }
         }

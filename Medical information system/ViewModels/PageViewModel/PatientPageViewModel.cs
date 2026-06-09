@@ -73,7 +73,7 @@ public partial class PatientPageViewModel:ViewModelBase
         CurrentPageSize = PageSizes.First();
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
         }
        
         
@@ -89,7 +89,7 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-             var rowsCount = rep.GetRowsCount(AccountName.User.Id);
+             var rowsCount = rep.GetRowsCount(AccountName.User.DoctorId);
              totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
              
              currentPage = 1;
@@ -104,7 +104,7 @@ public partial class PatientPageViewModel:ViewModelBase
 
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id, pageIndex, CurrentPageSize));
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId, pageIndex, CurrentPageSize));
             PageInfo = $"Страница {currentPage} из {totalPages}";
         }
     }
@@ -144,7 +144,7 @@ public partial class PatientPageViewModel:ViewModelBase
         {
             using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
             {
-                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
 
             }
         }
@@ -153,7 +153,7 @@ public partial class PatientPageViewModel:ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
             {
                 Patients = new ObservableCollection<Patient>(
-                    rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize).Where(s =>
+                    rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize).Where(s =>
                         s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                         s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                         s.InsuranceNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
@@ -179,7 +179,7 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
         }
     }
 
@@ -205,7 +205,7 @@ public partial class PatientPageViewModel:ViewModelBase
               
                 using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
                 {
-                    Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+                    Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
 
                 }
             }
@@ -213,7 +213,6 @@ public partial class PatientPageViewModel:ViewModelBase
         
        
     }
-  
     
     private bool ValidateEdit(out string error)
     {
@@ -222,29 +221,28 @@ public partial class PatientPageViewModel:ViewModelBase
             error = "Введите ФИО";
             return false;
         }
-        
-
+    
         if (string.IsNullOrWhiteSpace(EdAdress))
         {
             error = "Введите адрес";
             return false;
         }
 
-        if (EdPasport.Length < 12)
+        if (string.IsNullOrWhiteSpace(EdPasport))
         {
             error = "Введите паспорт";
             return false;
         }
 
-        if (EdSnils.Length < 6)
+        if (string.IsNullOrWhiteSpace(EdSnils))
         {
             error = "Введите СНИЛС";
             return false;
         }
-        
-        if (EdDateOfBirth > DateTimeOffset.Now)
+    
+        if (EdDateOfBirth == null || EdDateOfBirth > DateTimeOffset.Now)
         {
-            error = "Дата рождения не может быть больше текущей даты";
+            error = "Введите корректную дату рождения";
             return false;
         }
 
@@ -335,7 +333,7 @@ public partial class PatientPageViewModel:ViewModelBase
             
             using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
             {
-                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id,currentPage,CurrentPageSize));
+                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
 
             }
 

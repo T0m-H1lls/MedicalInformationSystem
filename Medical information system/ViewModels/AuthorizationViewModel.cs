@@ -30,6 +30,12 @@ public partial class AuthorizationViewModel:ViewModelBase
         _serviceProvider = serviceProvider;
         _navigation = navigation;
     }
+    private Action _closeAction;
+
+    public void SetCloseAction(Action closeAction)
+    {
+        _closeAction = closeAction;
+    }
 
   
 
@@ -61,7 +67,7 @@ public partial class AuthorizationViewModel:ViewModelBase
             Error = "Вход выполнен";
             await Task.Delay(1000);   
             win.Show();
-            _navigation.Close();
+            _closeAction?.Invoke();
         }
         else 
         {

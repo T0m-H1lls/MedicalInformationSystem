@@ -33,7 +33,11 @@
                 </ComboBox>
                 
                 <Label Content="Дата"/>
-                <DatePicker SelectedDate="{Binding EdAppointmentDate}"  Width="300"/>
+                <DatePicker SelectedDate="{Binding RecordDateEdit}"  Width="300"/>
+                
+                <Label Content="Время"/>
+                <TimePicker SelectedTime="{Binding RecordTimeEdit}"  Width="300"/>
+
                 
                 <Label Content="Статус"/>
                 <ComboBox ItemsSource="{Binding StatusList}"

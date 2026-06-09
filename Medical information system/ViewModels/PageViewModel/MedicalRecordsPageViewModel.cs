@@ -27,23 +27,28 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
     [ObservableProperty] private ObservableCollection<Medication> _medicinesList = new();
     [ObservableProperty] private ObservableCollection<Patient> _patientsList = new();
     
+    [ObservableProperty] private TimeSpan _recordTime = DateTime.Now.TimeOfDay;
+    [ObservableProperty] private TimeSpan _recordTimeEdit = DateTime.Now.TimeOfDay;
+    
+    [ObservableProperty] private DateTimeOffset _recordDateEdit = DateTime.Now;
+     
     [ObservableProperty] private Appointments _selectedAppointmentEdit;
     [ObservableProperty] private Medication _selectedMedicineEdit;
-    
+   
+
     [ObservableProperty] private string _descriptionEdit;
     [ObservableProperty] private string _diagnoseEdit;
     [ObservableProperty] private string _medicineEdit;
-    [ObservableProperty] private DateTimeOffset _recordDateEdit = DateTime.Now;
-   [ObservableProperty] private Patient _selectedPatient;
+    [ObservableProperty] private Patient _selectedPatient;
    
    [ObservableProperty] private int _currentPageSize;
    [ObservableProperty] List<int> pageSizes;
    [ObservableProperty]private string pageInfo;
    private int currentPage = 1;
    private int totalPages;
-  
-    
-    [RelayCommand]
+   
+
+   [RelayCommand]
     void ClosePanel()
     {
         ViewStyle = false;
@@ -76,7 +81,7 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.Id));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
         }
 
         SelectedPatient = PatientsList.FirstOrDefault();
@@ -264,13 +269,25 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
             return;
         }
-        if (SelectedMedicalRecord == null)
+        else if (SelectedMedicalRecord.DoctorId != AccountName.User.DoctorId)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Ошибка", "Вы не можете изменять чужие записи",
+                ButtonEnum.Ok);
+
+            await box.ShowAsync();
+
             return;
+        }
 
         MedicineEdit = SelectedMedicalRecord.MedicineName;
         DiagnoseEdit = SelectedMedicalRecord.DiagnoseName;
         DescriptionEdit = SelectedMedicalRecord.Description;
-        RecordDateEdit = SelectedMedicalRecord.RecordDate.Value;
+        if (SelectedMedicalRecord.RecordDate.HasValue)
+        {
+            RecordDateEdit = SelectedMedicalRecord.RecordDate.Value;
+            RecordTimeEdit = SelectedMedicalRecord.RecordDate.Value.TimeOfDay;
+        }
         SelectedPatient = PatientsList.FirstOrDefault(x => x.Id == SelectedMedicalRecord.PatientId);
         ViewStyle = true;
     }
@@ -297,11 +314,12 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
         if (result == ButtonResult.Ok)
         {
+            DateTime fullDateTime = RecordDateEdit.Date + RecordTimeEdit;
             SelectedMedicalRecord.MedicineName = MedicineEdit;
             SelectedMedicalRecord.Description = DescriptionEdit;
-            SelectedMedicalRecord.DoctorId = AccountName.User.Id;
+            SelectedMedicalRecord.DoctorId = AccountName.User.DoctorId;
             SelectedMedicalRecord.PatientId = SelectedPatient.Id;
-            SelectedMedicalRecord.RecordDate = SelectedMedicalRecord.RecordDate.Value;
+            SelectedMedicalRecord.RecordDate = fullDateTime;
             SelectedMedicalRecord.DiagnoseName = DiagnoseEdit;
             
             using (var rep = _serviceProvider.GetRequiredService<MedicalRecordRep>())
