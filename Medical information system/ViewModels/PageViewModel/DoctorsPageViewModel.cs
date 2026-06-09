@@ -42,6 +42,7 @@ public partial class DoctorsPageViewModel : ViewModelBase
     [ObservableProperty]private string pageInfo;
     private int currentPage = 1;
     private int totalPages;
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
     
 
     private string _searchText;

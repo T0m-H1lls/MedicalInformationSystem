@@ -40,6 +40,8 @@ public partial class PatientPageViewModel:ViewModelBase
     private int currentPage = 1;
     private int totalPages;
     
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
+    
     
     private Patient _selectedPatient;
     public Patient SelectedPatient
@@ -66,14 +68,14 @@ public partial class PatientPageViewModel:ViewModelBase
         }
     }
 
-    public PatientPageViewModel(IServiceProvider serviceProvider, User user)
+    public PatientPageViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
         PageSizes = new List<int>([5,10,20]);
         CurrentPageSize = PageSizes.First();
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor,currentPage,CurrentPageSize));
         }
        
         
@@ -89,7 +91,7 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-             var rowsCount = rep.GetRowsCount(AccountName.User.DoctorId);
+             var rowsCount = rep.GetRowsCount(AccountName.User.DoctorId,isChiefDoctor);
              totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
              
              currentPage = 1;
@@ -104,7 +106,7 @@ public partial class PatientPageViewModel:ViewModelBase
 
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId, pageIndex, CurrentPageSize));
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor, pageIndex, CurrentPageSize));
             PageInfo = $"Страница {currentPage} из {totalPages}";
         }
     }
@@ -144,7 +146,7 @@ public partial class PatientPageViewModel:ViewModelBase
         {
             using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
             {
-                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
+                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor,currentPage,CurrentPageSize));
 
             }
         }
@@ -153,7 +155,7 @@ public partial class PatientPageViewModel:ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
             {
                 Patients = new ObservableCollection<Patient>(
-                    rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize).Where(s =>
+                    rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor,currentPage,CurrentPageSize).Where(s =>
                         s.FullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                         s.PhoneNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) ||
                         s.InsuranceNumber.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
@@ -179,7 +181,7 @@ public partial class PatientPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
         {
-            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
+            Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor,currentPage,CurrentPageSize));
         }
     }
 
@@ -205,7 +207,7 @@ public partial class PatientPageViewModel:ViewModelBase
               
                 using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
                 {
-                    Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
+                    Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor,currentPage,CurrentPageSize));
 
                 }
             }
@@ -333,7 +335,7 @@ public partial class PatientPageViewModel:ViewModelBase
             
             using (var rep = _serviceProvider.GetRequiredService<PatientRep>())
             {
-                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,currentPage,CurrentPageSize));
+                Patients = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor,currentPage,CurrentPageSize));
 
             }
 

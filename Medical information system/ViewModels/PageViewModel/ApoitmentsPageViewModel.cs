@@ -44,6 +44,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     [ObservableProperty]private string pageInfo;
     private int currentPage = 1;
     private int totalPages;
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
     
     
     private string _searchText;
@@ -66,12 +67,12 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         
         using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
         {
-             AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
+             AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor));
         }
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor));
         }
         
         using (var rep = serviceProvider.GetRequiredService<DoctorRep>())
@@ -95,7 +96,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            var rowsCount = rep.GetRowsCount(AccountName.User.DoctorId);
+            var rowsCount = rep.GetRowsCount(AccountName.User.DoctorId,isChiefDoctor);
             totalPages = (int)Math.Ceiling(((double)rowsCount / CurrentPageSize));
              
             currentPage = 1;
@@ -110,7 +111,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
 
         using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId, pageIndex, CurrentPageSize));
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor, pageIndex, CurrentPageSize));
             PageInfo = $"Страница {currentPage} из {totalPages}";
         }
     }
@@ -147,7 +148,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
         {
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
-                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
+                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor));
             }
         }
         else
@@ -155,7 +156,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
                  AppointmentsList = new ObservableCollection<Appointments>(
-                     rep.GetAppointments(AccountName.User.DoctorId).Where(s =>
+                     rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor).Where(s =>
                          s.DoctorFullName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
                          s.PatientName.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase) || 
                          s.Status.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase)));
@@ -188,7 +189,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
     {
         using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor));
         }
     }
 
@@ -200,7 +201,12 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
             var box2 = MessageBoxManager.GetMessageBoxStandard("Ошибка","Выберите что хотите удалить",ButtonEnum.Ok);
             var result2 = await box2.ShowAsync();
         }
-        else
+        else if (SelectedAppointment.DoctorId != AccountName.User.DoctorId)
+        {
+            var box2 = MessageBoxManager.GetMessageBoxStandard("Ошибка","Вы не можете удалить чужой прием",ButtonEnum.Ok);
+            var result2 = await box2.ShowAsync();
+        }
+        else 
         {
             var box = MessageBoxManager.GetMessageBoxStandard("Удалить","Удалить выбранную запись",ButtonEnum.OkCancel);
             var result = await box.ShowAsync();
@@ -213,7 +219,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
                 
                 using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
                 {
-                    AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
+                    AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor));
                 }
             }
         }
@@ -284,7 +290,7 @@ public partial class ApoitmentsPageViewModel:ViewModelBase
            
             using (var rep = _serviceProvider.GetRequiredService<ApointmentRep>())
             {
-                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
+                AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor));
             }
             
             ViewStyle = false;

@@ -13,13 +13,17 @@ public class PatientRep:Base, IDisposable
     {
         OpenConnection();
     }
-
-    public List<Patient> GetAllPatient(int doctorId,int? pageNumber = null, int? pageSize = null)
+    public List<Patient> GetAllPatient(int doctorId,bool isChiefDoctor,int? pageNumber = null, int? pageSize = null)
     {
         List<Patient> patients = new();
         string sql = @"SELECT * 
                FROM patients 
-               WHERE doctorId = @doctorId AND IsActive = 1";
+               Where IsActive = 1";
+        if (!isChiefDoctor)
+        {
+            sql += " AND doctorId = @doctorId";
+        }
+        
         if (pageNumber != null && pageSize != null)
         {
             sql+= " limit @limit offset @offset";
@@ -62,11 +66,16 @@ public class PatientRep:Base, IDisposable
         return patients;
     }
 
-    public int GetRowsCount(int doctorId)
+    public int GetRowsCount(int doctorId,bool isChiefDoctor)
     {
         string sql = @"SELECT COUNT(Id)
                         FROM patients
-                        WHERE DoctorId = @doctorId AND IsActive = 1";
+                        WHERE IsActive = 1";
+        if (!isChiefDoctor)
+        {
+            sql += " AND doctorId = @doctorId";
+        }
+
 
         try
         {

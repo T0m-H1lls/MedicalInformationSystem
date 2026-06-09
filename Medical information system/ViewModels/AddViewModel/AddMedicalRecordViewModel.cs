@@ -32,12 +32,15 @@ public partial class AddMedicalRecordViewModel:ViewModelBase
     [ObservableProperty] private MedicalRecord _selectedMedicalRecord;
     [ObservableProperty] private Patient _selectedPatient;
     
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
+
+    
     public AddMedicalRecordViewModel(IServiceProvider serviceProvider )
     {
         _serviceProvider = serviceProvider;
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor));
         }
         SelectedPatient = PatientsList.FirstOrDefault();
     }

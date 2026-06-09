@@ -12,8 +12,10 @@ public class ApointmentRep:Base, IDisposable
     {
         OpenConnection();
     }
+    
 
-    public List<Appointments> GetAppointments(int id,int? pageNumber = null, int? pageSize = null )
+    
+    public List<Appointments> GetAppointments(int id,bool isChiefDoctor,int? pageNumber = null, int? pageSize = null )
     {
         List<Appointments> appointmentsList = new();
         string sql = @"SELECT a.id,a.PatientId,a.DoctorId,a.AppointmentDate,a.StatusId,a.ReferralDoctorId,p.FullName as PatientName,d.FullName as DoctorFullName,d2.FullName as DocFullNameReferal,s.Name  as Status
@@ -22,10 +24,15 @@ public class ApointmentRep:Base, IDisposable
                        Left join doctors d ON a.DoctorId = d.Id
                        Left join doctors d2 on a.ReferralDoctorId =d2.Id 
                        Left join status s  on a.StatusId  = s.id 
-                       Where a.DoctorId  = @id AND a.IsActive = 1";
+                       Where a.IsActive = 1";
+        if (!isChiefDoctor)
+        {
+            sql += " AND a.DoctorId = @id";
+        }
+
         if (pageNumber != null && pageSize != null)
         {
-            sql+= " limit @limit offset @offset";
+            sql += " LIMIT @limit OFFSET @offset";
         }
         try
         {
@@ -79,11 +86,18 @@ public class ApointmentRep:Base, IDisposable
         }
         return appointmentsList;
     }
-    public int GetRowsCount(int doctorId)
+    
+    public int GetRowsCount(int doctorId,bool isChiefDoctor)
     {
         string sql = @"SELECT COUNT(Id)
                         FROM `appointments`
-                        WHERE DoctorId = @doctorId AND IsActive = 1";
+                        WHERE IsActive = 1";
+        
+        if (!isChiefDoctor)
+        {
+            sql += " AND DoctorId = @doctorId";
+        }
+
 
         try
         {
@@ -98,6 +112,7 @@ public class ApointmentRep:Base, IDisposable
             return 0;
         }
     }
+    
 
     
     public bool AddAppointment(Appointments appointment)

@@ -18,7 +18,7 @@
                                 </StackPanel>
                                 
                                 <StackPanel>
-                                        <Label Content="Специалитет"/>
+                                        <Label Content="Специальность"/>
                                         <ComboBox ItemsSource="{Binding SpecializationsList}" 
                                                   Width="300"
                                                   HorizontalContentAlignment="Center"

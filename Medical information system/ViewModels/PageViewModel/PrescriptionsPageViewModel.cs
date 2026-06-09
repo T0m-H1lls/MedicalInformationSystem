@@ -37,6 +37,8 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
     private int currentPage = 1;
     private int totalPages;
     
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
+    
     
     [ObservableProperty] private bool _viewStyle = false;
     
@@ -91,7 +93,7 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId)); 
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor)); 
         }
         SelectedPatient = PatientsList.FirstOrDefault();
     }
@@ -177,6 +179,11 @@ public partial class PrescriptionsPageViewModel:ViewModelBase
         if (SelectedPrescription==null)
         {
             var box2 = MessageBoxManager.GetMessageBoxStandard("Ошибка","Выберите что хотите удалить",ButtonEnum.Ok);
+            var result2 = await box2.ShowAsync();
+        }
+        else if (SelectedPrescription.DoctorId != AccountName.User.DoctorId)
+        {
+            var box2 = MessageBoxManager.GetMessageBoxStandard("Ошибка","Вы не можете удалить чужое назначение",ButtonEnum.Ok);
             var result2 = await box2.ShowAsync();
         }
         else

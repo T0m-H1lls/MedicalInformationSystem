@@ -36,16 +36,17 @@ public partial class AddApoitmentViewModel:ViewModelBase
     public AddApoitmentViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        bool isChiefDoctor = AccountName.User.Role == "Главный врач";
        
         
         using (var rep = serviceProvider.GetRequiredService<ApointmentRep>())
         {
-            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId));
+            AppointmentsList = new ObservableCollection<Appointments>(rep.GetAppointments(AccountName.User.DoctorId,isChiefDoctor));
         }
         
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor));
         }
 
         SelectedAppointmentPatient = PatientsList.FirstOrDefault();

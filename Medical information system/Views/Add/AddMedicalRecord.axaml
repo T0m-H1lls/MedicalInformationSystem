@@ -51,7 +51,6 @@
                 <StackPanel>
                     <Label Content="Время"/>
                     <TimePicker SelectedTime="{Binding RecordTime}"
-                                Width="200"
                                 ClockIdentifier="24HourClock"/>
                  </StackPanel>
                 

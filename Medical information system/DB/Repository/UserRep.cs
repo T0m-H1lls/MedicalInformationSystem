@@ -38,7 +38,10 @@ public class UserRep:Base, IDisposable
     {
         
         List<User> users = new();
-        string sql =  @"select * from `users` where `Login`= @Login and `Password`= @Password";
+        string sql =  @"select u.Id ,u.DoctorId ,u.RoleId,s.Name as Role,u.Name,u.Surname,u.Patronymic,u.Login,u.Password 
+                        from users u 
+                        join specialization s on u.RoleId  = s.Id
+                        where `Login`= @Login and `Password`= @Password ";
         try
         {
             using (var mc = new MySqlCommand(sql, connection)) 
@@ -54,6 +57,7 @@ public class UserRep:Base, IDisposable
                             Id = reader.GetInt32("Id"),
                             Login = reader.GetString("Login"),
                             Password = reader.GetString("Password"),
+                            Role = reader.GetString("Role"),
                             RoleId = reader.GetInt32("RoleId"),
                             DoctorId = reader.GetInt32("DoctorId"),
                            

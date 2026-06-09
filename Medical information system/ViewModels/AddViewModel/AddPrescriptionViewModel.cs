@@ -22,6 +22,8 @@ public partial class AddPrescriptionViewModel : ViewModelBase
     [ObservableProperty] private string _dosage;
     [ObservableProperty] private string _duration;
     [ObservableProperty] private string _medicine;
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
+
 
     public AddPrescriptionViewModel(IServiceProvider serviceProvider )
     {
@@ -29,7 +31,7 @@ public partial class AddPrescriptionViewModel : ViewModelBase
 
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId)); 
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor)); 
         }
         SelectedPatient = PatientsList.FirstOrDefault();
         

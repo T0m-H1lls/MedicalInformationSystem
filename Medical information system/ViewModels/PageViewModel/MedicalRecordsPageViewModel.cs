@@ -34,6 +34,8 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
      
     [ObservableProperty] private Appointments _selectedAppointmentEdit;
     [ObservableProperty] private Medication _selectedMedicineEdit;
+    
+    bool isChiefDoctor = AccountName.User.Role == "Главный врач";
    
 
     [ObservableProperty] private string _descriptionEdit;
@@ -81,7 +83,7 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
 
         using (var rep = serviceProvider.GetRequiredService<PatientRep>())
         {
-            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId));
+            PatientsList = new ObservableCollection<Patient>(rep.GetAllPatient(AccountName.User.DoctorId,isChiefDoctor));
         }
 
         SelectedPatient = PatientsList.FirstOrDefault();
@@ -231,6 +233,16 @@ public partial class MedicalRecordsPageViewModel:ViewModelBase
                 ButtonEnum.Ok);
 
             await box.ShowAsync();
+            return;
+        }
+        else if (SelectedMedicalRecord.DoctorId != AccountName.User.DoctorId)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard(
+                "Ошибка", "Вы не можете удалять чужую запись",
+                ButtonEnum.Ok);
+
+            await box.ShowAsync();
+
             return;
         }
 
