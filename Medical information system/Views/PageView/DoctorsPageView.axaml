@@ -38,13 +38,14 @@
                    <Label Content="ФИО"/>
                    <TextBox Text="{Binding AdFullName}"/>
                    
-                   <Label Content="Специалитет"/>
+                   <Label Content="Специальность"/>
                    <ComboBox ItemsSource="{Binding SpecializationsList}" 
-                             Width="240"
+                             Width="200"
+                             HorizontalContentAlignment="Center"
                              SelectedItem="{Binding SelectedSpec}">
                        <ComboBox.ItemTemplate>
                            <DataTemplate>
-                               <TextBlock Text="{Binding Name}" Width="240"/>
+                               <TextBlock Text="{Binding Name}" />
                            </DataTemplate>
                        </ComboBox.ItemTemplate>
                    </ComboBox>

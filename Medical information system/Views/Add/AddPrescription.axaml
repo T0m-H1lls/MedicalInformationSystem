@@ -21,7 +21,7 @@
                         HorizontalAlignment="Center">
 
                 <StackPanel>
-                    <Label Content="Выберите "/>
+                    <Label Content="Выберите пациента "/>
 
                     <ComboBox ItemsSource="{Binding PatientsList}"
                               SelectedItem="{Binding SelectedPatient}"
